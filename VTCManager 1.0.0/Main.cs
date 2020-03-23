@@ -416,6 +416,7 @@ namespace VTCManager_1._0._0
                     {
                         CoordinateX = data.TruckValues.CurrentValues.PositionValue.Position.X;
                         CoordinateZ = data.TruckValues.CurrentValues.PositionValue.Position.Y;
+                        this.Geschwindigkeit = (float)data.TruckValues.CurrentValues.DashboardValues.Speed.Kph;
                         Spiel = data.Game.ToString();
 
 
@@ -1661,7 +1662,7 @@ namespace VTCManager_1._0._0
 
             if(GameRuns == 1)
             {
-                if (Geschwindigkeit < 1)
+                if (this.Geschwindigkeit < 1)
                 {
                     SendKeys.Send("y");
                     SendKeys.Send(utils.Reg_Lesen("TruckersMP_Autorun", "ANTI_AFK"));
