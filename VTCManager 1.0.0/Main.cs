@@ -1290,7 +1290,7 @@ namespace VTCManager_1._0._0
             // 
             // anti_AFK_TIMER
             // 
-            this.anti_AFK_TIMER.Enabled = true;
+            this.anti_AFK_TIMER.Enabled = false;
             this.anti_AFK_TIMER.Interval = 240000;
             this.anti_AFK_TIMER.Tick += new System.EventHandler(this.anti_AFK_TIMER_Tick);
             // 
