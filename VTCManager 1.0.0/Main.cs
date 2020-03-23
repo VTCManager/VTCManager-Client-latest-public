@@ -509,7 +509,8 @@ namespace VTCManager_1._0._0
                     double num2;
                     if (this.jobStarted)
                     {
-                                    this.lastJobDictionary.Clear();
+                        this.jobStarted = false;
+                        this.lastJobDictionary.Clear();
                                     notification_sound_tour_start.Play();
                                     this.totalDistance = (int)data.NavigationValues.NavigationDistance;
                                     num2 = (double)data.JobValues.Income * 0.15;
@@ -552,7 +553,7 @@ namespace VTCManager_1._0._0
                                     this.InitializeDiscord(1);
                                     this.send_tour_status.Enabled = true;
                                     this.send_tour_status.Start();
-                                    this.jobStarted = false;
+                                    
 
                     }
 
@@ -569,7 +570,7 @@ namespace VTCManager_1._0._0
                     {
                         if (this.lastJobDictionary["cargo"] == data.JobValues.CargoValues.Name && this.lastJobDictionary["source"] == data.JobValues.CitySource && this.lastJobDictionary["destination"] == data.JobValues.CityDestination)
                         {
-
+                            this.jobFinished = false;
                             Console.WriteLine("jobfinsiehed");
                             notification_sound_tour_end.Play();
                             this.send_tour_status.Enabled = false;
@@ -604,7 +605,7 @@ namespace VTCManager_1._0._0
                             this.depature_lb.Text = "";
                             //this.cargo_lb.Text = translation.no_cargo_lb;
                             
-                            this.jobFinished = false;
+                            
                         }
                     }
                     this.invertedDistance = this.totalDistance - (int)Math.Round((double)data.NavigationValues.NavigationDistance, 0);
