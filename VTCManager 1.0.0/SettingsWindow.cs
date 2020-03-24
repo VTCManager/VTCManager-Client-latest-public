@@ -773,7 +773,8 @@ namespace VTCManager_1._0._0
                "Plugins ATS: " + Read("Plugins ATS") + Environment.NewLine +
                "Reload Traffic Sek: " + Read("Reload_Traffic_Sekunden") + Environment.NewLine +
                "Verkehr Server: " + Read("verkehr_SERVER") + Environment.NewLine +
-               "Version: " + Read("Version") + Environment.NewLine);
+               "Version: " + Read("Version") + Environment.NewLine+
+               "Anzahl aufgeführter Tourstarts: " + Read("Count_Tourstart") + Environment.NewLine);
         }
 
 
