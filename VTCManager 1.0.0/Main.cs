@@ -153,7 +153,21 @@ namespace VTCManager_1._0._0
         public bool refuel_beendet;
         private int jobrunningcounter;
         private Discord discord;
+        private PictureBox pictureBox1;
+        private Label label5;
+        private ProgressBar Luft_Progress;
+        private PictureBox pictureBox2;
+        private Label label4;
+        private ProgressBar Fuel_Progress;
+        private Label TestLabel_Fuel;
+        private Label Rest_KM_Label;
+        private PictureBox pictureBox3;
+        private PictureBox pictureBox4;
+        private PictureBox pictureBox5;
+        private Label label7;
+        private Label label6;
         public float Geschwindigkeit;
+
 
         // Get a handle to an application window.
         [DllImport("USER32.DLL", CharSet = CharSet.Unicode)]
@@ -410,6 +424,13 @@ namespace VTCManager_1._0._0
 
                            this.currentPercentage = (((((double)data.NavigationValues.NavigationDistance / 1000) / (double)data.JobValues.PlannedDistanceKm) * 100)-100)*-1;
 
+                            // ###################   FUEL PROGRESS    ##############################################
+                            TestLabel_Fuel.Text = data.TruckValues.CurrentValues.DashboardValues.FuelValue.Amount.ToString();
+                            Fuel_Progress.Maximum = (int)data.TruckValues.ConstantsValues.CapacityValues.Fuel;
+                            Fuel_Progress.Value = (int)data.TruckValues.CurrentValues.DashboardValues.FuelValue.Amount;
+                            Rest_KM_Label.Text = "Noch: " + (int)data.TruckValues.CurrentValues.DashboardValues.FuelValue.Range + " KM";
+
+
                             // SPEED LABEL - TRUCK LABEL
                             labelkmh = (data.Game.ToString() == "Ets2") ? " KM/H" : " mp/h";
 
@@ -644,28 +665,12 @@ namespace VTCManager_1._0._0
             this.send_location = new System.Windows.Forms.Timer(this.components);
             this.send_speedo = new System.Windows.Forms.Timer(this.components);
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
-            this.dateiToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.einstellungenToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.creditsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.beendenToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.serverstatusToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.topMenuAccount = new System.Windows.Forms.ToolStripMenuItem();
-            this.MenuAbmeldenButton = new System.Windows.Forms.ToolStripMenuItem();
-            this.topmenuwebsite = new System.Windows.Forms.ToolStripMenuItem();
-            this.eventsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.GUI_SIZE_BUTTON = new System.Windows.Forms.ToolStripMenuItem();
             this.lbl_Overlay = new System.Windows.Forms.ToolStripMenuItem();
-            this.darkToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
-            this.oldCar1ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.oldCar2ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.oldCar3ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.oldCar4ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.keinsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.linkLabel1 = new System.Windows.Forms.LinkLabel();
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.panel2 = new System.Windows.Forms.Panel();
+            this.TestLabel_Fuel = new System.Windows.Forms.Label();
             this.status_jb_canc_lb = new System.Windows.Forms.Label();
             this.truck_lb = new System.Windows.Forms.Label();
             this.destination_lb = new System.Windows.Forms.Label();
@@ -674,6 +679,11 @@ namespace VTCManager_1._0._0
             this.speed_lb = new System.Windows.Forms.Label();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.panel4 = new System.Windows.Forms.Panel();
+            this.Rest_KM_Label = new System.Windows.Forms.Label();
+            this.label5 = new System.Windows.Forms.Label();
+            this.Luft_Progress = new System.Windows.Forms.ProgressBar();
+            this.label4 = new System.Windows.Forms.Label();
+            this.Fuel_Progress = new System.Windows.Forms.ProgressBar();
             this.version_lb = new System.Windows.Forms.Label();
             this.TaskBar_Icon = new System.Windows.Forms.NotifyIcon(this.components);
             this.contextTaskbar = new System.Windows.Forms.ContextMenuStrip(this.components);
@@ -683,9 +693,6 @@ namespace VTCManager_1._0._0
             this.überToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.beendenToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.groupStatistiken = new System.Windows.Forms.GroupBox();
-            this.ats_button = new System.Windows.Forms.PictureBox();
-            this.ets2_button = new System.Windows.Forms.PictureBox();
-            this.truckersMP_Button = new System.Windows.Forms.Button();
             this.user_company_lb = new System.Windows.Forms.Label();
             this.statistic_panel_topic = new System.Windows.Forms.Label();
             this.act_bank_balance_lb = new System.Windows.Forms.Label();
@@ -699,15 +706,48 @@ namespace VTCManager_1._0._0
             this.Label_DB_Server = new System.Windows.Forms.ToolStripStatusLabel();
             this.anti_AFK_TIMER = new System.Windows.Forms.Timer(this.components);
             this.label3 = new System.Windows.Forms.Label();
+            this.ats_button = new System.Windows.Forms.PictureBox();
+            this.ets2_button = new System.Windows.Forms.PictureBox();
+            this.truckersMP_Button = new System.Windows.Forms.Button();
+            this.pictureBox5 = new System.Windows.Forms.PictureBox();
+            this.pictureBox4 = new System.Windows.Forms.PictureBox();
+            this.pictureBox3 = new System.Windows.Forms.PictureBox();
+            this.pictureBox2 = new System.Windows.Forms.PictureBox();
+            this.pictureBox1 = new System.Windows.Forms.PictureBox();
+            this.dateiToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.einstellungenToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.creditsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.beendenToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.serverstatusToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.topMenuAccount = new System.Windows.Forms.ToolStripMenuItem();
+            this.MenuAbmeldenButton = new System.Windows.Forms.ToolStripMenuItem();
+            this.topmenuwebsite = new System.Windows.Forms.ToolStripMenuItem();
+            this.eventsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.GUI_SIZE_BUTTON = new System.Windows.Forms.ToolStripMenuItem();
+            this.darkToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.oldCar1ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.oldCar2ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.oldCar3ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.oldCar4ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.keinsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.label6 = new System.Windows.Forms.Label();
+            this.label7 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.send_tour_status)).BeginInit();
             this.menuStrip1.SuspendLayout();
             this.panel2.SuspendLayout();
+            this.panel4.SuspendLayout();
             this.contextTaskbar.SuspendLayout();
             this.groupStatistiken.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.ats_button)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.ets2_button)).BeginInit();
             this.groupVerkehr.SuspendLayout();
             this.statusStrip1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.ats_button)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.ets2_button)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox5)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox4)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
             // send_tour_status
@@ -743,92 +783,6 @@ namespace VTCManager_1._0._0
             this.menuStrip1.TabIndex = 0;
             this.menuStrip1.Text = "menuStrip1";
             // 
-            // dateiToolStripMenuItem
-            // 
-            this.dateiToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.einstellungenToolStripMenuItem,
-            this.creditsToolStripMenuItem,
-            this.beendenToolStripMenuItem,
-            this.serverstatusToolStripMenuItem});
-            this.dateiToolStripMenuItem.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.dateiToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("dateiToolStripMenuItem.Image")));
-            this.dateiToolStripMenuItem.Name = "dateiToolStripMenuItem";
-            this.dateiToolStripMenuItem.Size = new System.Drawing.Size(36, 28);
-            this.dateiToolStripMenuItem.ToolTipText = "Hauptmenü";
-            // 
-            // einstellungenToolStripMenuItem
-            // 
-            this.einstellungenToolStripMenuItem.Name = "einstellungenToolStripMenuItem";
-            this.einstellungenToolStripMenuItem.Size = new System.Drawing.Size(195, 22);
-            this.einstellungenToolStripMenuItem.Text = "Einstellungen";
-            this.einstellungenToolStripMenuItem.Click += new System.EventHandler(this.einstellungenToolStripMenuItemClick);
-            // 
-            // creditsToolStripMenuItem
-            // 
-            this.creditsToolStripMenuItem.Name = "creditsToolStripMenuItem";
-            this.creditsToolStripMenuItem.Size = new System.Drawing.Size(195, 22);
-            this.creditsToolStripMenuItem.Text = "Über...";
-            this.creditsToolStripMenuItem.Click += new System.EventHandler(this.CreditsToolStripMenuItem_Click);
-            // 
-            // beendenToolStripMenuItem
-            // 
-            this.beendenToolStripMenuItem.Name = "beendenToolStripMenuItem";
-            this.beendenToolStripMenuItem.Size = new System.Drawing.Size(195, 22);
-            this.beendenToolStripMenuItem.Text = "Beenden";
-            this.beendenToolStripMenuItem.Click += new System.EventHandler(this.beendenToolStripMenuItemClick);
-            // 
-            // serverstatusToolStripMenuItem
-            // 
-            this.serverstatusToolStripMenuItem.Name = "serverstatusToolStripMenuItem";
-            this.serverstatusToolStripMenuItem.Size = new System.Drawing.Size(195, 22);
-            this.serverstatusToolStripMenuItem.Text = "Serverstatus (Inaktiv)";
-            this.serverstatusToolStripMenuItem.Click += new System.EventHandler(this.serverstatusToolStripMenuItem_Click);
-            // 
-            // topMenuAccount
-            // 
-            this.topMenuAccount.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.MenuAbmeldenButton});
-            this.topMenuAccount.Image = ((System.Drawing.Image)(resources.GetObject("topMenuAccount.Image")));
-            this.topMenuAccount.Name = "topMenuAccount";
-            this.topMenuAccount.Size = new System.Drawing.Size(102, 28);
-            this.topMenuAccount.Text = "Account";
-            this.topMenuAccount.ToolTipText = "Client an/abmelden";
-            // 
-            // MenuAbmeldenButton
-            // 
-            this.MenuAbmeldenButton.Name = "MenuAbmeldenButton";
-            this.MenuAbmeldenButton.Size = new System.Drawing.Size(151, 26);
-            this.MenuAbmeldenButton.Text = "Abmelden";
-            this.MenuAbmeldenButton.Click += new System.EventHandler(this.MenuAbmeldenButton_Click);
-            // 
-            // topmenuwebsite
-            // 
-            this.topmenuwebsite.Image = ((System.Drawing.Image)(resources.GetObject("topmenuwebsite.Image")));
-            this.topmenuwebsite.Name = "topmenuwebsite";
-            this.topmenuwebsite.Size = new System.Drawing.Size(101, 28);
-            this.topmenuwebsite.Text = "Website";
-            this.topmenuwebsite.ToolTipText = "Gehe zu unserer Homepage";
-            this.topmenuwebsite.Click += new System.EventHandler(this.topMenuWebsiteClick);
-            // 
-            // eventsToolStripMenuItem
-            // 
-            this.eventsToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("eventsToolStripMenuItem.Image")));
-            this.eventsToolStripMenuItem.Name = "eventsToolStripMenuItem";
-            this.eventsToolStripMenuItem.Size = new System.Drawing.Size(91, 28);
-            this.eventsToolStripMenuItem.Text = "Events";
-            this.eventsToolStripMenuItem.ToolTipText = "Zeige aktuelle Events (in Bearbeitung)";
-            this.eventsToolStripMenuItem.Visible = false;
-            // 
-            // GUI_SIZE_BUTTON
-            // 
-            this.GUI_SIZE_BUTTON.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.GUI_SIZE_BUTTON.Image = ((System.Drawing.Image)(resources.GetObject("GUI_SIZE_BUTTON.Image")));
-            this.GUI_SIZE_BUTTON.Name = "GUI_SIZE_BUTTON";
-            this.GUI_SIZE_BUTTON.Size = new System.Drawing.Size(36, 28);
-            this.GUI_SIZE_BUTTON.Text = "Button_Groesse";
-            this.GUI_SIZE_BUTTON.ToolTipText = "Ansicht verkleinern / vergrößern";
-            this.GUI_SIZE_BUTTON.Click += new System.EventHandler(this.buttonGroesseToolStripMenuItem_Click);
-            // 
             // lbl_Overlay
             // 
             this.lbl_Overlay.Name = "lbl_Overlay";
@@ -836,61 +790,6 @@ namespace VTCManager_1._0._0
             this.lbl_Overlay.Text = "Overlay";
             this.lbl_Overlay.Visible = false;
             this.lbl_Overlay.Click += new System.EventHandler(this.overlayToolStripMenuItem_Click);
-            // 
-            // darkToolStripMenuItem
-            // 
-            this.darkToolStripMenuItem.Image = global::VTCManager_1._0._0.Properties.Resources.icons8_film_noir_50;
-            this.darkToolStripMenuItem.Name = "darkToolStripMenuItem";
-            this.darkToolStripMenuItem.Size = new System.Drawing.Size(36, 28);
-            this.darkToolStripMenuItem.ToolTipText = "Komm auf die Dunkle Seite";
-            this.darkToolStripMenuItem.Click += new System.EventHandler(this.darkToolStripMenuItem_Click);
-            // 
-            // toolStripMenuItem1
-            // 
-            this.toolStripMenuItem1.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.oldCar1ToolStripMenuItem,
-            this.oldCar2ToolStripMenuItem,
-            this.oldCar3ToolStripMenuItem,
-            this.oldCar4ToolStripMenuItem,
-            this.keinsToolStripMenuItem});
-            this.toolStripMenuItem1.Image = ((System.Drawing.Image)(resources.GetObject("toolStripMenuItem1.Image")));
-            this.toolStripMenuItem1.Name = "toolStripMenuItem1";
-            this.toolStripMenuItem1.Size = new System.Drawing.Size(36, 28);
-            // 
-            // oldCar1ToolStripMenuItem
-            // 
-            this.oldCar1ToolStripMenuItem.Name = "oldCar1ToolStripMenuItem";
-            this.oldCar1ToolStripMenuItem.Size = new System.Drawing.Size(146, 26);
-            this.oldCar1ToolStripMenuItem.Text = "Old Car 1";
-            this.oldCar1ToolStripMenuItem.Click += new System.EventHandler(this.oldCar1ToolStripMenuItem_Click);
-            // 
-            // oldCar2ToolStripMenuItem
-            // 
-            this.oldCar2ToolStripMenuItem.Name = "oldCar2ToolStripMenuItem";
-            this.oldCar2ToolStripMenuItem.Size = new System.Drawing.Size(146, 26);
-            this.oldCar2ToolStripMenuItem.Text = "Old Car 2";
-            this.oldCar2ToolStripMenuItem.Click += new System.EventHandler(this.oldCar2ToolStripMenuItem_Click);
-            // 
-            // oldCar3ToolStripMenuItem
-            // 
-            this.oldCar3ToolStripMenuItem.Name = "oldCar3ToolStripMenuItem";
-            this.oldCar3ToolStripMenuItem.Size = new System.Drawing.Size(146, 26);
-            this.oldCar3ToolStripMenuItem.Text = "Old Car 3";
-            this.oldCar3ToolStripMenuItem.Click += new System.EventHandler(this.oldCar3ToolStripMenuItem_Click);
-            // 
-            // oldCar4ToolStripMenuItem
-            // 
-            this.oldCar4ToolStripMenuItem.Name = "oldCar4ToolStripMenuItem";
-            this.oldCar4ToolStripMenuItem.Size = new System.Drawing.Size(146, 26);
-            this.oldCar4ToolStripMenuItem.Text = "Old Car 4";
-            this.oldCar4ToolStripMenuItem.Click += new System.EventHandler(this.oldCar4ToolStripMenuItem_Click);
-            // 
-            // keinsToolStripMenuItem
-            // 
-            this.keinsToolStripMenuItem.Name = "keinsToolStripMenuItem";
-            this.keinsToolStripMenuItem.Size = new System.Drawing.Size(146, 26);
-            this.keinsToolStripMenuItem.Text = "Keins";
-            this.keinsToolStripMenuItem.Click += new System.EventHandler(this.keinsToolStripMenuItem_Click);
             // 
             // linkLabel1
             // 
@@ -929,6 +828,7 @@ namespace VTCManager_1._0._0
             // panel2
             // 
             this.panel2.BackColor = System.Drawing.Color.Transparent;
+            this.panel2.Controls.Add(this.TestLabel_Fuel);
             this.panel2.Controls.Add(this.status_jb_canc_lb);
             this.panel2.Controls.Add(this.truck_lb);
             this.panel2.Controls.Add(this.destination_lb);
@@ -940,6 +840,16 @@ namespace VTCManager_1._0._0
             this.panel2.Name = "panel2";
             this.panel2.Size = new System.Drawing.Size(551, 582);
             this.panel2.TabIndex = 2;
+            // 
+            // TestLabel_Fuel
+            // 
+            this.TestLabel_Fuel.AutoSize = true;
+            this.TestLabel_Fuel.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.TestLabel_Fuel.Location = new System.Drawing.Point(97, 474);
+            this.TestLabel_Fuel.Name = "TestLabel_Fuel";
+            this.TestLabel_Fuel.Size = new System.Drawing.Size(51, 20);
+            this.TestLabel_Fuel.TabIndex = 7;
+            this.TestLabel_Fuel.Text = "label6";
             // 
             // status_jb_canc_lb
             // 
@@ -1025,10 +935,68 @@ namespace VTCManager_1._0._0
             // panel4
             // 
             this.panel4.BackColor = System.Drawing.Color.Transparent;
+            this.panel4.Controls.Add(this.Rest_KM_Label);
+            this.panel4.Controls.Add(this.label7);
+            this.panel4.Controls.Add(this.label6);
+            this.panel4.Controls.Add(this.pictureBox5);
+            this.panel4.Controls.Add(this.pictureBox4);
+            this.panel4.Controls.Add(this.pictureBox3);
+            this.panel4.Controls.Add(this.label5);
+            this.panel4.Controls.Add(this.Luft_Progress);
+            this.panel4.Controls.Add(this.pictureBox2);
+            this.panel4.Controls.Add(this.label4);
+            this.panel4.Controls.Add(this.Fuel_Progress);
+            this.panel4.Controls.Add(this.pictureBox1);
             this.panel4.Location = new System.Drawing.Point(1097, 28);
             this.panel4.Name = "panel4";
             this.panel4.Size = new System.Drawing.Size(284, 582);
             this.panel4.TabIndex = 4;
+            // 
+            // Rest_KM_Label
+            // 
+            this.Rest_KM_Label.AutoSize = true;
+            this.Rest_KM_Label.Font = new System.Drawing.Font("Verdana", 12F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.Rest_KM_Label.Location = new System.Drawing.Point(110, 436);
+            this.Rest_KM_Label.Name = "Rest_KM_Label";
+            this.Rest_KM_Label.Size = new System.Drawing.Size(52, 18);
+            this.Rest_KM_Label.TabIndex = 6;
+            this.Rest_KM_Label.Text = "0000";
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Font = new System.Drawing.Font("Microsoft Sans Serif", 6F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label5.Location = new System.Drawing.Point(15, 554);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(265, 9);
+            this.label5.TabIndex = 5;
+            this.label5.Text = "0        10         20         30        40        50        60        70        " +
+    "80        90        100    ";
+            // 
+            // Luft_Progress
+            // 
+            this.Luft_Progress.Location = new System.Drawing.Point(18, 527);
+            this.Luft_Progress.Name = "Luft_Progress";
+            this.Luft_Progress.Size = new System.Drawing.Size(248, 23);
+            this.Luft_Progress.TabIndex = 4;
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Font = new System.Drawing.Font("Microsoft Sans Serif", 6F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label4.Location = new System.Drawing.Point(16, 483);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(265, 9);
+            this.label4.TabIndex = 2;
+            this.label4.Text = "0        10         20         30        40        50        60        70        " +
+    "80        90        100    ";
+            // 
+            // Fuel_Progress
+            // 
+            this.Fuel_Progress.Location = new System.Drawing.Point(19, 456);
+            this.Fuel_Progress.Name = "Fuel_Progress";
+            this.Fuel_Progress.Size = new System.Drawing.Size(248, 23);
+            this.Fuel_Progress.TabIndex = 1;
             // 
             // version_lb
             // 
@@ -1104,47 +1072,6 @@ namespace VTCManager_1._0._0
             this.groupStatistiken.Size = new System.Drawing.Size(534, 178);
             this.groupStatistiken.TabIndex = 6;
             this.groupStatistiken.TabStop = false;
-            // 
-            // ats_button
-            // 
-            this.ats_button.Image = global::VTCManager_1._0._0.Properties.Resources.ats2l;
-            this.ats_button.Location = new System.Drawing.Point(17, 124);
-            this.ats_button.Name = "ats_button";
-            this.ats_button.Size = new System.Drawing.Size(100, 54);
-            this.ats_button.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.ats_button.TabIndex = 8;
-            this.ats_button.TabStop = false;
-            this.ats_button.Visible = false;
-            this.ats_button.Click += new System.EventHandler(this.ats_button_Click);
-            // 
-            // ets2_button
-            // 
-            this.ets2_button.Image = global::VTCManager_1._0._0.Properties.Resources._280px_Ets2_logo;
-            this.ets2_button.Location = new System.Drawing.Point(225, 124);
-            this.ets2_button.Name = "ets2_button";
-            this.ets2_button.Size = new System.Drawing.Size(100, 54);
-            this.ets2_button.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.ets2_button.TabIndex = 7;
-            this.ets2_button.TabStop = false;
-            this.ets2_button.Visible = false;
-            this.ets2_button.Click += new System.EventHandler(this.ets2_button_Click);
-            // 
-            // truckersMP_Button
-            // 
-            this.truckersMP_Button.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.truckersMP_Button.BackColor = System.Drawing.Color.Transparent;
-            this.truckersMP_Button.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("truckersMP_Button.BackgroundImage")));
-            this.truckersMP_Button.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.truckersMP_Button.FlatAppearance.BorderSize = 0;
-            this.truckersMP_Button.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.truckersMP_Button.Location = new System.Drawing.Point(450, 124);
-            this.truckersMP_Button.Margin = new System.Windows.Forms.Padding(0);
-            this.truckersMP_Button.Name = "truckersMP_Button";
-            this.truckersMP_Button.Size = new System.Drawing.Size(84, 54);
-            this.truckersMP_Button.TabIndex = 6;
-            this.truckersMP_Button.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
-            this.truckersMP_Button.UseVisualStyleBackColor = false;
-            this.truckersMP_Button.Click += new System.EventHandler(this.truckersMP_Button_Click);
             // 
             // user_company_lb
             // 
@@ -1271,6 +1198,262 @@ namespace VTCManager_1._0._0
             this.label3.Text = "Version:";
             this.label3.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
+            // ats_button
+            // 
+            this.ats_button.Image = global::VTCManager_1._0._0.Properties.Resources.ats2l;
+            this.ats_button.Location = new System.Drawing.Point(17, 124);
+            this.ats_button.Name = "ats_button";
+            this.ats_button.Size = new System.Drawing.Size(100, 54);
+            this.ats_button.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.ats_button.TabIndex = 8;
+            this.ats_button.TabStop = false;
+            this.ats_button.Visible = false;
+            this.ats_button.Click += new System.EventHandler(this.ats_button_Click);
+            // 
+            // ets2_button
+            // 
+            this.ets2_button.Image = global::VTCManager_1._0._0.Properties.Resources._280px_Ets2_logo;
+            this.ets2_button.Location = new System.Drawing.Point(225, 124);
+            this.ets2_button.Name = "ets2_button";
+            this.ets2_button.Size = new System.Drawing.Size(100, 54);
+            this.ets2_button.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.ets2_button.TabIndex = 7;
+            this.ets2_button.TabStop = false;
+            this.ets2_button.Visible = false;
+            this.ets2_button.Click += new System.EventHandler(this.ets2_button_Click);
+            // 
+            // truckersMP_Button
+            // 
+            this.truckersMP_Button.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.truckersMP_Button.BackColor = System.Drawing.Color.Transparent;
+            this.truckersMP_Button.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("truckersMP_Button.BackgroundImage")));
+            this.truckersMP_Button.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.truckersMP_Button.FlatAppearance.BorderSize = 0;
+            this.truckersMP_Button.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.truckersMP_Button.Location = new System.Drawing.Point(450, 124);
+            this.truckersMP_Button.Margin = new System.Windows.Forms.Padding(0);
+            this.truckersMP_Button.Name = "truckersMP_Button";
+            this.truckersMP_Button.Size = new System.Drawing.Size(84, 54);
+            this.truckersMP_Button.TabIndex = 6;
+            this.truckersMP_Button.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
+            this.truckersMP_Button.UseVisualStyleBackColor = false;
+            this.truckersMP_Button.Click += new System.EventHandler(this.truckersMP_Button_Click);
+            // 
+            // pictureBox5
+            // 
+            this.pictureBox5.Image = global::VTCManager_1._0._0.Properties.Resources.icons8_motor_128;
+            this.pictureBox5.Location = new System.Drawing.Point(203, 316);
+            this.pictureBox5.Name = "pictureBox5";
+            this.pictureBox5.Size = new System.Drawing.Size(63, 53);
+            this.pictureBox5.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.pictureBox5.TabIndex = 9;
+            this.pictureBox5.TabStop = false;
+            // 
+            // pictureBox4
+            // 
+            this.pictureBox4.Image = global::VTCManager_1._0._0.Properties.Resources.bremse_schwarz;
+            this.pictureBox4.Location = new System.Drawing.Point(111, 316);
+            this.pictureBox4.Name = "pictureBox4";
+            this.pictureBox4.Size = new System.Drawing.Size(63, 53);
+            this.pictureBox4.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.pictureBox4.TabIndex = 8;
+            this.pictureBox4.TabStop = false;
+            // 
+            // pictureBox3
+            // 
+            this.pictureBox3.Image = global::VTCManager_1._0._0.Properties.Resources.icons8_autobatterie_80;
+            this.pictureBox3.Location = new System.Drawing.Point(17, 316);
+            this.pictureBox3.Name = "pictureBox3";
+            this.pictureBox3.Size = new System.Drawing.Size(63, 53);
+            this.pictureBox3.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.pictureBox3.TabIndex = 7;
+            this.pictureBox3.TabStop = false;
+            // 
+            // pictureBox2
+            // 
+            this.pictureBox2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.pictureBox2.Image = global::VTCManager_1._0._0.Properties.Resources.icons8_luftdruck_24;
+            this.pictureBox2.Location = new System.Drawing.Point(18, 498);
+            this.pictureBox2.Name = "pictureBox2";
+            this.pictureBox2.Size = new System.Drawing.Size(27, 27);
+            this.pictureBox2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.pictureBox2.TabIndex = 3;
+            this.pictureBox2.TabStop = false;
+            // 
+            // pictureBox1
+            // 
+            this.pictureBox1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.pictureBox1.Image = global::VTCManager_1._0._0.Properties.Resources.icons8_benzin_24;
+            this.pictureBox1.Location = new System.Drawing.Point(19, 427);
+            this.pictureBox1.Name = "pictureBox1";
+            this.pictureBox1.Size = new System.Drawing.Size(27, 27);
+            this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.pictureBox1.TabIndex = 0;
+            this.pictureBox1.TabStop = false;
+            // 
+            // dateiToolStripMenuItem
+            // 
+            this.dateiToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.einstellungenToolStripMenuItem,
+            this.creditsToolStripMenuItem,
+            this.beendenToolStripMenuItem,
+            this.serverstatusToolStripMenuItem});
+            this.dateiToolStripMenuItem.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.dateiToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("dateiToolStripMenuItem.Image")));
+            this.dateiToolStripMenuItem.Name = "dateiToolStripMenuItem";
+            this.dateiToolStripMenuItem.Size = new System.Drawing.Size(36, 28);
+            this.dateiToolStripMenuItem.ToolTipText = "Hauptmenü";
+            // 
+            // einstellungenToolStripMenuItem
+            // 
+            this.einstellungenToolStripMenuItem.Name = "einstellungenToolStripMenuItem";
+            this.einstellungenToolStripMenuItem.Size = new System.Drawing.Size(195, 22);
+            this.einstellungenToolStripMenuItem.Text = "Einstellungen";
+            this.einstellungenToolStripMenuItem.Click += new System.EventHandler(this.einstellungenToolStripMenuItemClick);
+            // 
+            // creditsToolStripMenuItem
+            // 
+            this.creditsToolStripMenuItem.Name = "creditsToolStripMenuItem";
+            this.creditsToolStripMenuItem.Size = new System.Drawing.Size(195, 22);
+            this.creditsToolStripMenuItem.Text = "Über...";
+            this.creditsToolStripMenuItem.Click += new System.EventHandler(this.CreditsToolStripMenuItem_Click);
+            // 
+            // beendenToolStripMenuItem
+            // 
+            this.beendenToolStripMenuItem.Name = "beendenToolStripMenuItem";
+            this.beendenToolStripMenuItem.Size = new System.Drawing.Size(195, 22);
+            this.beendenToolStripMenuItem.Text = "Beenden";
+            this.beendenToolStripMenuItem.Click += new System.EventHandler(this.beendenToolStripMenuItemClick);
+            // 
+            // serverstatusToolStripMenuItem
+            // 
+            this.serverstatusToolStripMenuItem.Name = "serverstatusToolStripMenuItem";
+            this.serverstatusToolStripMenuItem.Size = new System.Drawing.Size(195, 22);
+            this.serverstatusToolStripMenuItem.Text = "Serverstatus (Inaktiv)";
+            this.serverstatusToolStripMenuItem.Click += new System.EventHandler(this.serverstatusToolStripMenuItem_Click);
+            // 
+            // topMenuAccount
+            // 
+            this.topMenuAccount.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.MenuAbmeldenButton});
+            this.topMenuAccount.Image = ((System.Drawing.Image)(resources.GetObject("topMenuAccount.Image")));
+            this.topMenuAccount.Name = "topMenuAccount";
+            this.topMenuAccount.Size = new System.Drawing.Size(102, 28);
+            this.topMenuAccount.Text = "Account";
+            this.topMenuAccount.ToolTipText = "Client an/abmelden";
+            // 
+            // MenuAbmeldenButton
+            // 
+            this.MenuAbmeldenButton.Name = "MenuAbmeldenButton";
+            this.MenuAbmeldenButton.Size = new System.Drawing.Size(151, 26);
+            this.MenuAbmeldenButton.Text = "Abmelden";
+            this.MenuAbmeldenButton.Click += new System.EventHandler(this.MenuAbmeldenButton_Click);
+            // 
+            // topmenuwebsite
+            // 
+            this.topmenuwebsite.Image = ((System.Drawing.Image)(resources.GetObject("topmenuwebsite.Image")));
+            this.topmenuwebsite.Name = "topmenuwebsite";
+            this.topmenuwebsite.Size = new System.Drawing.Size(101, 28);
+            this.topmenuwebsite.Text = "Website";
+            this.topmenuwebsite.ToolTipText = "Gehe zu unserer Homepage";
+            this.topmenuwebsite.Click += new System.EventHandler(this.topMenuWebsiteClick);
+            // 
+            // eventsToolStripMenuItem
+            // 
+            this.eventsToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("eventsToolStripMenuItem.Image")));
+            this.eventsToolStripMenuItem.Name = "eventsToolStripMenuItem";
+            this.eventsToolStripMenuItem.Size = new System.Drawing.Size(91, 28);
+            this.eventsToolStripMenuItem.Text = "Events";
+            this.eventsToolStripMenuItem.ToolTipText = "Zeige aktuelle Events (in Bearbeitung)";
+            this.eventsToolStripMenuItem.Visible = false;
+            // 
+            // GUI_SIZE_BUTTON
+            // 
+            this.GUI_SIZE_BUTTON.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.GUI_SIZE_BUTTON.Image = ((System.Drawing.Image)(resources.GetObject("GUI_SIZE_BUTTON.Image")));
+            this.GUI_SIZE_BUTTON.Name = "GUI_SIZE_BUTTON";
+            this.GUI_SIZE_BUTTON.Size = new System.Drawing.Size(36, 28);
+            this.GUI_SIZE_BUTTON.Text = "Button_Groesse";
+            this.GUI_SIZE_BUTTON.ToolTipText = "Ansicht verkleinern / vergrößern";
+            this.GUI_SIZE_BUTTON.Click += new System.EventHandler(this.buttonGroesseToolStripMenuItem_Click);
+            // 
+            // darkToolStripMenuItem
+            // 
+            this.darkToolStripMenuItem.Image = global::VTCManager_1._0._0.Properties.Resources.icons8_film_noir_50;
+            this.darkToolStripMenuItem.Name = "darkToolStripMenuItem";
+            this.darkToolStripMenuItem.Size = new System.Drawing.Size(36, 28);
+            this.darkToolStripMenuItem.ToolTipText = "Komm auf die Dunkle Seite";
+            this.darkToolStripMenuItem.Click += new System.EventHandler(this.darkToolStripMenuItem_Click);
+            // 
+            // toolStripMenuItem1
+            // 
+            this.toolStripMenuItem1.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.oldCar1ToolStripMenuItem,
+            this.oldCar2ToolStripMenuItem,
+            this.oldCar3ToolStripMenuItem,
+            this.oldCar4ToolStripMenuItem,
+            this.keinsToolStripMenuItem});
+            this.toolStripMenuItem1.Image = ((System.Drawing.Image)(resources.GetObject("toolStripMenuItem1.Image")));
+            this.toolStripMenuItem1.Name = "toolStripMenuItem1";
+            this.toolStripMenuItem1.Size = new System.Drawing.Size(36, 28);
+            // 
+            // oldCar1ToolStripMenuItem
+            // 
+            this.oldCar1ToolStripMenuItem.Name = "oldCar1ToolStripMenuItem";
+            this.oldCar1ToolStripMenuItem.Size = new System.Drawing.Size(146, 26);
+            this.oldCar1ToolStripMenuItem.Text = "Old Car 1";
+            this.oldCar1ToolStripMenuItem.Click += new System.EventHandler(this.oldCar1ToolStripMenuItem_Click);
+            // 
+            // oldCar2ToolStripMenuItem
+            // 
+            this.oldCar2ToolStripMenuItem.Name = "oldCar2ToolStripMenuItem";
+            this.oldCar2ToolStripMenuItem.Size = new System.Drawing.Size(146, 26);
+            this.oldCar2ToolStripMenuItem.Text = "Old Car 2";
+            this.oldCar2ToolStripMenuItem.Click += new System.EventHandler(this.oldCar2ToolStripMenuItem_Click);
+            // 
+            // oldCar3ToolStripMenuItem
+            // 
+            this.oldCar3ToolStripMenuItem.Name = "oldCar3ToolStripMenuItem";
+            this.oldCar3ToolStripMenuItem.Size = new System.Drawing.Size(146, 26);
+            this.oldCar3ToolStripMenuItem.Text = "Old Car 3";
+            this.oldCar3ToolStripMenuItem.Click += new System.EventHandler(this.oldCar3ToolStripMenuItem_Click);
+            // 
+            // oldCar4ToolStripMenuItem
+            // 
+            this.oldCar4ToolStripMenuItem.Name = "oldCar4ToolStripMenuItem";
+            this.oldCar4ToolStripMenuItem.Size = new System.Drawing.Size(146, 26);
+            this.oldCar4ToolStripMenuItem.Text = "Old Car 4";
+            this.oldCar4ToolStripMenuItem.Click += new System.EventHandler(this.oldCar4ToolStripMenuItem_Click);
+            // 
+            // keinsToolStripMenuItem
+            // 
+            this.keinsToolStripMenuItem.Name = "keinsToolStripMenuItem";
+            this.keinsToolStripMenuItem.Size = new System.Drawing.Size(146, 26);
+            this.keinsToolStripMenuItem.Text = "Keins";
+            this.keinsToolStripMenuItem.Click += new System.EventHandler(this.keinsToolStripMenuItem_Click);
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Font = new System.Drawing.Font("Verdana", 12F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label6.Location = new System.Drawing.Point(54, 436);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(63, 18);
+            this.label6.TabIndex = 10;
+            this.label6.Text = "Noch: ";
+            this.label6.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Font = new System.Drawing.Font("Verdana", 9.75F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label7.Location = new System.Drawing.Point(161, 438);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(29, 16);
+            this.label7.TabIndex = 11;
+            this.label7.Text = "KM";
+            this.label7.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
             // Main
             // 
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
@@ -1299,19 +1482,27 @@ namespace VTCManager_1._0._0
             this.menuStrip1.PerformLayout();
             this.panel2.ResumeLayout(false);
             this.panel2.PerformLayout();
+            this.panel4.ResumeLayout(false);
+            this.panel4.PerformLayout();
             this.contextTaskbar.ResumeLayout(false);
             this.groupStatistiken.ResumeLayout(false);
             this.groupStatistiken.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.ats_button)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.ets2_button)).EndInit();
             this.groupVerkehr.ResumeLayout(false);
             this.groupVerkehr.PerformLayout();
             this.statusStrip1.ResumeLayout(false);
             this.statusStrip1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.ats_button)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.ets2_button)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox5)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox4)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
         }
+        public System.Windows.Controls.Orientation Orientation { get; set; }
 
         private void topMenuWebsiteClick(object sender, EventArgs e)
         {
@@ -1377,6 +1568,11 @@ namespace VTCManager_1._0._0
             if (string.IsNullOrEmpty(utils.Reg_Lesen("TruckersMP_Autorun", "Version")))
                 utils.Reg_Schreiben("Version", labelRevision.ToString());
 
+
+            
+
+
+            // #####################################################################################
 
 
             //  ################## Telemetry kopieren wenn nicht vorhanden #########################
