@@ -76,12 +76,6 @@ namespace VTCManager_1._0._0
         private Label status_jb_canc_lb;
         public SoundPlayer notification_sound_tour_end;
 
-
-        /// <summary>
-        /// SPEED LABEL
-        /// </summary>
-
-
         private string speed;
         private int rpm;
         private double CoordinateX;
@@ -131,7 +125,7 @@ namespace VTCManager_1._0._0
         private StatusStrip statusStrip1;
         private ToolStripStatusLabel WebServer_Status_label;
         private ToolStripStatusLabel Label_DB_Server;
-        public int reload;
+        public int reload = 20;
         public Timer anti_AFK_TIMER;
         private ToolStripMenuItem toolStripMenuItem1;
         private ToolStripMenuItem oldCar1ToolStripMenuItem;
@@ -199,18 +193,12 @@ namespace VTCManager_1._0._0
             this.act_bank_balance = act_bank_balance;
             CultureInfo ci = CultureInfo.InstalledUICulture;
             this.translation = new Translation(ci.DisplayName);
-            if (company == "0")
-            {
-                this.userCompany = translation.no_company_text;
-            }
-            else
-            {
-                this.userCompany = company;
-            }
+            
+            userCompany = (company == "0") ? this.userCompany = translation.no_company_text : this.userCompany = company;
+
             if (last_job_canceled == true)
-            {
                 this.status_jb_canc_lb.Text = translation.jb_canc_lb;
-            }
+            
             this.settings = new SettingsManager();
             this.settings.CreateCache();
             this.settings.LoadJobID();
@@ -281,12 +269,11 @@ namespace VTCManager_1._0._0
 
         private void load_traffic()
         {
-            
-
             string server;
 
             if (string.IsNullOrEmpty(utils.Reg_Lesen("TruckersMP_Autorun", "verkehr_SERVER")))
             {
+                utils.Reg_Schreiben("verkehr_SERVER", "sim1");
                 this.settings.Cache.truckersmp_server = "sim1";
                 server = "sim1";
             } else
@@ -337,27 +324,23 @@ namespace VTCManager_1._0._0
             this.AddItem(truckyTopTraffic.Response[8].Name, truckyTopTraffic.Response[8].Players.ToString());
             this.tableLayoutPanel1.Visible = true;
             // Verkehr Label aktualisieren
-
             if (server == "sim1") { label2.Text = "Server: Simulation 1"; }
             if (server == "sim2") { label2.Text = "Server: Simulation 2"; }
             if (server == "arc1") { label2.Text = "Server: Arcade 1"; }
             if (server == "eupromods1") { label2.Text = "Server: ProMods 1"; }
             if (server == "eupromods2") { label2.Text = "Server: ProMods 2"; }
-
-
         }
+
+
         private void AddItem(string road, string traffic)
         {
-            //get a reference to the previous existent 
             RowStyle temp = tableLayoutPanel1.RowStyles[tableLayoutPanel1.RowCount - 1];
-            //increase panel rows count by one
             tableLayoutPanel1.RowCount++;
-            //add a new RowStyle as a copy of the previous one
             tableLayoutPanel1.RowStyles.Add(new RowStyle(temp.SizeType, temp.Height));
-            //add your three controls
             tableLayoutPanel1.Controls.Add(new Label() { Text = road }, 0, tableLayoutPanel1.RowCount - 1);
             tableLayoutPanel1.Controls.Add(new Label() { Text = traffic }, 1, tableLayoutPanel1.RowCount - 1);
         }
+
 
         public bool CancelTour()
         {
@@ -366,16 +349,10 @@ namespace VTCManager_1._0._0
             this.settings.SaveJobID();
             API api = new API();
             api.HTTPSRequestPost(api.api_server + api.canceltourpath, new Dictionary<string, string>()
-      {
-        {
-          "authcode",
-          this.authCode
-        },
-        {
-          "job_id",
-          this.jobID
-        }
-      }, true).ToString();
+              {
+                { "authcode", this.authCode },
+                { "job_id", this.jobID }
+              }, true).ToString();
             this.totalDistance = 0;
             this.currentPercentage = 0;
             this.invertedDistance = 0;
@@ -411,14 +388,13 @@ namespace VTCManager_1._0._0
                 else
                 {
                     int time = Telemetry.UpdateInterval;
-                    //float num1;
+
                     if (data.SdkActive)
                     {
                         CoordinateX = data.TruckValues.CurrentValues.PositionValue.Position.X;
                         CoordinateZ = data.TruckValues.CurrentValues.PositionValue.Position.Y;
                         this.Geschwindigkeit = (float)data.TruckValues.CurrentValues.DashboardValues.Speed.Kph;
                         Spiel = data.Game.ToString();
-
 
                         // EIN - AUSBLENDEN JE NACH PAUSENSTATUS
                         truck_lb.Visible = (data.Paused) ? false : true;
@@ -427,9 +403,7 @@ namespace VTCManager_1._0._0
                         cargo_lb.Visible = (data.Paused) ? false : true;
                         Tollgate_Payment = data.GamePlay.TollgateEvent.PayAmount;
 
-                        truckersMP_Button.Visible = (utils.Reg_Lesen("TruckersMP_Autorun", "TruckersMP_Pfad") != "" ? true : false);
-
-
+                        truckersMP_Button.Visible = (string.IsNullOrEmpty(utils.Reg_Lesen("TruckersMP_Autorun", "TruckersMP_Pfad"))) ? false : true;
 
                         if (data.Paused == false)
                         {
@@ -439,11 +413,6 @@ namespace VTCManager_1._0._0
 
                             // SPEED LABEL - TRUCK LABEL
                             labelkmh = (data.Game.ToString() == "Ets2") ? " KM/H" : " mp/h";
-                            
-                            /* ### 1 ####
-                             * Abfrage ETS2 = Geschwindigkeit in KM/H 
-                             * bei ATS Geschwindigkeit in mph 
-                            */
 
                             if (data.Game.ToString() == "Ets2") {
                                 speed_lb.Text = (int)data.TruckValues.CurrentValues.DashboardValues.Speed.Kph + labelkmh;
@@ -453,14 +422,11 @@ namespace VTCManager_1._0._0
                                 speed_lb.Text = (int)data.TruckValues.CurrentValues.DashboardValues.Speed.Mph + labelkmh;
                                 Geschwindigkeit = (float)data.TruckValues.CurrentValues.DashboardValues.Speed.Mph;
                             }
-                            
-                            // ## 1 ENDE ##
 
-                            // AUSGABE TRUCK MODEL etc.
+                            // ##########################  AUSGABE TRUCK MODEL etc.  ##########################
                             truck_lb.Text = "Dein Truck: " + data.TruckValues.ConstantsValues.Brand + ", Modell: " + data.TruckValues.ConstantsValues.Name;
 
-                        
-
+                            // ##############################   JOB DATA   ####################################
                             if (data.JobValues.CargoLoaded == false)
                             {
                                 this.discord.noTour();
@@ -492,7 +458,7 @@ namespace VTCManager_1._0._0
                         }
                         else
                         {
-                            speed_lb.Text = "Warte auf ETS2" + Environment.NewLine + "oder ATS..."; 
+                            speed_lb.Text = translation.waiting_for_ets; 
                         }
                         bool flag;
                         using (Dictionary<string, string>.Enumerator enumerator = this.lastJobDictionary.GetEnumerator())
@@ -1292,7 +1258,6 @@ namespace VTCManager_1._0._0
             // 
             // anti_AFK_TIMER
             // 
-            this.anti_AFK_TIMER.Enabled = false;
             this.anti_AFK_TIMER.Interval = 240000;
             this.anti_AFK_TIMER.Tick += new System.EventHandler(this.anti_AFK_TIMER_Tick);
             // 
@@ -1302,7 +1267,7 @@ namespace VTCManager_1._0._0
             this.label3.BackColor = System.Drawing.Color.Transparent;
             this.label3.Location = new System.Drawing.Point(1261, 9);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(51, 13);
+            this.label3.Size = new System.Drawing.Size(45, 13);
             this.label3.TabIndex = 10;
             this.label3.Text = "Version:";
             this.label3.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -1391,20 +1356,27 @@ namespace VTCManager_1._0._0
         {
 
             this.discord = new Discord();
-            lbl_Revision.Text = "2.0.2";
+            lbl_Revision.Text = "2.0.3";
             labelRevision = lbl_Revision.Text;
 
 
             // ################## CHECK ob der AFK Text bei nicht Spendern stimmt ##################
+            if (string.IsNullOrEmpty(utils.Reg_Lesen("TruckersMP_Autorun", "ANTI_AFK_AN")))
+                utils.Reg_Schreiben("ANTI_AFK_AN", "0");
+
+            if (string.IsNullOrEmpty(utils.Reg_Lesen("TruckersMP_Autorun", "GroupBox_Diagnostic")))
+                utils.Reg_Schreiben("Diagnostic", "0");
+
+
+
             anti_AFK_TIMER.Enabled = (Convert.ToInt32(utils.Reg_Lesen("TruckersMP_Autorun", "ANTI_AFK_AN")) == 1) ? true : false;
 
             int spender = 0;
             if (spender == 0)
                 utils.Reg_Schreiben("ANTI_AFK", "VTCManager wünscht Gute und Sichere Fahrt!");
 
-
-                
-
+            if (string.IsNullOrEmpty(utils.Reg_Lesen("TruckersMP_Autorun", "Version")))
+                utils.Reg_Schreiben("Version", labelRevision.ToString());
 
 
 
@@ -1426,10 +1398,20 @@ namespace VTCManager_1._0._0
                 tt.SetToolTip(this.ets2_button, "Starte ETS2 im Singleplayer !");
 
                 string dest_leer = utils.Reg_Lesen("TruckersMP_Autorun", "ETS2_Pfad");
-                if (!File.Exists(dest_leer + @"bin\win_x64\plugins\scs-telemetry.dll"))
+               
+                if (!File.Exists(dest_leer + @"\bin\win_x64\plugins\scs-telemetry.dll"))
                 {
-                    if (!Directory.Exists(dest_leer + @"bin\win_x64\plugins")) { Directory.CreateDirectory(dest_leer + @"bin\win_x64\plugins"); }
-                    File.Copy(Application.StartupPath + @"\Resources\scs-telemetry.dll", dest_leer + @"bin\win_x64\plugins\scs-telemetry.dll");
+                    if (!Directory.Exists(dest_leer + @"\bin\win_x64\plugins")) { Directory.CreateDirectory(dest_leer + @"\bin\win_x64\plugins"); }
+                    File.Copy(Application.StartupPath + @"\Resources\scs-telemetry.dll", dest_leer + @"\bin\win_x64\plugins\scs-telemetry.dll");
+                } else
+                {
+                    // ################  Für Diagnostikzwecke  ###########################
+                    string Plugins_ETS = "";
+                    DirectoryInfo di = new DirectoryInfo(dest_leer + @"\bin\win_x64\plugins");
+                    foreach (var fi in di.GetFiles())
+                    { Plugins_ETS += fi.Name + "  "; }
+                    utils.Reg_Schreiben("Plugins ETS", Plugins_ETS);
+                    // ################  Diagnostikzwecke ENDE  ###########################
                 }
 
 
@@ -1440,12 +1422,24 @@ namespace VTCManager_1._0._0
                     ToolTip tt2 = new ToolTip();
                     tt2.SetToolTip(this.ats_button, "Starte ATS im Singleplayer !");
 
-                    if (!Directory.Exists(dest_leer2 + @"bin\win_x64\plugins")) { Directory.CreateDirectory(dest_leer2 + @"bin\win_x64\plugins"); }
+                    if (!Directory.Exists(dest_leer2 + @"\bin\win_x64\plugins")) { Directory.CreateDirectory(dest_leer2 + @"\bin\win_x64\plugins"); }
 
-                    if (!File.Exists(dest_leer2 + @"bin\win_x64\plugins\scs-telemetry.dll"))
+                    if (!File.Exists(dest_leer2 + @"\bin\win_x64\plugins\scs-telemetry.dll"))
                     {
-                        File.Copy(Application.StartupPath + @"\Resources\scs-telemetry.dll", dest_leer2 + @"bin\win_x64\plugins\scs-telemetry.dll");
+                        File.Copy(Application.StartupPath + @"\Resources\scs-telemetry.dll", dest_leer2 + @"\bin\win_x64\plugins\scs-telemetry.dll");
                     }
+                    else
+                    {
+                        // ################  Für Diagnostikzwecke  ###########################
+                        string Plugins_ATS = "";
+                        DirectoryInfo di = new DirectoryInfo(dest_leer2 + @"\bin\win_x64\plugins");
+                        foreach (var fi in di.GetFiles())
+                        { Plugins_ATS += fi.Name + "  "; }
+                        utils.Reg_Schreiben("Plugins ATS", Plugins_ATS);
+                        // ################  Diagnostikzwecke ENDE  ###########################
+                    }
+
+
                 }
             }
 
@@ -1468,9 +1462,7 @@ namespace VTCManager_1._0._0
 
 
             utils.Reg_Schreiben("Reload_Traffic_Sekunden", "20");
-           
             lbl_Reload_Time.Text = "Reload-Interval: " + reload + " Sek.";
-
 
 
             if(Utilities.IsGameRunning == false)
@@ -1614,13 +1606,8 @@ namespace VTCManager_1._0._0
 
         private void updateTraffic_Tick(object sender, EventArgs e)
         {
-            string reload2 = utils.Reg_Lesen("TruckersMP_Autorun", "Reload_Traffic_Sekunden");
-            if (string.IsNullOrEmpty(reload2))
-                utils.Reg_Schreiben("Reload_Traffic_Sekunden", "20");
-
-            int wert = Convert.ToInt32(utils.Reg_Lesen("TruckersMP_Autorun", "Reload_Traffic_Sekunden"));
-            updateTraffic.Interval = wert * 1000;
-            lbl_Reload_Time.Text = "Reload-Interval: " + wert + " Sek.";
+            updateTraffic.Interval = reload * 1000;
+            lbl_Reload_Time.Text = "Reload-Interval: " + reload + " Sek.";
             this.load_traffic();
 
             // Serverstatus in Statusleiste anzeigen
@@ -1658,6 +1645,9 @@ namespace VTCManager_1._0._0
 
         private void anti_AFK_TIMER_Tick(object sender, EventArgs e)
         {
+            if (string.IsNullOrEmpty(utils.Reg_Lesen("TruckersMP_Autorun", "ANTI_AFK_RELOAD")))
+                utils.Reg_Schreiben("ANTI_AFK_RELOAD", "3");
+
             anti_AFK_TIMER.Interval = Convert.ToInt32(utils.Reg_Lesen("TruckersMP_Autorun", "ANTI_AFK_RELOAD").ToString()) * 60000;
 
             if(GameRuns == 1)
@@ -1674,6 +1664,7 @@ namespace VTCManager_1._0._0
 
         private void oldCar1ToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            this.menuStrip1.BackColor = Color.Transparent;
             this.BackgroundImage = Properties.Resources.oldcar1;
             utils.Reg_Schreiben("Background", "oldcar1");
         }
