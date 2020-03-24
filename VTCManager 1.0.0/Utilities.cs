@@ -158,8 +158,6 @@ namespace VTCManager_1._0._0
         }
 
 
-
-
         // Edit by Thommy
         public void Reg_Schreiben(string name, string wert)
         {

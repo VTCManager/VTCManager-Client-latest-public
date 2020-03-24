@@ -1,7 +1,9 @@
 ﻿using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Globalization;
+using System.IO;
 using System.Linq;
 using System.Net.Mail;
 using System.Text;
@@ -12,7 +14,7 @@ namespace VTCManager_1._0._0
 {
     class SettingsWindow : Form
     {
-        private Utilities utils = new Utilities();
+        public Utilities utils = new Utilities();
         private ComboBox comboBox1;
         private Label label1;
         private SettingsManager data;
@@ -47,10 +49,16 @@ namespace VTCManager_1._0._0
         private PictureBox pictureBox1;
         private Label label9;
         private Label Settings_Windows_Label_Settings;
+        private Button GameLog_suchen;
+        private GroupBox GroupBox_Diagnostic;
+        private Button Registry_anzeigen;
+        private Button GameLog_oeffnen;
+        private CheckBox Diagnostic_Checkbox;
         private System.Windows.Forms.OpenFileDialog openFileDialog1;
-        
 
-        public SettingsWindow(Translation translation) {
+
+        public SettingsWindow(Translation translation)
+        {
             this.data = new SettingsManager();
             this.data.LoadJobID();
 
@@ -96,6 +104,11 @@ namespace VTCManager_1._0._0
             this.ATS_FileDialog = new System.Windows.Forms.OpenFileDialog();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.Settings_Windows_Label_Settings = new System.Windows.Forms.Label();
+            this.GameLog_suchen = new System.Windows.Forms.Button();
+            this.GroupBox_Diagnostic = new System.Windows.Forms.GroupBox();
+            this.Registry_anzeigen = new System.Windows.Forms.Button();
+            this.GameLog_oeffnen = new System.Windows.Forms.Button();
+            this.Diagnostic_Checkbox = new System.Windows.Forms.CheckBox();
             this.groupBox1.SuspendLayout();
             this.btn_TruckersMP_suchen.SuspendLayout();
             this.group_Overlay.SuspendLayout();
@@ -103,6 +116,7 @@ namespace VTCManager_1._0._0
             this.groupBox_AntiAFK.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.reload_antiafk)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
+            this.GroupBox_Diagnostic.SuspendLayout();
             this.SuspendLayout();
             // 
             // comboBox1
@@ -252,9 +266,9 @@ namespace VTCManager_1._0._0
             this.group_Overlay.Controls.Add(this.num_Overlay_Transparenz);
             this.group_Overlay.Controls.Add(this.label5);
             this.group_Overlay.Controls.Add(this.combo_Bildschirme);
-            this.group_Overlay.Location = new System.Drawing.Point(22, 413);
+            this.group_Overlay.Location = new System.Drawing.Point(288, 23);
             this.group_Overlay.Name = "group_Overlay";
-            this.group_Overlay.Size = new System.Drawing.Size(321, 111);
+            this.group_Overlay.Size = new System.Drawing.Size(270, 100);
             this.group_Overlay.TabIndex = 7;
             this.group_Overlay.TabStop = false;
             this.group_Overlay.Text = "Overlay Einstellungen";
@@ -283,7 +297,7 @@ namespace VTCManager_1._0._0
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(26, 31);
+            this.label5.Location = new System.Drawing.Point(10, 31);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(84, 13);
             this.label5.TabIndex = 1;
@@ -292,9 +306,9 @@ namespace VTCManager_1._0._0
             // combo_Bildschirme
             // 
             this.combo_Bildschirme.FormattingEnabled = true;
-            this.combo_Bildschirme.Location = new System.Drawing.Point(116, 28);
+            this.combo_Bildschirme.Location = new System.Drawing.Point(96, 28);
             this.combo_Bildschirme.Name = "combo_Bildschirme";
-            this.combo_Bildschirme.Size = new System.Drawing.Size(195, 21);
+            this.combo_Bildschirme.Size = new System.Drawing.Size(170, 21);
             this.combo_Bildschirme.TabIndex = 0;
             // 
             // tmp_Trucker
@@ -311,7 +325,7 @@ namespace VTCManager_1._0._0
             this.groupBox_AntiAFK.Controls.Add(this.txt_Anti_AFK_Text);
             this.groupBox_AntiAFK.Location = new System.Drawing.Point(288, 198);
             this.groupBox_AntiAFK.Name = "groupBox_AntiAFK";
-            this.groupBox_AntiAFK.Size = new System.Drawing.Size(321, 95);
+            this.groupBox_AntiAFK.Size = new System.Drawing.Size(321, 117);
             this.groupBox_AntiAFK.TabIndex = 9;
             this.groupBox_AntiAFK.TabStop = false;
             this.groupBox_AntiAFK.Text = "Anti - AFK";
@@ -377,6 +391,7 @@ namespace VTCManager_1._0._0
             this.chk_antiafk_on_off.TabIndex = 1;
             this.chk_antiafk_on_off.Text = "Anti AFK An/Aus";
             this.chk_antiafk_on_off.UseVisualStyleBackColor = true;
+            this.chk_antiafk_on_off.CheckedChanged += new System.EventHandler(this.chk_antiafk_on_off_CheckedChanged);
             // 
             // txt_Anti_AFK_Text
             // 
@@ -414,9 +429,68 @@ namespace VTCManager_1._0._0
             this.Settings_Windows_Label_Settings.TabIndex = 11;
             this.Settings_Windows_Label_Settings.Text = "...";
             // 
+            // GameLog_suchen
+            // 
+            this.GameLog_suchen.Location = new System.Drawing.Point(6, 19);
+            this.GameLog_suchen.Name = "GameLog_suchen";
+            this.GameLog_suchen.Size = new System.Drawing.Size(162, 33);
+            this.GameLog_suchen.TabIndex = 12;
+            this.GameLog_suchen.Text = "GameLog suchen";
+            this.GameLog_suchen.UseVisualStyleBackColor = true;
+            this.GameLog_suchen.Click += new System.EventHandler(this.GameLog_suchen_Click);
+            // 
+            // GroupBox_Diagnostic
+            // 
+            this.GroupBox_Diagnostic.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.GroupBox_Diagnostic.BackColor = System.Drawing.SystemColors.GradientActiveCaption;
+            this.GroupBox_Diagnostic.Controls.Add(this.Registry_anzeigen);
+            this.GroupBox_Diagnostic.Controls.Add(this.GameLog_oeffnen);
+            this.GroupBox_Diagnostic.Controls.Add(this.GameLog_suchen);
+            this.GroupBox_Diagnostic.Cursor = System.Windows.Forms.Cursors.Help;
+            this.GroupBox_Diagnostic.Location = new System.Drawing.Point(12, 482);
+            this.GroupBox_Diagnostic.Name = "GroupBox_Diagnostic";
+            this.GroupBox_Diagnostic.Size = new System.Drawing.Size(606, 58);
+            this.GroupBox_Diagnostic.TabIndex = 13;
+            this.GroupBox_Diagnostic.TabStop = false;
+            this.GroupBox_Diagnostic.Text = "Diagnose-Daten";
+            // 
+            // Registry_anzeigen
+            // 
+            this.Registry_anzeigen.Location = new System.Drawing.Point(435, 19);
+            this.Registry_anzeigen.Name = "Registry_anzeigen";
+            this.Registry_anzeigen.Size = new System.Drawing.Size(162, 33);
+            this.Registry_anzeigen.TabIndex = 14;
+            this.Registry_anzeigen.Text = "Registry Werte anzeigen";
+            this.Registry_anzeigen.UseVisualStyleBackColor = true;
+            this.Registry_anzeigen.Click += new System.EventHandler(this.Registry_anzeigen_Click);
+            // 
+            // GameLog_oeffnen
+            // 
+            this.GameLog_oeffnen.Location = new System.Drawing.Point(224, 19);
+            this.GameLog_oeffnen.Name = "GameLog_oeffnen";
+            this.GameLog_oeffnen.Size = new System.Drawing.Size(162, 33);
+            this.GameLog_oeffnen.TabIndex = 13;
+            this.GameLog_oeffnen.Text = "GameLog öffnen";
+            this.GameLog_oeffnen.UseVisualStyleBackColor = true;
+            this.GameLog_oeffnen.Click += new System.EventHandler(this.GameLog_oeffnen_Click);
+            // 
+            // Diagnostic_Checkbox
+            // 
+            this.Diagnostic_Checkbox.AutoSize = true;
+            this.Diagnostic_Checkbox.Location = new System.Drawing.Point(13, 569);
+            this.Diagnostic_Checkbox.Name = "Diagnostic_Checkbox";
+            this.Diagnostic_Checkbox.Size = new System.Drawing.Size(76, 17);
+            this.Diagnostic_Checkbox.TabIndex = 14;
+            this.Diagnostic_Checkbox.Text = "Diagnostic";
+            this.Diagnostic_Checkbox.UseVisualStyleBackColor = true;
+            this.Diagnostic_Checkbox.CheckedChanged += new System.EventHandler(this.Diagnostic_Checkbox_CheckedChanged);
+            // 
             // SettingsWindow
             // 
             this.ClientSize = new System.Drawing.Size(630, 599);
+            this.Controls.Add(this.Diagnostic_Checkbox);
+            this.Controls.Add(this.GroupBox_Diagnostic);
             this.Controls.Add(this.Settings_Windows_Label_Settings);
             this.Controls.Add(this.pictureBox1);
             this.Controls.Add(this.groupBox_AntiAFK);
@@ -441,6 +515,7 @@ namespace VTCManager_1._0._0
             this.groupBox_AntiAFK.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.reload_antiafk)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
+            this.GroupBox_Diagnostic.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -448,7 +523,6 @@ namespace VTCManager_1._0._0
 
         private void save_button_Click(object sender, EventArgs e)
         {
-            Utilities util = new Utilities();
 
             if (this.comboBox1.Text == "Simulation 1")
             {
@@ -456,33 +530,33 @@ namespace VTCManager_1._0._0
                 this.data.Cache.truckersmp_server = this.selected_server_tm;
                 // Edit by Thommy
 
-                util.Reg_Schreiben("verkehr_SERVER", "sim1");
+                utils.Reg_Schreiben("verkehr_SERVER", "sim1");
 
             }
             else if (this.comboBox1.Text == "Simulation 2")
             {
                 this.selected_server_tm = "sim2";
                 this.data.Cache.truckersmp_server = this.selected_server_tm;
-                util.Reg_Schreiben("verkehr_SERVER", "sim2");
+                utils.Reg_Schreiben("verkehr_SERVER", "sim2");
 
             }
             else if (this.comboBox1.Text == "Arcade")
             {
                 this.selected_server_tm = "arc1";
                 this.data.Cache.truckersmp_server = this.selected_server_tm;
-                util.Reg_Schreiben("verkehr_SERVER", "arc1");
+                utils.Reg_Schreiben("verkehr_SERVER", "arc1");
             }
             else if (this.comboBox1.Text == "EU Promods 1")
             {
                 this.selected_server_tm = "eupromods1";
                 this.data.Cache.truckersmp_server = this.selected_server_tm;
-                util.Reg_Schreiben("verkehr_SERVER", "eupromods1");
+                utils.Reg_Schreiben("verkehr_SERVER", "eupromods1");
             }
             else if (this.comboBox1.Text == "EU Promods 2")
             {
                 this.selected_server_tm = "eupromods2";
                 this.data.Cache.truckersmp_server = this.selected_server_tm;
-                util.Reg_Schreiben("verkehr_SERVER", "eupromods2");
+                utils.Reg_Schreiben("verkehr_SERVER", "eupromods2");
             }
 
 
@@ -490,41 +564,36 @@ namespace VTCManager_1._0._0
             // TODO-- SPENDER 
 
 
-            util.Reg_Schreiben("ANTI_AFK", txt_Anti_AFK_Text.Text);
-           if(chk_antiafk_on_off.CheckState == CheckState.Checked)
-           {
-                if(txt_Anti_AFK_Text.Text == "")
-                {
-                    util.Reg_Schreiben("ANTI_AFK", "VTCManager wünscht Gute und Sichere Fahrt!");
-                }
-                util.Reg_Schreiben("ANTI_AFK_AN", "1");
-            } else
+            utils.Reg_Schreiben("ANTI_AFK", txt_Anti_AFK_Text.Text);
+            if (chk_antiafk_on_off.CheckState == CheckState.Checked)
             {
-                util.Reg_Schreiben("ANTI_AFK_AN","0");
+                if (txt_Anti_AFK_Text.Text == "")
+                {
+                    utils.Reg_Schreiben("ANTI_AFK", "VTCManager wünscht Gute und Sichere Fahrt!");
+                }
+                utils.Reg_Schreiben("ANTI_AFK_AN", "1");
             }
-
-       
-
-
+            else
+            {
+                utils.Reg_Schreiben("ANTI_AFK_AN", "0");
+            }
             this.data.SaveJobID();
-
-            //MessageBox.Show(translation.save_info);
-
-            // Edit by Thommy
             this.Close();
         }
 
         private void SettingsWindow_Load(object sender, EventArgs e)
         {
-        
+            GroupBox_Diagnostic.Visible = (utils.Reg_Lesen("TruckersMP_Autorun", "Diagnostic") == "1") ? true : false;
+
             group_Overlay.Visible = false;
             // Settings_Windows_Label_Settings.Text = translation.settings_window_titel_text; ######### GEHT NICHT ############
             Settings_Windows_Label_Settings.Text = "Einstellungen";
 
             var test = utils.Reg_Lesen("TruckersMP_Autorun", "TruckersMP_Pfad");
-            if (test == "") {
+            if (test == "")
+            {
                 MessageBox.Show("der Pfad zu TruckersMP stimmt nicht" + Environment.NewLine + "Bitte korrigiere diesen im folgenden Fenster", "Fehler TruckersMP", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            } 
+            }
 
             string wert27 = utils.Reg_Lesen("TruckersMP_Autorun", "verkehr_SERVER");
             string wert28 = utils.Reg_Lesen("TruckersMP_Autorun", "TruckersMP_Pfad");
@@ -540,13 +609,14 @@ namespace VTCManager_1._0._0
             {
                 truckersMP_Pfad_TextBox.Text = wert28;
                 truckersMP_Pfad_TextBox.Enabled = false;
-            } else
+            }
+            else
             {
                 truckersMP_Pfad_TextBox.Text = "";
             }
 
             // Server COMBO vorauswahl
-            if(wert27 == null) { comboBox1.Text = "Simulation 1"; utils.Reg_Schreiben("verkehr_SERVER", "sim1"); }
+            if (wert27 == null) { comboBox1.Text = "Simulation 1"; utils.Reg_Schreiben("verkehr_SERVER", "sim1"); }
             if (wert27 == "sim1") { comboBox1.Text = "Simulation 1"; }
             if (wert27 == "sim2") { comboBox1.Text = "Simulation 2"; }
             if (wert27 == "arc1") { comboBox1.Text = "Arcade 1"; }
@@ -587,7 +657,7 @@ namespace VTCManager_1._0._0
 
         private void SettingsWindow_FormClosed(object sender, FormClosedEventArgs e)
         {
-       
+
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -601,7 +671,7 @@ namespace VTCManager_1._0._0
                 util.Reg_Schreiben("TruckersMP_Pfad", tmp_Trucker.FileName);
                 truckersMP_Pfad_TextBox.Text = tmp_Trucker.FileName.ToString();
             }
-                
+
         }
 
         private void Ets_Suche_Click(object sender, EventArgs e)
@@ -619,7 +689,7 @@ namespace VTCManager_1._0._0
         private void Ats_Suche_Click(object sender, EventArgs e)
         {
             ATS_FileDialog.InitialDirectory = utils.Reg_Lesen("TruckersMP_Autorun", "ATS_Pfad") + @"bin\win_x64\";
-            if(string.IsNullOrEmpty(utils.Reg_Lesen("TruckersMP_Autorun", "ATS_Pfad")))
+            if (string.IsNullOrEmpty(utils.Reg_Lesen("TruckersMP_Autorun", "ATS_Pfad")))
             {
                 ATS_FileDialog.InitialDirectory = utils.Reg_Lesen("TruckersMP_Autorun", "ETS2_Pfad");
             }
@@ -637,5 +707,106 @@ namespace VTCManager_1._0._0
             utils.Reg_Schreiben("ANTI_AFK_RELOAD", reload_antiafk.Value.ToString());
 
         }
+
+        private void chk_antiafk_on_off_CheckedChanged(object sender, EventArgs e)
+        {
+            if (chk_antiafk_on_off.CheckState == CheckState.Checked)
+            {
+                if (txt_Anti_AFK_Text.Text == "")
+                    utils.Reg_Schreiben("ANTI_AFK", "VTCManager wünscht Gute und Sichere Fahrt!");
+
+                utils.Reg_Schreiben("ANTI_AFK_AN", "1");
+                utils.Reg_Schreiben("ANTI_AFK_RELOAD", reload_antiafk.Value.ToString());
+            }
+            else
+            {
+                utils.Reg_Schreiben("ANTI_AFK_AN", "0");
+                utils.Reg_Schreiben("ANTI_AFK_RELOAD", reload_antiafk.Value.ToString());
+            }
+        }
+
+        private void GameLog_suchen_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (Directory.Exists(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + @"\Euro Truck Simulator 2"))
+                    System.Diagnostics.Process.Start("explorer", Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + @"\Euro Truck Simulator 2");
+            }
+            catch { MessageBox.Show("Der Pfad zum GameLog Ordner wurde nicht gefunden!", "Fehler", MessageBoxButtons.OK, MessageBoxIcon.Error); }
+
+        }
+
+        private void Diagnostic_Checkbox_CheckedChanged(object sender, EventArgs e)
+        {
+            if (Diagnostic_Checkbox.CheckState == CheckState.Checked)
+            {
+                utils.Reg_Schreiben("Diagnostic", "1");
+                GroupBox_Diagnostic.Visible = true;
+            }
+            else
+            {
+                utils.Reg_Schreiben("Diagnostic", "0");
+                GroupBox_Diagnostic.Visible = false;
+            }
+        }
+
+        private void GameLog_oeffnen_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (File.Exists(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + @"\Euro Truck Simulator 2\game.log.txt"))
+                    System.Diagnostics.Process.Start(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + @"\Euro Truck Simulator 2\game.log.txt");
+            }
+            catch { MessageBox.Show("Der Pfad zur GameLog wurde nicht gefunden!", "Fehler", MessageBoxButtons.OK, MessageBoxIcon.Error); }
+
+        }
+
+        private void Registry_anzeigen_Click(object sender, EventArgs e)
+        {
+           MessageBox.Show( "ANTI-AFK: " + Read("ANTI_AFK") + Environment.NewLine +
+               "ANTI_AFK_AN: " + Read("ANTI_AFK_AN") + Environment.NewLine +
+               "Background: " + Read("Background") + Environment.NewLine +
+               "Diagnostic: " + Read("Diagnostic") + Environment.NewLine +
+               "ETS Pfad: " + Read("ETS2_Pfad") + Environment.NewLine +
+               "ATS Pfad: " + Read("ATS_Pfad") + Environment.NewLine +
+               "Plugins ETS: " + Read("Plugins ETS") + Environment.NewLine +
+               "Plugins ATS: " + Read("Plugins ATS") + Environment.NewLine +
+               "Reload Traffic Sek: " + Read("Reload_Traffic_Sekunden") + Environment.NewLine +
+               "Verkehr Server: " + Read("verkehr_SERVER") + Environment.NewLine +
+               "Version: " + Read("Version") + Environment.NewLine);
+        }
+
+
+
+        public string Read(string KeyName)
+        {
+            // Opening the registry key
+            RegistryKey rk = Registry.CurrentUser;
+            // Open a subKey as read-only
+            RegistryKey sk1 = rk.OpenSubKey(@"Software\VTCManager\TruckersMP_Autorun");
+            // If the RegistrySubKey doesn't exist -> (null)
+            if (sk1 == null)
+            {
+                return null;
+            }
+            else
+            {
+                try
+                {
+                    // If the RegistryKey exists I get its value
+                    // or null is returned.
+                    return (string)sk1.GetValue(KeyName.ToUpper());
+                }
+                catch (Exception e)
+                {
+                    // AAAAAAAAAAARGH, an error!
+                    MessageBox.Show(e.Message, "Reading registry " + KeyName.ToUpper());
+                    return null;
+                }
+            }
+        }
+
+
     }
 }
+
