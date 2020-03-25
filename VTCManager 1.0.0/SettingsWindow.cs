@@ -54,6 +54,8 @@ namespace VTCManager_1._0._0
         private Button Registry_anzeigen;
         private Button GameLog_oeffnen;
         private CheckBox Diagnostic_Checkbox;
+        private GroupBox groupBox2;
+        private CheckBox Chk_Dashboard;
         private System.Windows.Forms.OpenFileDialog openFileDialog1;
 
 
@@ -109,6 +111,8 @@ namespace VTCManager_1._0._0
             this.Registry_anzeigen = new System.Windows.Forms.Button();
             this.GameLog_oeffnen = new System.Windows.Forms.Button();
             this.Diagnostic_Checkbox = new System.Windows.Forms.CheckBox();
+            this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.Chk_Dashboard = new System.Windows.Forms.CheckBox();
             this.groupBox1.SuspendLayout();
             this.btn_TruckersMP_suchen.SuspendLayout();
             this.group_Overlay.SuspendLayout();
@@ -117,6 +121,7 @@ namespace VTCManager_1._0._0
             ((System.ComponentModel.ISupportInitialize)(this.reload_antiafk)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.GroupBox_Diagnostic.SuspendLayout();
+            this.groupBox2.SuspendLayout();
             this.SuspendLayout();
             // 
             // comboBox1
@@ -276,7 +281,7 @@ namespace VTCManager_1._0._0
             // label6
             // 
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(41, 58);
+            this.label6.Location = new System.Drawing.Point(131, 56);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(69, 13);
             this.label6.TabIndex = 3;
@@ -284,7 +289,7 @@ namespace VTCManager_1._0._0
             // 
             // num_Overlay_Transparenz
             // 
-            this.num_Overlay_Transparenz.Location = new System.Drawing.Point(116, 56);
+            this.num_Overlay_Transparenz.Location = new System.Drawing.Point(206, 54);
             this.num_Overlay_Transparenz.Name = "num_Overlay_Transparenz";
             this.num_Overlay_Transparenz.Size = new System.Drawing.Size(59, 20);
             this.num_Overlay_Transparenz.TabIndex = 2;
@@ -486,9 +491,31 @@ namespace VTCManager_1._0._0
             this.Diagnostic_Checkbox.UseVisualStyleBackColor = true;
             this.Diagnostic_Checkbox.CheckedChanged += new System.EventHandler(this.Diagnostic_Checkbox_CheckedChanged);
             // 
+            // groupBox2
+            // 
+            this.groupBox2.Controls.Add(this.Chk_Dashboard);
+            this.groupBox2.Location = new System.Drawing.Point(12, 322);
+            this.groupBox2.Name = "groupBox2";
+            this.groupBox2.Size = new System.Drawing.Size(270, 100);
+            this.groupBox2.TabIndex = 15;
+            this.groupBox2.TabStop = false;
+            this.groupBox2.Text = "Sonstiges";
+            // 
+            // Chk_Dashboard
+            // 
+            this.Chk_Dashboard.AutoSize = true;
+            this.Chk_Dashboard.Location = new System.Drawing.Point(10, 20);
+            this.Chk_Dashboard.Name = "Chk_Dashboard";
+            this.Chk_Dashboard.Size = new System.Drawing.Size(124, 17);
+            this.Chk_Dashboard.TabIndex = 0;
+            this.Chk_Dashboard.Text = "Dashboard anzeigen";
+            this.Chk_Dashboard.UseVisualStyleBackColor = true;
+            this.Chk_Dashboard.CheckedChanged += new System.EventHandler(this.Chk_Dashboard_CheckedChanged);
+            // 
             // SettingsWindow
             // 
             this.ClientSize = new System.Drawing.Size(630, 599);
+            this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.Diagnostic_Checkbox);
             this.Controls.Add(this.GroupBox_Diagnostic);
             this.Controls.Add(this.Settings_Windows_Label_Settings);
@@ -516,6 +543,8 @@ namespace VTCManager_1._0._0
             ((System.ComponentModel.ISupportInitialize)(this.reload_antiafk)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.GroupBox_Diagnostic.ResumeLayout(false);
+            this.groupBox2.ResumeLayout(false);
+            this.groupBox2.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -588,6 +617,12 @@ namespace VTCManager_1._0._0
             group_Overlay.Visible = false;
             // Settings_Windows_Label_Settings.Text = translation.settings_window_titel_text; ######### GEHT NICHT ############
             Settings_Windows_Label_Settings.Text = "Einstellungen";
+
+            // #############  DASHBOARD ############################
+            if (string.IsNullOrEmpty(utils.Reg_Lesen("TruckersMP_Autorun", "Dashboard")))
+                utils.Reg_Schreiben("Dashboard", "0");
+
+            Chk_Dashboard.CheckState = (utils.Reg_Lesen("TruckersMP_Autorun", "Dashboard") == "1") ? CheckState.Checked : CheckState.Unchecked;
 
             var test = utils.Reg_Lesen("TruckersMP_Autorun", "TruckersMP_Pfad");
             if (test == "")
@@ -763,17 +798,17 @@ namespace VTCManager_1._0._0
 
         private void Registry_anzeigen_Click(object sender, EventArgs e)
         {
-           MessageBox.Show( "ANTI-AFK: " + Read("ANTI_AFK") + Environment.NewLine +
-               "ANTI_AFK_AN: " + Read("ANTI_AFK_AN") + Environment.NewLine +
-               "Background: " + Read("Background") + Environment.NewLine +
-               "Diagnostic: " + Read("Diagnostic") + Environment.NewLine +
-               "ETS Pfad: " + Read("ETS2_Pfad") + Environment.NewLine +
-               "ATS Pfad: " + Read("ATS_Pfad") + Environment.NewLine +
-               "Plugins ETS: " + Read("Plugins ETS") + Environment.NewLine +
-               "Plugins ATS: " + Read("Plugins ATS") + Environment.NewLine +
-               "Reload Traffic Sek: " + Read("Reload_Traffic_Sekunden") + Environment.NewLine +
-               "Verkehr Server: " + Read("verkehr_SERVER") + Environment.NewLine +
-               "Version: " + Read("Version") + Environment.NewLine);
+            MessageBox.Show("ANTI-AFK: " + Read("ANTI_AFK") + Environment.NewLine +
+                "ANTI_AFK_AN: " + Read("ANTI_AFK_AN") + Environment.NewLine +
+                "Background: " + Read("Background") + Environment.NewLine +
+                "Diagnostic: " + Read("Diagnostic") + Environment.NewLine +
+                "ETS Pfad: " + Read("ETS2_Pfad") + Environment.NewLine +
+                "ATS Pfad: " + Read("ATS_Pfad") + Environment.NewLine +
+                "Plugins ETS: " + Read("Plugins ETS") + Environment.NewLine +
+                "Plugins ATS: " + Read("Plugins ATS") + Environment.NewLine +
+                "Reload Traffic Sek: " + Read("Reload_Traffic_Sekunden") + Environment.NewLine +
+                "Verkehr Server: " + Read("verkehr_SERVER") + Environment.NewLine +
+                "Version: " + Read("Version") + Environment.NewLine);
         }
 
 
@@ -806,7 +841,17 @@ namespace VTCManager_1._0._0
             }
         }
 
-
+        private void Chk_Dashboard_CheckedChanged(object sender, EventArgs e)
+        {
+            if (Chk_Dashboard.CheckState == CheckState.Checked)
+            {
+                utils.Reg_Schreiben("Dashboard", "1");
+            }
+            else
+            {
+                utils.Reg_Schreiben("Dashboard", "0");
+            }
+        }
     }
 }
 

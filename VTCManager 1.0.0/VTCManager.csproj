@@ -337,6 +337,7 @@
     <None Include="Resources\bremse_schwarz.png" />
     <None Include="Resources\bremse_rot.png" />
     <None Include="Resources\icons8-motor-128.png" />
+    <None Include="Resources\retarder1.png" />
     <Content Include="Resources\scs-telemetry.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
