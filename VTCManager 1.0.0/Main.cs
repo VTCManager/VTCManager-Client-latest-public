@@ -168,7 +168,8 @@ namespace VTCManager_1._0._0
         private ProgressBar Streckenverlauf;
         private ProgressBar progressBar_F;
         public float Geschwindigkeit;
-
+        private string logDirectory = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + @"\VTC_Manager");
+        private string logFile = @"\log.txt";
 
         // Get a handle to an application window.
         [DllImport("USER32.DLL", CharSet = CharSet.Unicode)]
@@ -288,12 +289,14 @@ namespace VTCManager_1._0._0
 
             if (string.IsNullOrEmpty(utils.Reg_Lesen("TruckersMP_Autorun", "verkehr_SERVER")))
             {
+                utils.Log("Registry => 'verkehr_SERVER' IsNullOrEmpty => Schreibe in REG");
                 utils.Reg_Schreiben("verkehr_SERVER", "sim1");
                 this.settings.Cache.truckersmp_server = "sim1";
                 server = "sim1";
             } else
             {
                 server = utils.Reg_Lesen("TruckersMP_Autorun", "verkehr_SERVER");
+                utils.Log("Verkehr-SERVER: " + server);
             }
 
             this.tableLayoutPanel1.Visible = false;
@@ -374,6 +377,9 @@ namespace VTCManager_1._0._0
             this.lastNotZeroDistance = 0;
             this.lastCargoDamage = 0.0f;
             this.jobID = "0";
+
+            utils.Log("Tour Cancel: " + authCode + " - " + jobID);
+
             this.InitializeDiscord(0);
             return true;
         }
@@ -489,6 +495,7 @@ namespace VTCManager_1._0._0
                                         { "percentage", this.currentPercentage.ToString() }
                                     }, false).ToString();
                                     this.jobrunningcounter = 0;
+                                    utils.Log("Tour Tick: " + authCode + " - " + jobID + " - " + currentPercentage.ToString());
                                 }
                                 this.jobrunningcounter++;
                             }
@@ -541,7 +548,7 @@ namespace VTCManager_1._0._0
                                     postParameters.Add("distance", data.JobValues.PlannedDistanceKm.ToString());
                                     this.jobID = this.api.HTTPSRequestPost(this.api.api_server + this.api.new_job_path, postParameters, true).ToString();
 
-
+                                    utils.Log("Tour START: " + authCode + ", Cargo: " + data.JobValues.CargoValues.Name + ", " + ((int)Math.Round((double)data.JobValues.CargoValues.Mass, 0) / 1000).ToString() + " Tonnen, Startort: " + data.JobValues.CitySource + ", Start-Firma: " + data.JobValues.CompanySource + ", Zielort: " + data.JobValues.CityDestination + ", Ziel-Firma: " + data.JobValues.CompanyDestination + ", LKW: " + data.TruckValues.ConstantsValues.Brand + " " + data.TruckValues.ConstantsValues.Name + ", Strecke: " + data.JobValues.PlannedDistanceKm.ToString() + " KM");
                                     utils.Reg_Schreiben("jobID", this.jobID);
 
                                         //this.settings.Cache.SaveJobID = this.jobID;
@@ -614,8 +621,9 @@ namespace VTCManager_1._0._0
                             this.destination_lb.Text = "";
                             this.depature_lb.Text = "";
                             //this.cargo_lb.Text = translation.no_cargo_lb;
-                            
-                            
+                            utils.Log("Tour FINISH: " + authCode + ", " + this.jobID + ", Einkommen: " + data.JobValues.Income.ToString() + " €" + ", Damage: " + str3);
+
+
                         }
                     }
                     this.invertedDistance = this.totalDistance - (int)Math.Round((double)data.NavigationValues.NavigationDistance, 0);
@@ -667,13 +675,16 @@ namespace VTCManager_1._0._0
                 postParameters.Add("game", this.Spiel);
 
                 this.api.HTTPSRequestPost(this.api.api_server + this.api.loc_update_path, postParameters, false).ToString();
+            utils.Log("Tour UPDATE: " + this.authCode + ", " + this.jobID + ", " + this.currentPercentage.ToString() + ", " + this.Spiel);
 
-           
+
+
         }
         private void Main_FormClosing(object sender, FormClosingEventArgs e)
         {
             System.Windows.Forms.Application.Exit();
             TaskBar_Icon.Dispose();
+            utils.Log("Client wurde geschlossen !");
         }
 
         private void send_location_Tick(object sender, EventArgs e)
@@ -1548,6 +1559,7 @@ namespace VTCManager_1._0._0
         private void beendenToolStripMenuItemClick(object sender, EventArgs e)
         {
             System.Windows.Forms.Application.Exit();
+            utils.Log("Client wurde geschlossen !");
         }
 
         private void einstellungenToolStripMenuItemClick(object sender, EventArgs e)
@@ -1555,6 +1567,7 @@ namespace VTCManager_1._0._0
             SettingsWindow Settingswindow = new SettingsWindow(this.translation);
             Settingswindow.FormClosing += new FormClosingEventHandler(ChildFormClosing);
             Settingswindow.ShowDialog();
+            utils.Log("Einstellungen geöffnet!");
         }
 
         private void ChildFormClosing(object sender, FormClosingEventArgs e)
@@ -1565,12 +1578,15 @@ namespace VTCManager_1._0._0
 
         private void MenuAbmeldenButton_Click(object sender, EventArgs e)
         {
+            utils.Log("User hat sich Abgemeldet!");
             this.settings.DeleteConfig();
             Application.Restart();
+
         }
 
         private void CreditsToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            utils.Log("Fenster Über angeklickt!");
             Ueber ueber = new Ueber();
             ueber.ShowDialog();
         }
@@ -1581,7 +1597,7 @@ namespace VTCManager_1._0._0
         {
             Motorbremse_ICON.Visible = false;
             this.discord = new Discord();
-            lbl_Revision.Text = "2.0.3";
+            lbl_Revision.Text = "2.0.4";
             labelRevision = lbl_Revision.Text;
 
 
@@ -1595,6 +1611,7 @@ namespace VTCManager_1._0._0
 
 
             anti_AFK_TIMER.Enabled = (Convert.ToInt32(utils.Reg_Lesen("TruckersMP_Autorun", "ANTI_AFK_AN")) == 1) ? true : false;
+            utils.Log("Anti-AFK: " + anti_AFK_TIMER.Enabled);
 
             int spender = 0;
             if (spender == 0)
@@ -1635,16 +1652,25 @@ namespace VTCManager_1._0._0
                
                 if (!File.Exists(dest_leer + @"\bin\win_x64\plugins\scs-telemetry.dll"))
                 {
-                    if (!Directory.Exists(dest_leer + @"\bin\win_x64\plugins")) { Directory.CreateDirectory(dest_leer + @"\bin\win_x64\plugins"); }
+                    utils.Log("Unsere DLL ist nicht vorhanden!");
+                    if (!Directory.Exists(dest_leer + @"\bin\win_x64\plugins")) { Directory.CreateDirectory(dest_leer + @"\bin\win_x64\plugins"); utils.Log("Verzeichnis Plugins wurde erstellt!"); }
                     File.Copy(Application.StartupPath + @"\Resources\scs-telemetry.dll", dest_leer + @"\bin\win_x64\plugins\scs-telemetry.dll");
+                    utils.Log("DLL wurde ins Plugin Verzeichnis kopiert!");
                 } else
                 {
                     // ################  Für Diagnostikzwecke  ###########################
+                    if (!File.Exists(logDirectory + logFile))
+                    {
+                        Directory.CreateDirectory(logDirectory);
+                        File.Create(logDirectory + logFile);
+                    }
+
                     string Plugins_ETS = "";
                     DirectoryInfo di = new DirectoryInfo(dest_leer + @"\bin\win_x64\plugins");
                     foreach (var fi in di.GetFiles())
                     { Plugins_ETS += fi.Name + "  "; }
                     utils.Reg_Schreiben("Plugins ETS", Plugins_ETS);
+                    utils.Log("Plugins wurden in die REG geschrieben!");
                     // ################  Diagnostikzwecke ENDE  ###########################
                 }
 
@@ -1652,6 +1678,7 @@ namespace VTCManager_1._0._0
                 string dest_leer2 = utils.Reg_Lesen("TruckersMP_Autorun", "ATS_Pfad");
                 if (!string.IsNullOrEmpty(dest_leer2))
                 {
+                    utils.Log("ATS Pfad in REG ist angegeben!");
                     ats_button.Visible = true;
                     ToolTip tt2 = new ToolTip();
                     tt2.SetToolTip(this.ats_button, "Starte ATS im Singleplayer !");
@@ -1670,6 +1697,7 @@ namespace VTCManager_1._0._0
                         foreach (var fi in di.GetFiles())
                         { Plugins_ATS += fi.Name + "  "; }
                         utils.Reg_Schreiben("Plugins ATS", Plugins_ATS);
+                        utils.Log("ATS Pfad ist leer!");
                         // ################  Diagnostikzwecke ENDE  ###########################
                     }
 
@@ -1738,9 +1766,11 @@ namespace VTCManager_1._0._0
             truckersMP_Link = utils.Reg_Lesen("TruckersMP_Autorun", "TruckersMP_Pfad");
             if (truckersMP_Link != null)
             {
+                utils.Log("TruckersMP wurde geöffnet!");
                 Process.Start(truckersMP_Link);
             } else
             {
+                utils.Log("Link zu TMP fehlt => MessageBox ausgegeben!");
                 MessageBox.Show("Kein Link zu Truckers-MP angegeben!\nBitte schaue in den Einstellungen nach.", "Kein Link!", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
 
@@ -1748,6 +1778,7 @@ namespace VTCManager_1._0._0
 
         private void linkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
+            utils.Log("TruckyApp angeklickt!");
             Process.Start("https://truckyapp.com/");
         }
 
@@ -1779,6 +1810,7 @@ namespace VTCManager_1._0._0
                 GUI_SIZE_BUTTON.Image = GetImageFromURL("https://zwpc.de/icons/expand.png");
                 // COMMIT - eventuell die beiden Bilder über Ressourcen laden
                 this.BackgroundImage = null;
+                utils.Log("GUI SIZE geändert zu Klein");
             }
             else
             {
@@ -1795,6 +1827,7 @@ namespace VTCManager_1._0._0
                 else if (hintergrund == "oldcar3") { this.BackgroundImage = Properties.Resources.oldcar3; }
                 else if (hintergrund == "oldcar4") { this.BackgroundImage = Properties.Resources.oldcar4; }
                 else { this.BackgroundImage = null; }
+                utils.Log("GUI SIZE geändert zu Groß");
             }
 
 
@@ -1808,6 +1841,7 @@ namespace VTCManager_1._0._0
         private void Main_FormClosing_1(object sender, FormClosingEventArgs e)
         {
             TaskBar_Icon.Dispose();
+            utils.Log("APPLICATION EXIT");
         }
 
         private void darkToolStripMenuItem_Click(object sender, EventArgs e)
@@ -1820,6 +1854,7 @@ namespace VTCManager_1._0._0
                 menuStrip1.ForeColor = System.Drawing.Color.Gray;
                 BackColor = System.Drawing.Color.FromArgb(46, 46, 46);
                 ForeColor = System.Drawing.Color.LightGray;
+                utils.Log("DARK MODE ON");
             } else
             {
                 Is_DarkMode_On = 0;
@@ -1834,6 +1869,7 @@ namespace VTCManager_1._0._0
                 menuStrip1.ForeColor = System.Drawing.Color.Gray;
                 BackColor = System.Drawing.Color.FromArgb(255, 255, 255);
                 ForeColor = System.Drawing.Color.Black;
+                utils.Log("DARK MODE OFF");
             }
         }
 
@@ -1852,6 +1888,7 @@ namespace VTCManager_1._0._0
             {
                 WebServer_Status_label.Text = "←Webserver";
                 WebServer_Status_label.Image = (sc.WS_Check() == true) ? green : red;
+                utils.Log("Server WS: " + sc.WS_Check());
             } catch (Exception Fehler_Server)
             {
                 MessageBox.Show("Keine Verbindung zum Webserver\n" + Fehler_Server.Message, "Fehler Verbindung", MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -1861,6 +1898,7 @@ namespace VTCManager_1._0._0
             {
                 Label_DB_Server.Text = "←Datenbank";
                 Label_DB_Server.Image = (sc.DB_Check() == true) ? green : red;
+                utils.Log("Server DB: " + sc.DB_Check());
             }
             catch (Exception Fehler_Server)
             {

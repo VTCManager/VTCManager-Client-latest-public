@@ -56,6 +56,7 @@ namespace VTCManager_1._0._0
         private CheckBox Diagnostic_Checkbox;
         private GroupBox groupBox2;
         private CheckBox Chk_Dashboard;
+        private Button VTC_Button;
         private System.Windows.Forms.OpenFileDialog openFileDialog1;
 
 
@@ -108,6 +109,7 @@ namespace VTCManager_1._0._0
             this.Settings_Windows_Label_Settings = new System.Windows.Forms.Label();
             this.GameLog_suchen = new System.Windows.Forms.Button();
             this.GroupBox_Diagnostic = new System.Windows.Forms.GroupBox();
+            this.VTC_Button = new System.Windows.Forms.Button();
             this.Registry_anzeigen = new System.Windows.Forms.Button();
             this.GameLog_oeffnen = new System.Windows.Forms.Button();
             this.Diagnostic_Checkbox = new System.Windows.Forms.CheckBox();
@@ -438,7 +440,7 @@ namespace VTCManager_1._0._0
             // 
             this.GameLog_suchen.Location = new System.Drawing.Point(6, 19);
             this.GameLog_suchen.Name = "GameLog_suchen";
-            this.GameLog_suchen.Size = new System.Drawing.Size(162, 33);
+            this.GameLog_suchen.Size = new System.Drawing.Size(116, 33);
             this.GameLog_suchen.TabIndex = 12;
             this.GameLog_suchen.Text = "GameLog suchen";
             this.GameLog_suchen.UseVisualStyleBackColor = true;
@@ -446,9 +448,10 @@ namespace VTCManager_1._0._0
             // 
             // GroupBox_Diagnostic
             // 
-            this.GroupBox_Diagnostic.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)
+            this.GroupBox_Diagnostic.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.GroupBox_Diagnostic.BackColor = System.Drawing.SystemColors.GradientActiveCaption;
+            this.GroupBox_Diagnostic.Controls.Add(this.VTC_Button);
             this.GroupBox_Diagnostic.Controls.Add(this.Registry_anzeigen);
             this.GroupBox_Diagnostic.Controls.Add(this.GameLog_oeffnen);
             this.GroupBox_Diagnostic.Controls.Add(this.GameLog_suchen);
@@ -460,11 +463,21 @@ namespace VTCManager_1._0._0
             this.GroupBox_Diagnostic.TabStop = false;
             this.GroupBox_Diagnostic.Text = "Diagnose-Daten";
             // 
+            // VTC_Button
+            // 
+            this.VTC_Button.Location = new System.Drawing.Point(338, 19);
+            this.VTC_Button.Name = "VTC_Button";
+            this.VTC_Button.Size = new System.Drawing.Size(117, 33);
+            this.VTC_Button.TabIndex = 15;
+            this.VTC_Button.Text = "DLC Log erstellen";
+            this.VTC_Button.UseVisualStyleBackColor = true;
+            this.VTC_Button.Click += new System.EventHandler(this.VTC_Button_Click);
+            // 
             // Registry_anzeigen
             // 
-            this.Registry_anzeigen.Location = new System.Drawing.Point(435, 19);
+            this.Registry_anzeigen.Location = new System.Drawing.Point(457, 19);
             this.Registry_anzeigen.Name = "Registry_anzeigen";
-            this.Registry_anzeigen.Size = new System.Drawing.Size(162, 33);
+            this.Registry_anzeigen.Size = new System.Drawing.Size(140, 33);
             this.Registry_anzeigen.TabIndex = 14;
             this.Registry_anzeigen.Text = "Registry Werte anzeigen";
             this.Registry_anzeigen.UseVisualStyleBackColor = true;
@@ -472,9 +485,9 @@ namespace VTCManager_1._0._0
             // 
             // GameLog_oeffnen
             // 
-            this.GameLog_oeffnen.Location = new System.Drawing.Point(224, 19);
+            this.GameLog_oeffnen.Location = new System.Drawing.Point(128, 19);
             this.GameLog_oeffnen.Name = "GameLog_oeffnen";
-            this.GameLog_oeffnen.Size = new System.Drawing.Size(162, 33);
+            this.GameLog_oeffnen.Size = new System.Drawing.Size(107, 33);
             this.GameLog_oeffnen.TabIndex = 13;
             this.GameLog_oeffnen.Text = "GameLog öffnen";
             this.GameLog_oeffnen.UseVisualStyleBackColor = true;
@@ -852,6 +865,60 @@ namespace VTCManager_1._0._0
                 utils.Reg_Schreiben("Dashboard", "0");
             }
         }
+
+        private void VTC_Button_Click(object sender, EventArgs e)
+        {
+            string path = Path.Combine(Environment.GetFolderPath(System.Environment.SpecialFolder.MyDocuments) + @"\VTC_Manager\DLC_Log.txt");
+
+            DirectoryInfo d = new DirectoryInfo(utils.Reg_Lesen("TruckersMP_Autorun", "ETS2_Pfad")); 
+            FileInfo[] Files = d.GetFiles("dlc_*"); 
+            List<string> myCollection = new List<string>();
+            foreach (FileInfo file in Files)
+            {
+                myCollection.Add(file.Name + Environment.NewLine);
+            }
+            string a = String.Join("", myCollection);
+
+            File.WriteAllText(path, a);
+
+            DirectoryInfo d2 = new DirectoryInfo(utils.Reg_Lesen("TruckersMP_Autorun", "ETS2_Pfad") + @"\bin\win_x64");
+            FileInfo[] Files2 = d2.GetFiles("*.*");
+            List<string> myCollection2 = new List<string>();
+            foreach (FileInfo file2 in Files2)
+            {
+                myCollection2.Add(file2.Name + Environment.NewLine);
+            }
+            string a2 = String.Join("", myCollection2);
+            File.AppendAllText(path, " ------------------------------    GAME VERZEICHNIS   ------------------------------------" + Environment.NewLine);
+            File.AppendAllText(path, a2);
+
+
+            DirectoryInfo d3 = new DirectoryInfo(utils.Reg_Lesen("TruckersMP_Autorun", "ETS2_Pfad") + @"\bin\win_x64\plugins");
+            FileInfo[] Files3 = d3.GetFiles("*.*");
+            List<string> myCollection3 = new List<string>();
+            foreach (FileInfo file3 in Files3)
+            {
+                myCollection3.Add(file3.Name + Environment.NewLine);
+            }
+            string a3 = String.Join("", myCollection3);
+            File.AppendAllText(path, " ------------------------------    PLUGIN VERZEICHNIS   ------------------------------------" + Environment.NewLine);
+            File.AppendAllText(path, a3);
+
+            File.AppendAllText(path, " ------------------------------        REGISTRY         ------------------------------------" + Environment.NewLine);
+            File.AppendAllText(path, "ANTI-AFK: " + Read("ANTI_AFK") + Environment.NewLine +
+                "ANTI_AFK_AN: " + Read("ANTI_AFK_AN") + Environment.NewLine +
+                "Background: " + Read("Background") + Environment.NewLine +
+                "Diagnostic: " + Read("Diagnostic") + Environment.NewLine +
+                "ETS Pfad: " + Read("ETS2_Pfad") + Environment.NewLine +
+                "ATS Pfad: " + Read("ATS_Pfad") + Environment.NewLine +
+                "Plugins ETS: " + Read("Plugins ETS") + Environment.NewLine +
+                "Plugins ATS: " + Read("Plugins ATS") + Environment.NewLine +
+                "Reload Traffic Sek: " + Read("Reload_Traffic_Sekunden") + Environment.NewLine +
+                "Verkehr Server: " + Read("verkehr_SERVER") + Environment.NewLine +
+                "Version: " + Read("Version") + Environment.NewLine);
+
+        }
+
     }
 }
 

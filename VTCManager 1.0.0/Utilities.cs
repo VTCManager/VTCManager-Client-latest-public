@@ -1,6 +1,9 @@
 ﻿using Microsoft.Win32;
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
+using System.Globalization;
+using System.IO;
 using System.Runtime.CompilerServices;
 using System.Security.Cryptography;
 using System.Text;
@@ -16,6 +19,9 @@ namespace VTCManager_1._0._0
         private static bool _cachedRunningFlag;
         private static string _chachedGame;
         private static bool _DiscordRunningFlag;
+        CultureInfo ci = CultureInfo.InstalledUICulture;
+        private string logDirectory = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + @"\VTC_Manager");
+        private string logFile = @"\log.txt";
 
         //Properties
         public static string LastRunningGameName { get; set; }
@@ -179,7 +185,19 @@ namespace VTCManager_1._0._0
         }
 
 
+        public void Log(string text)
+        {
+            Translation trans = new Translation(ci.DisplayName);
+            if(File.Exists(logDirectory + logFile))
+            {
+                try
+                {
+                    File.AppendAllText(logDirectory + logFile, "<" + DateTime.Now + "> " + text + Environment.NewLine);
+                } catch { }
 
+            }
+
+        }
 
 
 
