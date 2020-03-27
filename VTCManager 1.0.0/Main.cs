@@ -165,7 +165,6 @@ namespace VTCManager_1._0._0
         private PictureBox Retarder_ICON;
         private Label label6;
         private GroupBox Dashboard_1;
-        private ProgressBar Streckenverlauf;
         private ProgressBar progressBar_F;
         public float Geschwindigkeit;
         private string logDirectory = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + @"\VTC_Manager");
@@ -454,8 +453,8 @@ namespace VTCManager_1._0._0
                             Luft_Progress.Value = (int)data.TruckValues.CurrentValues.MotorValues.BrakeValues.AirPressure;
 
                             // #########################   STRECKENVERLAUF   #############################################
-                            Streckenverlauf.Maximum = 100;
-                            Streckenverlauf.Value = (int)currentPercentage;
+                            //Streckenverlauf.Maximum = 100;
+                            //Streckenverlauf.Value = (int)currentPercentage;
                             
 
                     
@@ -721,7 +720,6 @@ namespace VTCManager_1._0._0
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.panel2 = new System.Windows.Forms.Panel();
-            this.Streckenverlauf = new System.Windows.Forms.ProgressBar();
             this.status_jb_canc_lb = new System.Windows.Forms.Label();
             this.truck_lb = new System.Windows.Forms.Label();
             this.destination_lb = new System.Windows.Forms.Label();
@@ -1006,7 +1004,6 @@ namespace VTCManager_1._0._0
             // panel2
             // 
             this.panel2.BackColor = System.Drawing.Color.Transparent;
-            this.panel2.Controls.Add(this.Streckenverlauf);
             this.panel2.Controls.Add(this.status_jb_canc_lb);
             this.panel2.Controls.Add(this.truck_lb);
             this.panel2.Controls.Add(this.destination_lb);
@@ -1018,13 +1015,6 @@ namespace VTCManager_1._0._0
             this.panel2.Name = "panel2";
             this.panel2.Size = new System.Drawing.Size(551, 582);
             this.panel2.TabIndex = 2;
-            // 
-            // Streckenverlauf
-            // 
-            this.Streckenverlauf.Location = new System.Drawing.Point(13, 530);
-            this.Streckenverlauf.Name = "Streckenverlauf";
-            this.Streckenverlauf.Size = new System.Drawing.Size(520, 23);
-            this.Streckenverlauf.TabIndex = 7;
             // 
             // status_jb_canc_lb
             // 
