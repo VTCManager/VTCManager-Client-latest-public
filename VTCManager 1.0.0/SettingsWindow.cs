@@ -836,17 +836,17 @@ namespace VTCManager_1._0._0
 
         private void Registry_anzeigen_Click(object sender, EventArgs e)
         {
-            MessageBox.Show("ANTI-AFK: " + Read("ANTI_AFK") + Environment.NewLine +
-                "ANTI_AFK_AN: " + Read("ANTI_AFK_AN") + Environment.NewLine +
-                "Background: " + Read("Background") + Environment.NewLine +
-                "Diagnostic: " + Read("Diagnostic") + Environment.NewLine +
-                "ETS Pfad: " + Read("ETS2_Pfad") + Environment.NewLine +
-                "ATS Pfad: " + Read("ATS_Pfad") + Environment.NewLine +
-                "Plugins ETS: " + Read("Plugins ETS") + Environment.NewLine +
-                "Plugins ATS: " + Read("Plugins ATS") + Environment.NewLine +
-                "Reload Traffic Sek: " + Read("Reload_Traffic_Sekunden") + Environment.NewLine +
-                "Verkehr Server: " + Read("verkehr_SERVER") + Environment.NewLine +
-                "Version: " + Read("Version") + Environment.NewLine);
+           MessageBox.Show( "ANTI-AFK: " + Read("ANTI_AFK") + Environment.NewLine +
+               "ANTI_AFK_AN: " + Read("ANTI_AFK_AN") + Environment.NewLine +
+               "Background: " + Read("Background") + Environment.NewLine +
+               "Diagnostic: " + Read("Diagnostic") + Environment.NewLine +
+               "ETS Pfad: " + Read("ETS2_Pfad") + Environment.NewLine +
+               "ATS Pfad: " + Read("ATS_Pfad") + Environment.NewLine +
+               "Plugins ETS: " + Read("Plugins ETS") + Environment.NewLine +
+               "Plugins ATS: " + Read("Plugins ATS") + Environment.NewLine +
+               "Reload Traffic Sek: " + Read("Reload_Traffic_Sekunden") + Environment.NewLine +
+               "Verkehr Server: " + Read("verkehr_SERVER") + Environment.NewLine +
+               "Version: " + Read("Version") + Environment.NewLine);
         }
 
 
