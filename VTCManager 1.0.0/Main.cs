@@ -153,23 +153,8 @@ namespace VTCManager_1._0._0
         public bool refuel_beendet;
         private int jobrunningcounter;
         private Discord discord;
-        private PictureBox pictureBox1;
-        private Label label5;
-        private ProgressBar Luft_Progress;
-        private PictureBox pictureBox2;
-        private Label label4;
-        private Label Rest_KM_Label;
-        private PictureBox Batterie_ICON;
-        private PictureBox Handbremse_ICON;
-        private PictureBox Motorbremse_ICON;
-        private PictureBox Retarder_ICON;
-        private Label label6;
-        private GroupBox Dashboard_1;
-        private ProgressBar progressBar_F;
         public float Geschwindigkeit;
-        private string logDirectory = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + @"\VTC_Manager");
-        private Label TestLabel11;
-        private string logFile = @"\log.txt";
+        public int tour_start_count;
 
         // Get a handle to an application window.
         [DllImport("USER32.DLL", CharSet = CharSet.Unicode)]
@@ -291,14 +276,12 @@ namespace VTCManager_1._0._0
 
             if (string.IsNullOrEmpty(utils.Reg_Lesen("TruckersMP_Autorun", "verkehr_SERVER")))
             {
-                utils.Log("Registry => 'verkehr_SERVER' IsNullOrEmpty => Schreibe in REG");
                 utils.Reg_Schreiben("verkehr_SERVER", "sim1");
                 this.settings.Cache.truckersmp_server = "sim1";
                 server = "sim1";
             } else
             {
                 server = utils.Reg_Lesen("TruckersMP_Autorun", "verkehr_SERVER");
-                utils.Log("Verkehr-SERVER: " + server);
             }
 
             this.tableLayoutPanel1.Visible = false;
@@ -379,9 +362,6 @@ namespace VTCManager_1._0._0
             this.lastNotZeroDistance = 0;
             this.lastCargoDamage = 0.0f;
             this.jobID = "0";
-
-            utils.Log("Tour Cancel: " + authCode + " - " + jobID);
-
             this.InitializeDiscord(0);
             return true;
         }
@@ -419,19 +399,12 @@ namespace VTCManager_1._0._0
                         this.Geschwindigkeit = (float)data.TruckValues.CurrentValues.DashboardValues.Speed.Kph;
                         Spiel = data.Game.ToString();
 
-                        Motorbremse_ICON.Visible = (data.TruckValues.CurrentValues.MotorValues.BrakeValues.MotorBrake) ? true : false;
-                        Handbremse_ICON.Visible = (data.TruckValues.CurrentValues.MotorValues.BrakeValues.ParkingBrake) ? true : false;
-                        Retarder_ICON.Visible = (((float)data.ControlValues.InputValues.Brake) >= 0.1) ? true : false;
-
-       
-
                         // EIN - AUSBLENDEN JE NACH PAUSENSTATUS
                         truck_lb.Visible = (data.Paused) ? false : true;
                         destination_lb.Visible = (data.Paused) ? false : true;
                         depature_lb.Visible = (data.Paused) ? false : true;
                         cargo_lb.Visible = (data.Paused) ? false : true;
                         Tollgate_Payment = data.GamePlay.TollgateEvent.PayAmount;
-                        Dashboard_1.Visible = (utils.Reg_Lesen("TruckersMP_Autorun", "Dashboard") == "1") ? true : false;
 
                         truckersMP_Button.Visible = (string.IsNullOrEmpty(utils.Reg_Lesen("TruckersMP_Autorun", "TruckersMP_Pfad"))) ? false : true;
 
@@ -440,26 +413,6 @@ namespace VTCManager_1._0._0
                             GameRuns = 1;
 
                            this.currentPercentage = (((((double)data.NavigationValues.NavigationDistance / 1000) / (double)data.JobValues.PlannedDistanceKm) * 100)-100)*-1;
-
-                            // ###################   FUEL PROGRESS    ##############################################
-                            progressBar_F.Maximum = Convert.ToInt32(data.TruckValues.ConstantsValues.CapacityValues.Fuel);
-                            progressBar_F.Value = Convert.ToInt32(data.TruckValues.CurrentValues.DashboardValues.FuelValue.Amount);
-
-
-                            // #########################   REST KM    ##############################################
-                            Rest_KM_Label.Text = (int)data.TruckValues.CurrentValues.DashboardValues.FuelValue.Range + " KM (" + Convert.ToInt32(data.TruckValues.CurrentValues.DashboardValues.FuelValue.Amount) + " L)";
-                        
-                            // #########################   LUFTDRUCK   #############################################
-                            Luft_Progress.Maximum = 150;
-                            Luft_Progress.Value = (int)data.TruckValues.CurrentValues.MotorValues.BrakeValues.AirPressure;
-
-                            // #########################   STRECKENVERLAUF   #######################################
-                            //Streckenverlauf.Maximum = 100;
-                            //Streckenverlauf.Value = (int)currentPercentage;
-
-
-                            TestLabel11.Text = data.JobValues.Market.ToString();
-
 
                             // SPEED LABEL - TRUCK LABEL
                             labelkmh = (data.Game.ToString() == "Ets2") ? " KM/H" : " mp/h";
@@ -473,7 +426,7 @@ namespace VTCManager_1._0._0
                                 Geschwindigkeit = (float)data.TruckValues.CurrentValues.DashboardValues.Speed.Mph;
                             }
 
-                            // ##########################  AUSGABE TRUCK MODEL etc.  #############################
+                            // ##########################  AUSGABE TRUCK MODEL etc.  ##########################
                             truck_lb.Text = "Dein Truck: " + data.TruckValues.ConstantsValues.Brand + ", Modell: " + data.TruckValues.ConstantsValues.Name;
 
                             // ##############################   JOB DATA   ####################################
@@ -496,7 +449,6 @@ namespace VTCManager_1._0._0
                                         { "percentage", this.currentPercentage.ToString() }
                                     }, false).ToString();
                                     this.jobrunningcounter = 0;
-                                    utils.Log("Tour Tick: " + authCode + " - " + jobID + " - " + currentPercentage.ToString());
                                 }
                                 this.jobrunningcounter++;
                             }
@@ -532,48 +484,48 @@ namespace VTCManager_1._0._0
                         utils.Reg_Schreiben("Count_Tourstart", this.tour_start_count.ToString());
                         this.jobStarted = false;
                         this.lastJobDictionary.Clear();
-                        notification_sound_tour_start.Play();
-                        this.totalDistance = (int)data.NavigationValues.NavigationDistance;
-                        num2 = (double)data.JobValues.Income * 0.15;
-                        this.cargo_lb.Text = "Deine Fracht: " + ((int)Math.Round((double)data.JobValues.CargoValues.Mass, 0) / 1000).ToString() + " Tonnen " + data.JobValues.CargoValues.Name;
-                        this.depature_lb.Text = "Von: " + data.JobValues.CitySource + " ( " + data.JobValues.CompanySource + " ) nach: " + data.JobValues.CityDestination + " ( " + data.JobValues.CompanyDestination + " )";
-                        this.fuelatstart = data.TruckValues.ConstantsValues.CapacityValues.Fuel;
+                                    notification_sound_tour_start.Play();
+                                    this.totalDistance = (int)data.NavigationValues.NavigationDistance;
+                                    num2 = (double)data.JobValues.Income * 0.15;
+                                    this.cargo_lb.Text = "Deine Fracht: " + ((int)Math.Round((double)data.JobValues.CargoValues.Mass, 0) / 1000).ToString() + " Tonnen " + data.JobValues.CargoValues.Name;
+                                    this.depature_lb.Text = "Von: " + data.JobValues.CitySource + " ( " + data.JobValues.CompanySource + " ) nach: " + data.JobValues.CityDestination + " ( " + data.JobValues.CompanyDestination + " )";
+                                    this.fuelatstart = data.TruckValues.ConstantsValues.CapacityValues.Fuel;
 
-                        Dictionary<string, string> postParameters = new Dictionary<string, string>();
-                        postParameters.Add("authcode", this.authCode);
-                        postParameters.Add("cargo", data.JobValues.CargoValues.Name);
-                        postParameters.Add("weight", ((int)Math.Round((double)data.JobValues.CargoValues.Mass, 0) / 1000).ToString());
-                        postParameters.Add("depature", data.JobValues.CitySource);
-                        postParameters.Add("depature_company", data.JobValues.CompanySource);
-                        postParameters.Add("destination_company", data.JobValues.CompanyDestination);
-                        postParameters.Add("destination", data.JobValues.CityDestination);
-                        postParameters.Add("truck_manufacturer", data.TruckValues.ConstantsValues.Brand);
-                        postParameters.Add("truck_model", data.TruckValues.ConstantsValues.Name);
-                        postParameters.Add("distance", data.JobValues.PlannedDistanceKm.ToString());
-                        this.jobID = this.api.HTTPSRequestPost(this.api.api_server + this.api.new_job_path, postParameters, true).ToString();
+                                    Dictionary<string, string> postParameters = new Dictionary<string, string>();
+                                    postParameters.Add("authcode", this.authCode);
+                                    postParameters.Add("cargo", data.JobValues.CargoValues.Name);
+                                    postParameters.Add("weight", ((int)Math.Round((double)data.JobValues.CargoValues.Mass, 0) / 1000).ToString());
+                                    postParameters.Add("depature", data.JobValues.CitySource);
+                                    postParameters.Add("depature_company", data.JobValues.CompanySource);
+                                    postParameters.Add("destination_company", data.JobValues.CompanyDestination);
+                                    postParameters.Add("destination", data.JobValues.CityDestination);
+                                    postParameters.Add("truck_manufacturer", data.TruckValues.ConstantsValues.Brand);
+                                    postParameters.Add("truck_model", data.TruckValues.ConstantsValues.Name);
+                                    postParameters.Add("distance", data.JobValues.PlannedDistanceKm.ToString());
+                                    this.jobID = this.api.HTTPSRequestPost(this.api.api_server + this.api.new_job_path, postParameters, true).ToString();
 
-                        utils.Log("Tour START: " + authCode + ", Cargo: " + data.JobValues.CargoValues.Name + ", " + ((int)Math.Round((double)data.JobValues.CargoValues.Mass, 0) / 1000).ToString() + " Tonnen, Startort: " + data.JobValues.CitySource + ", Start-Firma: " + data.JobValues.CompanySource + ", Zielort: " + data.JobValues.CityDestination + ", Ziel-Firma: " + data.JobValues.CompanyDestination + ", LKW: " + data.TruckValues.ConstantsValues.Brand + " " + data.TruckValues.ConstantsValues.Name + ", Strecke: " + data.JobValues.PlannedDistanceKm.ToString() + " KM");
-                        utils.Reg_Schreiben("jobID", this.jobID);
 
-                            //this.settings.Cache.SaveJobID = this.jobID;
-                            //this.settings.SaveJobID();
+                                    utils.Reg_Schreiben("jobID", this.jobID);
+
+                                    //this.settings.Cache.SaveJobID = this.jobID;
+                                    //this.settings.SaveJobID();
                                     
 
-                        Dictionary<string, string> lastJobDictionary = this.lastJobDictionary;
-                        this.lastJobDictionary.Add("cargo", data.JobValues.CargoValues.Name);
-                        this.lastJobDictionary.Add("source", data.JobValues.CitySource);
-                        this.lastJobDictionary.Add("destination", data.JobValues.CityDestination);
-                        this.lastJobDictionary.Add("income", data.JobValues.Income.ToString());
-                        this.lastJobDictionary.Add("weight", data.JobValues.CargoValues.Mass.ToString());
+                                    Dictionary<string, string> lastJobDictionary = this.lastJobDictionary;
+                                    this.lastJobDictionary.Add("cargo", data.JobValues.CargoValues.Name);
+                                    this.lastJobDictionary.Add("source", data.JobValues.CitySource);
+                                    this.lastJobDictionary.Add("destination", data.JobValues.CityDestination);
+                                    this.lastJobDictionary.Add("income", data.JobValues.Income.ToString());
+                                    this.lastJobDictionary.Add("weight", data.JobValues.CargoValues.Mass.ToString());
 
-                        this.discord.onTour(data.JobValues.CityDestination, data.JobValues.CitySource, data.JobValues.CargoValues.Name, ((int)Math.Round((double)data.JobValues.CargoValues.Mass, 0) / 1000).ToString());
+                                    this.discord.onTour(data.JobValues.CityDestination, data.JobValues.CitySource, data.JobValues.CargoValues.Name, ((int)Math.Round((double)data.JobValues.CargoValues.Mass, 0) / 1000).ToString());
 
-                        //if(this.lastJobDictionary["mass"] == Convert.ToString(data.Job.Mass)) { MessageBox.Show("SELEBE!"); }
-                        this.CitySource = data.JobValues.CitySource;
-                        this.CityDestination = data.JobValues.CityDestination;
-                        this.InitializeDiscord(1);
-                        this.send_tour_status.Enabled = true;
-                        this.send_tour_status.Start();
+                                    //if(this.lastJobDictionary["mass"] == Convert.ToString(data.Job.Mass)) { MessageBox.Show("SELEBE!"); }
+                                    this.CitySource = data.JobValues.CitySource;
+                                    this.CityDestination = data.JobValues.CityDestination;
+                                    this.InitializeDiscord(1);
+                                    this.send_tour_status.Enabled = true;
+                                    this.send_tour_status.Start();
                                     
 
                     }
@@ -625,9 +577,8 @@ namespace VTCManager_1._0._0
                             this.destination_lb.Text = "";
                             this.depature_lb.Text = "";
                             //this.cargo_lb.Text = translation.no_cargo_lb;
-                            utils.Log("Tour FINISH: " + authCode + ", " + this.jobID + ", Einkommen: " + data.JobValues.Income.ToString() + " €" + ", Damage: " + str3);
-
-
+                            
+                            
                         }
                     }
                     this.invertedDistance = this.totalDistance - (int)Math.Round((double)data.NavigationValues.NavigationDistance, 0);
@@ -679,16 +630,13 @@ namespace VTCManager_1._0._0
                 postParameters.Add("game", this.Spiel);
 
                 this.api.HTTPSRequestPost(this.api.api_server + this.api.loc_update_path, postParameters, false).ToString();
-            utils.Log("Tour UPDATE: " + this.authCode + ", " + this.jobID + ", " + this.currentPercentage.ToString() + ", " + this.Spiel);
 
-
-
+           
         }
         private void Main_FormClosing(object sender, FormClosingEventArgs e)
         {
             System.Windows.Forms.Application.Exit();
             TaskBar_Icon.Dispose();
-            utils.Log("Client wurde geschlossen !");
         }
 
         private void send_location_Tick(object sender, EventArgs e)
@@ -733,19 +681,6 @@ namespace VTCManager_1._0._0
             this.speed_lb = new System.Windows.Forms.Label();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.panel4 = new System.Windows.Forms.Panel();
-            this.Dashboard_1 = new System.Windows.Forms.GroupBox();
-            this.progressBar_F = new System.Windows.Forms.ProgressBar();
-            this.Retarder_ICON = new System.Windows.Forms.PictureBox();
-            this.label6 = new System.Windows.Forms.Label();
-            this.Batterie_ICON = new System.Windows.Forms.PictureBox();
-            this.Handbremse_ICON = new System.Windows.Forms.PictureBox();
-            this.Rest_KM_Label = new System.Windows.Forms.Label();
-            this.Motorbremse_ICON = new System.Windows.Forms.PictureBox();
-            this.label5 = new System.Windows.Forms.Label();
-            this.Luft_Progress = new System.Windows.Forms.ProgressBar();
-            this.pictureBox1 = new System.Windows.Forms.PictureBox();
-            this.pictureBox2 = new System.Windows.Forms.PictureBox();
-            this.label4 = new System.Windows.Forms.Label();
             this.version_lb = new System.Windows.Forms.Label();
             this.TaskBar_Icon = new System.Windows.Forms.NotifyIcon(this.components);
             this.contextTaskbar = new System.Windows.Forms.ContextMenuStrip(this.components);
@@ -771,18 +706,9 @@ namespace VTCManager_1._0._0
             this.Label_DB_Server = new System.Windows.Forms.ToolStripStatusLabel();
             this.anti_AFK_TIMER = new System.Windows.Forms.Timer(this.components);
             this.label3 = new System.Windows.Forms.Label();
-            this.TestLabel11 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.send_tour_status)).BeginInit();
             this.menuStrip1.SuspendLayout();
             this.panel2.SuspendLayout();
-            this.panel4.SuspendLayout();
-            this.Dashboard_1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.Retarder_ICON)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.Batterie_ICON)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.Handbremse_ICON)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.Motorbremse_ICON)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
             this.contextTaskbar.SuspendLayout();
             this.groupStatistiken.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.ats_button)).BeginInit();
@@ -1010,7 +936,6 @@ namespace VTCManager_1._0._0
             // panel2
             // 
             this.panel2.BackColor = System.Drawing.Color.Transparent;
-            this.panel2.Controls.Add(this.TestLabel11);
             this.panel2.Controls.Add(this.status_jb_canc_lb);
             this.panel2.Controls.Add(this.truck_lb);
             this.panel2.Controls.Add(this.destination_lb);
@@ -1107,152 +1032,10 @@ namespace VTCManager_1._0._0
             // panel4
             // 
             this.panel4.BackColor = System.Drawing.Color.Transparent;
-            this.panel4.Controls.Add(this.Dashboard_1);
             this.panel4.Location = new System.Drawing.Point(1097, 28);
             this.panel4.Name = "panel4";
             this.panel4.Size = new System.Drawing.Size(284, 582);
             this.panel4.TabIndex = 4;
-            // 
-            // Dashboard_1
-            // 
-            this.Dashboard_1.Controls.Add(this.progressBar_F);
-            this.Dashboard_1.Controls.Add(this.Retarder_ICON);
-            this.Dashboard_1.Controls.Add(this.label6);
-            this.Dashboard_1.Controls.Add(this.Batterie_ICON);
-            this.Dashboard_1.Controls.Add(this.Handbremse_ICON);
-            this.Dashboard_1.Controls.Add(this.Rest_KM_Label);
-            this.Dashboard_1.Controls.Add(this.Motorbremse_ICON);
-            this.Dashboard_1.Controls.Add(this.label5);
-            this.Dashboard_1.Controls.Add(this.Luft_Progress);
-            this.Dashboard_1.Controls.Add(this.pictureBox1);
-            this.Dashboard_1.Controls.Add(this.pictureBox2);
-            this.Dashboard_1.Controls.Add(this.label4);
-            this.Dashboard_1.Location = new System.Drawing.Point(5, 328);
-            this.Dashboard_1.Name = "Dashboard_1";
-            this.Dashboard_1.Size = new System.Drawing.Size(276, 245);
-            this.Dashboard_1.TabIndex = 15;
-            this.Dashboard_1.TabStop = false;
-            this.Dashboard_1.Text = "Dashboard";
-            // 
-            // progressBar_F
-            // 
-            this.progressBar_F.Location = new System.Drawing.Point(9, 124);
-            this.progressBar_F.Margin = new System.Windows.Forms.Padding(0);
-            this.progressBar_F.Name = "progressBar_F";
-            this.progressBar_F.Size = new System.Drawing.Size(249, 23);
-            this.progressBar_F.TabIndex = 15;
-            // 
-            // Retarder_ICON
-            // 
-            this.Retarder_ICON.Image = global::VTCManager_1._0._0.Properties.Resources.retarder1;
-            this.Retarder_ICON.Location = new System.Drawing.Point(136, 21);
-            this.Retarder_ICON.Name = "Retarder_ICON";
-            this.Retarder_ICON.Size = new System.Drawing.Size(63, 53);
-            this.Retarder_ICON.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.Retarder_ICON.TabIndex = 12;
-            this.Retarder_ICON.TabStop = false;
-            // 
-            // label6
-            // 
-            this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(39, 182);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(63, 13);
-            this.label6.TabIndex = 14;
-            this.label6.Text = "Air Pressure";
-            // 
-            // Batterie_ICON
-            // 
-            this.Batterie_ICON.Image = global::VTCManager_1._0._0.Properties.Resources.icons8_autobatterie_80;
-            this.Batterie_ICON.Location = new System.Drawing.Point(10, 21);
-            this.Batterie_ICON.Name = "Batterie_ICON";
-            this.Batterie_ICON.Size = new System.Drawing.Size(63, 53);
-            this.Batterie_ICON.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.Batterie_ICON.TabIndex = 7;
-            this.Batterie_ICON.TabStop = false;
-            // 
-            // Handbremse_ICON
-            // 
-            this.Handbremse_ICON.Image = global::VTCManager_1._0._0.Properties.Resources.bremse_schwarz;
-            this.Handbremse_ICON.Location = new System.Drawing.Point(73, 21);
-            this.Handbremse_ICON.Name = "Handbremse_ICON";
-            this.Handbremse_ICON.Size = new System.Drawing.Size(63, 53);
-            this.Handbremse_ICON.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.Handbremse_ICON.TabIndex = 8;
-            this.Handbremse_ICON.TabStop = false;
-            // 
-            // Rest_KM_Label
-            // 
-            this.Rest_KM_Label.AutoSize = true;
-            this.Rest_KM_Label.Font = new System.Drawing.Font("Verdana", 12F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.Rest_KM_Label.Location = new System.Drawing.Point(44, 102);
-            this.Rest_KM_Label.Name = "Rest_KM_Label";
-            this.Rest_KM_Label.Size = new System.Drawing.Size(52, 18);
-            this.Rest_KM_Label.TabIndex = 6;
-            this.Rest_KM_Label.Text = "0000";
-            // 
-            // Motorbremse_ICON
-            // 
-            this.Motorbremse_ICON.Image = global::VTCManager_1._0._0.Properties.Resources.icons8_motor_128;
-            this.Motorbremse_ICON.Location = new System.Drawing.Point(195, 21);
-            this.Motorbremse_ICON.Name = "Motorbremse_ICON";
-            this.Motorbremse_ICON.Size = new System.Drawing.Size(63, 53);
-            this.Motorbremse_ICON.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.Motorbremse_ICON.TabIndex = 9;
-            this.Motorbremse_ICON.TabStop = false;
-            // 
-            // label5
-            // 
-            this.label5.AutoSize = true;
-            this.label5.Font = new System.Drawing.Font("Microsoft Sans Serif", 6F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label5.Location = new System.Drawing.Point(7, 224);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(265, 9);
-            this.label5.TabIndex = 5;
-            this.label5.Text = "0        10         20         30        40        50        60        70        " +
-    "80        90        100    ";
-            // 
-            // Luft_Progress
-            // 
-            this.Luft_Progress.Location = new System.Drawing.Point(10, 197);
-            this.Luft_Progress.MarqueeAnimationSpeed = 0;
-            this.Luft_Progress.Name = "Luft_Progress";
-            this.Luft_Progress.Size = new System.Drawing.Size(248, 23);
-            this.Luft_Progress.Style = System.Windows.Forms.ProgressBarStyle.Continuous;
-            this.Luft_Progress.TabIndex = 4;
-            // 
-            // pictureBox1
-            // 
-            this.pictureBox1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.pictureBox1.Image = global::VTCManager_1._0._0.Properties.Resources.icons8_benzin_24;
-            this.pictureBox1.Location = new System.Drawing.Point(11, 97);
-            this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(27, 27);
-            this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.pictureBox1.TabIndex = 0;
-            this.pictureBox1.TabStop = false;
-            // 
-            // pictureBox2
-            // 
-            this.pictureBox2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.pictureBox2.Image = global::VTCManager_1._0._0.Properties.Resources.icons8_luftdruck_24;
-            this.pictureBox2.Location = new System.Drawing.Point(10, 168);
-            this.pictureBox2.Name = "pictureBox2";
-            this.pictureBox2.Size = new System.Drawing.Size(27, 27);
-            this.pictureBox2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.pictureBox2.TabIndex = 3;
-            this.pictureBox2.TabStop = false;
-            // 
-            // label4
-            // 
-            this.label4.AutoSize = true;
-            this.label4.Font = new System.Drawing.Font("Microsoft Sans Serif", 6F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label4.Location = new System.Drawing.Point(8, 153);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(265, 9);
-            this.label4.TabIndex = 2;
-            this.label4.Text = "0        10         20         30        40        50        60        70        " +
-    "80        90        100    ";
             // 
             // version_lb
             // 
@@ -1495,16 +1278,6 @@ namespace VTCManager_1._0._0
             this.label3.Text = "Version:";
             this.label3.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
-            // TestLabel11
-            // 
-            this.TestLabel11.AutoSize = true;
-            this.TestLabel11.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.TestLabel11.Location = new System.Drawing.Point(60, 311);
-            this.TestLabel11.Name = "TestLabel11";
-            this.TestLabel11.Size = new System.Drawing.Size(60, 24);
-            this.TestLabel11.TabIndex = 7;
-            this.TestLabel11.Text = "label7";
-            // 
             // Main
             // 
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
@@ -1526,21 +1299,13 @@ namespace VTCManager_1._0._0
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "VTC-Manager";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Main_FormClosing_1);
+            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.Main_FormClosed);
             this.Load += new System.EventHandler(this.Main_Load);
             ((System.ComponentModel.ISupportInitialize)(this.send_tour_status)).EndInit();
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
             this.panel2.ResumeLayout(false);
             this.panel2.PerformLayout();
-            this.panel4.ResumeLayout(false);
-            this.Dashboard_1.ResumeLayout(false);
-            this.Dashboard_1.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.Retarder_ICON)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.Batterie_ICON)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.Handbremse_ICON)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.Motorbremse_ICON)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
             this.contextTaskbar.ResumeLayout(false);
             this.groupStatistiken.ResumeLayout(false);
             this.groupStatistiken.PerformLayout();
@@ -1554,7 +1319,6 @@ namespace VTCManager_1._0._0
             this.PerformLayout();
 
         }
-        public System.Windows.Controls.Orientation Orientation { get; set; }
 
         private void topMenuWebsiteClick(object sender, EventArgs e)
         {
@@ -1565,7 +1329,6 @@ namespace VTCManager_1._0._0
         private void beendenToolStripMenuItemClick(object sender, EventArgs e)
         {
             System.Windows.Forms.Application.Exit();
-            utils.Log("Client wurde geschlossen !");
         }
 
         private void einstellungenToolStripMenuItemClick(object sender, EventArgs e)
@@ -1573,7 +1336,6 @@ namespace VTCManager_1._0._0
             SettingsWindow Settingswindow = new SettingsWindow(this.translation);
             Settingswindow.FormClosing += new FormClosingEventHandler(ChildFormClosing);
             Settingswindow.ShowDialog();
-            utils.Log("Einstellungen geöffnet!");
         }
 
         private void ChildFormClosing(object sender, FormClosingEventArgs e)
@@ -1584,15 +1346,12 @@ namespace VTCManager_1._0._0
 
         private void MenuAbmeldenButton_Click(object sender, EventArgs e)
         {
-            utils.Log("User hat sich Abgemeldet!");
             this.settings.DeleteConfig();
             Application.Restart();
-
         }
 
         private void CreditsToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            utils.Log("Fenster Über angeklickt!");
             Ueber ueber = new Ueber();
             ueber.ShowDialog();
         }
@@ -1601,12 +1360,10 @@ namespace VTCManager_1._0._0
         // Edit by Thommy
         private void Main_Load(object sender, EventArgs e)
         {
-            Motorbremse_ICON.Visible = false;
+
             this.discord = new Discord();
-            lbl_Revision.Text = "2.0.4";
+            lbl_Revision.Text = "2.0.3";
             labelRevision = lbl_Revision.Text;
-
-
 
 
             // ################## CHECK ob der AFK Text bei nicht Spendern stimmt ##################
@@ -1619,7 +1376,6 @@ namespace VTCManager_1._0._0
 
 
             anti_AFK_TIMER.Enabled = (Convert.ToInt32(utils.Reg_Lesen("TruckersMP_Autorun", "ANTI_AFK_AN")) == 1) ? true : false;
-            utils.Log("Anti-AFK: " + anti_AFK_TIMER.Enabled);
 
             int spender = 0;
             if (spender == 0)
@@ -1629,15 +1385,6 @@ namespace VTCManager_1._0._0
                 utils.Reg_Schreiben("Version", labelRevision.ToString());
 
 
-            if (utils.Reg_Lesen("TruckersMP_Autorun", "Background") == "oldcar2")
-            {
-
-                Dashboard_1.Location = new System.Drawing.Point(5, 10);
-            }
-            else
-            {
-                Dashboard_1.Location = new System.Drawing.Point(5, 334);
-            }
 
             //  ################## Telemetry kopieren wenn nicht vorhanden #########################
 
@@ -1660,28 +1407,16 @@ namespace VTCManager_1._0._0
                
                 if (!File.Exists(dest_leer + @"\bin\win_x64\plugins\scs-telemetry.dll"))
                 {
-                    utils.Log("Unsere DLL ist nicht vorhanden!");
-                    if (!Directory.Exists(dest_leer + @"\bin\win_x64\plugins")) { Directory.CreateDirectory(dest_leer + @"\bin\win_x64\plugins"); utils.Log("Verzeichnis Plugins wurde erstellt!"); }
+                    if (!Directory.Exists(dest_leer + @"\bin\win_x64\plugins")) { Directory.CreateDirectory(dest_leer + @"\bin\win_x64\plugins"); }
                     File.Copy(Application.StartupPath + @"\Resources\scs-telemetry.dll", dest_leer + @"\bin\win_x64\plugins\scs-telemetry.dll");
-                    utils.Log("DLL wurde ins Plugin Verzeichnis kopiert!");
                 } else
                 {
                     // ################  Für Diagnostikzwecke  ###########################
-                    if (!File.Exists(logDirectory + logFile))
-                    {
-                        Directory.CreateDirectory(logDirectory);
-                        File.Create(logDirectory + logFile);
-                    }
-
-                    if (File.Exists(logDirectory + logFile))
-                        File.WriteAllText(logDirectory + logFile, String.Empty);
-
                     string Plugins_ETS = "";
                     DirectoryInfo di = new DirectoryInfo(dest_leer + @"\bin\win_x64\plugins");
                     foreach (var fi in di.GetFiles())
                     { Plugins_ETS += fi.Name + "  "; }
                     utils.Reg_Schreiben("Plugins ETS", Plugins_ETS);
-                    utils.Log("Plugins wurden in die REG geschrieben!");
                     // ################  Diagnostikzwecke ENDE  ###########################
                 }
 
@@ -1689,7 +1424,6 @@ namespace VTCManager_1._0._0
                 string dest_leer2 = utils.Reg_Lesen("TruckersMP_Autorun", "ATS_Pfad");
                 if (!string.IsNullOrEmpty(dest_leer2))
                 {
-                    utils.Log("ATS Pfad in REG ist angegeben!");
                     ats_button.Visible = true;
                     ToolTip tt2 = new ToolTip();
                     tt2.SetToolTip(this.ats_button, "Starte ATS im Singleplayer !");
@@ -1708,9 +1442,9 @@ namespace VTCManager_1._0._0
                         foreach (var fi in di.GetFiles())
                         { Plugins_ATS += fi.Name + "  "; }
                         utils.Reg_Schreiben("Plugins ATS", Plugins_ATS);
-                        utils.Log("ATS Pfad ist leer!");
                         // ################  Diagnostikzwecke ENDE  ###########################
                     }
+
 
                 }
             }
@@ -1772,19 +1506,14 @@ namespace VTCManager_1._0._0
         }
 
 
-
-
-
         private void truckersMP_Button_Click(object sender, EventArgs e)
         {
             truckersMP_Link = utils.Reg_Lesen("TruckersMP_Autorun", "TruckersMP_Pfad");
             if (truckersMP_Link != null)
             {
-                utils.Log("TruckersMP wurde geöffnet!");
                 Process.Start(truckersMP_Link);
             } else
             {
-                utils.Log("Link zu TMP fehlt => MessageBox ausgegeben!");
                 MessageBox.Show("Kein Link zu Truckers-MP angegeben!\nBitte schaue in den Einstellungen nach.", "Kein Link!", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
 
@@ -1792,7 +1521,6 @@ namespace VTCManager_1._0._0
 
         private void linkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            utils.Log("TruckyApp angeklickt!");
             Process.Start("https://truckyapp.com/");
         }
 
@@ -1824,7 +1552,6 @@ namespace VTCManager_1._0._0
                 GUI_SIZE_BUTTON.Image = GetImageFromURL("https://zwpc.de/icons/expand.png");
                 // COMMIT - eventuell die beiden Bilder über Ressourcen laden
                 this.BackgroundImage = null;
-                utils.Log("GUI SIZE geändert zu Klein");
             }
             else
             {
@@ -1841,7 +1568,6 @@ namespace VTCManager_1._0._0
                 else if (hintergrund == "oldcar3") { this.BackgroundImage = Properties.Resources.oldcar3; }
                 else if (hintergrund == "oldcar4") { this.BackgroundImage = Properties.Resources.oldcar4; }
                 else { this.BackgroundImage = null; }
-                utils.Log("GUI SIZE geändert zu Groß");
             }
 
 
@@ -1854,11 +1580,8 @@ namespace VTCManager_1._0._0
 
         private void Main_FormClosing_1(object sender, FormClosingEventArgs e)
         {
-            Application.Exit();
-            utils.Log("APPLICATION EXIT");
+            TaskBar_Icon.Dispose();
         }
-
-
 
         private void darkToolStripMenuItem_Click(object sender, EventArgs e)
         {
@@ -1870,7 +1593,6 @@ namespace VTCManager_1._0._0
                 menuStrip1.ForeColor = System.Drawing.Color.Gray;
                 BackColor = System.Drawing.Color.FromArgb(46, 46, 46);
                 ForeColor = System.Drawing.Color.LightGray;
-                utils.Log("DARK MODE ON");
             } else
             {
                 Is_DarkMode_On = 0;
@@ -1885,7 +1607,6 @@ namespace VTCManager_1._0._0
                 menuStrip1.ForeColor = System.Drawing.Color.Gray;
                 BackColor = System.Drawing.Color.FromArgb(255, 255, 255);
                 ForeColor = System.Drawing.Color.Black;
-                utils.Log("DARK MODE OFF");
             }
         }
 
@@ -1904,7 +1625,6 @@ namespace VTCManager_1._0._0
             {
                 WebServer_Status_label.Text = "←Webserver";
                 WebServer_Status_label.Image = (sc.WS_Check() == true) ? green : red;
-                utils.Log("Server WS: " + sc.WS_Check());
             } catch (Exception Fehler_Server)
             {
                 MessageBox.Show("Keine Verbindung zum Webserver\n" + Fehler_Server.Message, "Fehler Verbindung", MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -1914,7 +1634,6 @@ namespace VTCManager_1._0._0
             {
                 Label_DB_Server.Text = "←Datenbank";
                 Label_DB_Server.Image = (sc.DB_Check() == true) ? green : red;
-                utils.Log("Server DB: " + sc.DB_Check());
             }
             catch (Exception Fehler_Server)
             {
@@ -1954,32 +1673,24 @@ namespace VTCManager_1._0._0
             this.menuStrip1.BackColor = Color.Transparent;
             this.BackgroundImage = Properties.Resources.oldcar1;
             utils.Reg_Schreiben("Background", "oldcar1");
-
-            Dashboard_1.Location = new System.Drawing.Point(5, 334);
-
         }
 
         private void oldCar2ToolStripMenuItem_Click(object sender, EventArgs e)
         {
             this.BackgroundImage = Properties.Resources.oldcar2;
             utils.Reg_Schreiben("Background", "oldcar2");
-            Dashboard_1.Location = new System.Drawing.Point(5, 10);
         }
 
         private void oldCar3ToolStripMenuItem_Click(object sender, EventArgs e)
         {
             this.BackgroundImage = Properties.Resources.oldcar3;
             utils.Reg_Schreiben("Background", "oldcar3");
-
-            Dashboard_1.Location = new System.Drawing.Point(5, 334);
         }
 
         private void oldCar4ToolStripMenuItem_Click(object sender, EventArgs e)
         {
             this.BackgroundImage = Properties.Resources.oldcar4;
             utils.Reg_Schreiben("Background", "oldcar4");
-
-            Dashboard_1.Location = new System.Drawing.Point(5, 334);
         }
 
         private void keinsToolStripMenuItem_Click(object sender, EventArgs e)
@@ -1988,7 +1699,8 @@ namespace VTCManager_1._0._0
             utils.Reg_Schreiben("Background", "");
         }
 
-
+        private void Main_FormClosed(object sender, FormClosedEventArgs e) =>
+            TaskBar_Icon.Dispose();
        
 
         private void ets2_button_Click(object sender, EventArgs e) =>
@@ -2022,11 +1734,14 @@ namespace VTCManager_1._0._0
         }
             
 
-        private void TelemetryFerry(object sender, EventArgs e) =>
+        private void TelemetryFerry(object sender, EventArgs e)
+        {
             this.Ferry = true;
+        }
+
 
         private void TelemetryTrain(object sender, EventArgs e) =>
-            this.Train = true;
+        this.Train = true;
 
         private void TelemetryRefuel(object sender, EventArgs e) 
         {

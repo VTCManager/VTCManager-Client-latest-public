@@ -163,26 +163,6 @@ namespace VTCManager_1._0._0.Properties {
         /// <summary>
         ///   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
         /// </summary>
-        public static System.Drawing.Bitmap bremse_rot {
-            get {
-                object obj = ResourceManager.GetObject("bremse_rot", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
-        /// </summary>
-        public static System.Drawing.Bitmap bremse_schwarz {
-            get {
-                object obj = ResourceManager.GetObject("bremse_schwarz", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
-        /// </summary>
         public static System.Drawing.Bitmap einstellungen {
             get {
                 object obj = ResourceManager.GetObject("einstellungen", resourceCulture);
@@ -303,49 +283,9 @@ namespace VTCManager_1._0._0.Properties {
         /// <summary>
         ///   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
         /// </summary>
-        public static System.Drawing.Bitmap icons8_autobatterie_80 {
-            get {
-                object obj = ResourceManager.GetObject("icons8-autobatterie-80", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
-        /// </summary>
-        public static System.Drawing.Bitmap icons8_benzin_24 {
-            get {
-                object obj = ResourceManager.GetObject("icons8-benzin-24", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
-        /// </summary>
         public static System.Drawing.Bitmap icons8_film_noir_50 {
             get {
                 object obj = ResourceManager.GetObject("icons8-film-noir-50", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
-        /// </summary>
-        public static System.Drawing.Bitmap icons8_luftdruck_24 {
-            get {
-                object obj = ResourceManager.GetObject("icons8-luftdruck-24", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
-        /// </summary>
-        public static System.Drawing.Bitmap icons8_motor_128 {
-            get {
-                object obj = ResourceManager.GetObject("icons8-motor-128", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -386,16 +326,6 @@ namespace VTCManager_1._0._0.Properties {
         public static System.Drawing.Bitmap oldcar4 {
             get {
                 object obj = ResourceManager.GetObject("oldcar4", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
-        /// </summary>
-        public static System.Drawing.Bitmap retarder1 {
-            get {
-                object obj = ResourceManager.GetObject("retarder1", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

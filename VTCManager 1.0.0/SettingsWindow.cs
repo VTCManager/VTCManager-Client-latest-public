@@ -54,10 +54,6 @@ namespace VTCManager_1._0._0
         private Button Registry_anzeigen;
         private Button GameLog_oeffnen;
         private CheckBox Diagnostic_Checkbox;
-        private GroupBox groupBox2;
-        private CheckBox Chk_Dashboard;
-        private Button VTC_Button;
-        private CheckBox Autostart_Checkbox;
         private System.Windows.Forms.OpenFileDialog openFileDialog1;
 
 
@@ -110,13 +106,9 @@ namespace VTCManager_1._0._0
             this.Settings_Windows_Label_Settings = new System.Windows.Forms.Label();
             this.GameLog_suchen = new System.Windows.Forms.Button();
             this.GroupBox_Diagnostic = new System.Windows.Forms.GroupBox();
-            this.VTC_Button = new System.Windows.Forms.Button();
             this.Registry_anzeigen = new System.Windows.Forms.Button();
             this.GameLog_oeffnen = new System.Windows.Forms.Button();
             this.Diagnostic_Checkbox = new System.Windows.Forms.CheckBox();
-            this.groupBox2 = new System.Windows.Forms.GroupBox();
-            this.Chk_Dashboard = new System.Windows.Forms.CheckBox();
-            this.Autostart_Checkbox = new System.Windows.Forms.CheckBox();
             this.groupBox1.SuspendLayout();
             this.btn_TruckersMP_suchen.SuspendLayout();
             this.group_Overlay.SuspendLayout();
@@ -125,7 +117,6 @@ namespace VTCManager_1._0._0
             ((System.ComponentModel.ISupportInitialize)(this.reload_antiafk)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.GroupBox_Diagnostic.SuspendLayout();
-            this.groupBox2.SuspendLayout();
             this.SuspendLayout();
             // 
             // comboBox1
@@ -285,7 +276,7 @@ namespace VTCManager_1._0._0
             // label6
             // 
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(131, 56);
+            this.label6.Location = new System.Drawing.Point(41, 58);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(69, 13);
             this.label6.TabIndex = 3;
@@ -293,7 +284,7 @@ namespace VTCManager_1._0._0
             // 
             // num_Overlay_Transparenz
             // 
-            this.num_Overlay_Transparenz.Location = new System.Drawing.Point(206, 54);
+            this.num_Overlay_Transparenz.Location = new System.Drawing.Point(116, 56);
             this.num_Overlay_Transparenz.Name = "num_Overlay_Transparenz";
             this.num_Overlay_Transparenz.Size = new System.Drawing.Size(59, 20);
             this.num_Overlay_Transparenz.TabIndex = 2;
@@ -442,7 +433,7 @@ namespace VTCManager_1._0._0
             // 
             this.GameLog_suchen.Location = new System.Drawing.Point(6, 19);
             this.GameLog_suchen.Name = "GameLog_suchen";
-            this.GameLog_suchen.Size = new System.Drawing.Size(116, 33);
+            this.GameLog_suchen.Size = new System.Drawing.Size(162, 33);
             this.GameLog_suchen.TabIndex = 12;
             this.GameLog_suchen.Text = "GameLog suchen";
             this.GameLog_suchen.UseVisualStyleBackColor = true;
@@ -450,10 +441,9 @@ namespace VTCManager_1._0._0
             // 
             // GroupBox_Diagnostic
             // 
-            this.GroupBox_Diagnostic.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            this.GroupBox_Diagnostic.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)
             | System.Windows.Forms.AnchorStyles.Right)));
             this.GroupBox_Diagnostic.BackColor = System.Drawing.SystemColors.GradientActiveCaption;
-            this.GroupBox_Diagnostic.Controls.Add(this.VTC_Button);
             this.GroupBox_Diagnostic.Controls.Add(this.Registry_anzeigen);
             this.GroupBox_Diagnostic.Controls.Add(this.GameLog_oeffnen);
             this.GroupBox_Diagnostic.Controls.Add(this.GameLog_suchen);
@@ -465,21 +455,11 @@ namespace VTCManager_1._0._0
             this.GroupBox_Diagnostic.TabStop = false;
             this.GroupBox_Diagnostic.Text = "Diagnose-Daten";
             // 
-            // VTC_Button
-            // 
-            this.VTC_Button.Location = new System.Drawing.Point(338, 19);
-            this.VTC_Button.Name = "VTC_Button";
-            this.VTC_Button.Size = new System.Drawing.Size(117, 33);
-            this.VTC_Button.TabIndex = 15;
-            this.VTC_Button.Text = "DLC Log erstellen";
-            this.VTC_Button.UseVisualStyleBackColor = true;
-            this.VTC_Button.Click += new System.EventHandler(this.VTC_Button_Click);
-            // 
             // Registry_anzeigen
             // 
-            this.Registry_anzeigen.Location = new System.Drawing.Point(457, 19);
+            this.Registry_anzeigen.Location = new System.Drawing.Point(435, 19);
             this.Registry_anzeigen.Name = "Registry_anzeigen";
-            this.Registry_anzeigen.Size = new System.Drawing.Size(140, 33);
+            this.Registry_anzeigen.Size = new System.Drawing.Size(162, 33);
             this.Registry_anzeigen.TabIndex = 14;
             this.Registry_anzeigen.Text = "Registry Werte anzeigen";
             this.Registry_anzeigen.UseVisualStyleBackColor = true;
@@ -487,9 +467,9 @@ namespace VTCManager_1._0._0
             // 
             // GameLog_oeffnen
             // 
-            this.GameLog_oeffnen.Location = new System.Drawing.Point(128, 19);
+            this.GameLog_oeffnen.Location = new System.Drawing.Point(224, 19);
             this.GameLog_oeffnen.Name = "GameLog_oeffnen";
-            this.GameLog_oeffnen.Size = new System.Drawing.Size(107, 33);
+            this.GameLog_oeffnen.Size = new System.Drawing.Size(162, 33);
             this.GameLog_oeffnen.TabIndex = 13;
             this.GameLog_oeffnen.Text = "GameLog öffnen";
             this.GameLog_oeffnen.UseVisualStyleBackColor = true;
@@ -506,43 +486,9 @@ namespace VTCManager_1._0._0
             this.Diagnostic_Checkbox.UseVisualStyleBackColor = true;
             this.Diagnostic_Checkbox.CheckedChanged += new System.EventHandler(this.Diagnostic_Checkbox_CheckedChanged);
             // 
-            // groupBox2
-            // 
-            this.groupBox2.Controls.Add(this.Autostart_Checkbox);
-            this.groupBox2.Controls.Add(this.Chk_Dashboard);
-            this.groupBox2.Location = new System.Drawing.Point(12, 322);
-            this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(270, 100);
-            this.groupBox2.TabIndex = 15;
-            this.groupBox2.TabStop = false;
-            this.groupBox2.Text = "Sonstiges";
-            // 
-            // Chk_Dashboard
-            // 
-            this.Chk_Dashboard.AutoSize = true;
-            this.Chk_Dashboard.Location = new System.Drawing.Point(10, 20);
-            this.Chk_Dashboard.Name = "Chk_Dashboard";
-            this.Chk_Dashboard.Size = new System.Drawing.Size(124, 17);
-            this.Chk_Dashboard.TabIndex = 0;
-            this.Chk_Dashboard.Text = "Dashboard anzeigen";
-            this.Chk_Dashboard.UseVisualStyleBackColor = true;
-            this.Chk_Dashboard.CheckedChanged += new System.EventHandler(this.Chk_Dashboard_CheckedChanged);
-            // 
-            // Autostart_Checkbox
-            // 
-            this.Autostart_Checkbox.AutoSize = true;
-            this.Autostart_Checkbox.Location = new System.Drawing.Point(10, 44);
-            this.Autostart_Checkbox.Name = "Autostart_Checkbox";
-            this.Autostart_Checkbox.Size = new System.Drawing.Size(171, 17);
-            this.Autostart_Checkbox.TabIndex = 1;
-            this.Autostart_Checkbox.Text = "Programm mit Windows starten";
-            this.Autostart_Checkbox.UseVisualStyleBackColor = true;
-            this.Autostart_Checkbox.CheckedChanged += new System.EventHandler(this.Autostart_Checkbox_CheckedChanged);
-            // 
             // SettingsWindow
             // 
             this.ClientSize = new System.Drawing.Size(630, 599);
-            this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.Diagnostic_Checkbox);
             this.Controls.Add(this.GroupBox_Diagnostic);
             this.Controls.Add(this.Settings_Windows_Label_Settings);
@@ -570,8 +516,6 @@ namespace VTCManager_1._0._0
             ((System.ComponentModel.ISupportInitialize)(this.reload_antiafk)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.GroupBox_Diagnostic.ResumeLayout(false);
-            this.groupBox2.ResumeLayout(false);
-            this.groupBox2.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -641,26 +585,9 @@ namespace VTCManager_1._0._0
         {
             GroupBox_Diagnostic.Visible = (utils.Reg_Lesen("TruckersMP_Autorun", "Diagnostic") == "1") ? true : false;
 
-            // ##################  AUTOSTART   #####################
-            if (File.Exists(System.IO.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Startup), "VTCManager.appref-ms")))
-            {
-                utils.Reg_Schreiben("Autostart", "1");
-                Autostart_Checkbox.CheckState = CheckState.Checked;
-            } else
-            {
-                utils.Reg_Schreiben("Autostart", "0");
-                Autostart_Checkbox.CheckState = CheckState.Unchecked;
-            }
-
-                group_Overlay.Visible = false;
+            group_Overlay.Visible = false;
             // Settings_Windows_Label_Settings.Text = translation.settings_window_titel_text; ######### GEHT NICHT ############
             Settings_Windows_Label_Settings.Text = "Einstellungen";
-
-            // #############  DASHBOARD ############################
-            if (string.IsNullOrEmpty(utils.Reg_Lesen("TruckersMP_Autorun", "Dashboard")))
-                utils.Reg_Schreiben("Dashboard", "0");
-
-            Chk_Dashboard.CheckState = (utils.Reg_Lesen("TruckersMP_Autorun", "Dashboard") == "1") ? CheckState.Checked : CheckState.Unchecked;
 
             var test = utils.Reg_Lesen("TruckersMP_Autorun", "TruckersMP_Pfad");
             if (test == "")
@@ -846,7 +773,8 @@ namespace VTCManager_1._0._0
                "Plugins ATS: " + Read("Plugins ATS") + Environment.NewLine +
                "Reload Traffic Sek: " + Read("Reload_Traffic_Sekunden") + Environment.NewLine +
                "Verkehr Server: " + Read("verkehr_SERVER") + Environment.NewLine +
-               "Version: " + Read("Version") + Environment.NewLine);
+               "Version: " + Read("Version") + Environment.NewLine+
+               "Anzahl aufgeführter Tourstarts: " + Read("Count_Tourstart") + Environment.NewLine);
         }
 
 
@@ -879,104 +807,7 @@ namespace VTCManager_1._0._0
             }
         }
 
-        private void Chk_Dashboard_CheckedChanged(object sender, EventArgs e)
-        {
-            if (Chk_Dashboard.CheckState == CheckState.Checked)
-            {
-                utils.Reg_Schreiben("Dashboard", "1");
-            }
-            else
-            {
-                utils.Reg_Schreiben("Dashboard", "0");
-            }
-        }
 
-        private void VTC_Button_Click(object sender, EventArgs e)
-        {
-            string path = Path.Combine(Environment.GetFolderPath(System.Environment.SpecialFolder.MyDocuments) + @"\VTC_Manager\DLC_Log.txt");
-
-            DirectoryInfo d = new DirectoryInfo(utils.Reg_Lesen("TruckersMP_Autorun", "ETS2_Pfad")); 
-            FileInfo[] Files = d.GetFiles("dlc_*"); 
-            List<string> myCollection = new List<string>();
-            foreach (FileInfo file in Files)
-            {
-                myCollection.Add(file.Name + Environment.NewLine);
-            }
-            string a = String.Join("", myCollection);
-
-            File.WriteAllText(path, a);
-
-            DirectoryInfo d2 = new DirectoryInfo(utils.Reg_Lesen("TruckersMP_Autorun", "ETS2_Pfad") + @"\bin\win_x64");
-            FileInfo[] Files2 = d2.GetFiles("*.*");
-            List<string> myCollection2 = new List<string>();
-            foreach (FileInfo file2 in Files2)
-            {
-                myCollection2.Add(file2.Name + Environment.NewLine);
-            }
-            string a2 = String.Join("", myCollection2);
-            File.AppendAllText(path, " ------------------------------    GAME VERZEICHNIS   ------------------------------------" + Environment.NewLine);
-            File.AppendAllText(path, a2);
-
-
-            DirectoryInfo d3 = new DirectoryInfo(utils.Reg_Lesen("TruckersMP_Autorun", "ETS2_Pfad") + @"\bin\win_x64\plugins");
-            FileInfo[] Files3 = d3.GetFiles("*.*");
-            List<string> myCollection3 = new List<string>();
-            foreach (FileInfo file3 in Files3)
-            {
-                myCollection3.Add(file3.Name + Environment.NewLine);
-            }
-            string a3 = String.Join("", myCollection3);
-            File.AppendAllText(path, " ------------------------------    PLUGIN VERZEICHNIS   ------------------------------------" + Environment.NewLine);
-            File.AppendAllText(path, a3);
-
-            File.AppendAllText(path, " ------------------------------        REGISTRY         ------------------------------------" + Environment.NewLine);
-            File.AppendAllText(path, "ANTI-AFK: " + Read("ANTI_AFK") + Environment.NewLine +
-                "ANTI_AFK_AN: " + Read("ANTI_AFK_AN") + Environment.NewLine +
-                "Background: " + Read("Background") + Environment.NewLine +
-                "Diagnostic: " + Read("Diagnostic") + Environment.NewLine +
-                "ETS Pfad: " + Read("ETS2_Pfad") + Environment.NewLine +
-                "ATS Pfad: " + Read("ATS_Pfad") + Environment.NewLine +
-                "Plugins ETS: " + Read("Plugins ETS") + Environment.NewLine +
-                "Plugins ATS: " + Read("Plugins ATS") + Environment.NewLine +
-                "Reload Traffic Sek: " + Read("Reload_Traffic_Sekunden") + Environment.NewLine +
-                "Verkehr Server: " + Read("verkehr_SERVER") + Environment.NewLine +
-                "Version: " + Read("Version") + Environment.NewLine);
-
-        }
-
-        private void Autostart_Checkbox_CheckedChanged(object sender, EventArgs e)
-        {
-            if(Autostart_Checkbox.CheckState == CheckState.Checked)
-            {
-                addAutoStartRegistry();
-    
-            } else
-            {
-                delAutoStartRegistry();
-            }
-            
-        }
-
-        public static void addAutoStartRegistry()
-        {
-            if (!File.Exists(System.IO.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Startup), "VTCManager.appref-ms")))
-            {
-                System.IO.File.Copy(Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + @"\VTCManager.appref-ms", System.IO.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Startup), "VTCManager.appref-ms"));
-                Utilities ut = new Utilities();
-                ut.Reg_Schreiben("Autostart", "1");
-                MessageBox.Show("Dein Programm wird jetzt beim Systemstart ausgeführt !", "AutoRun", MessageBoxButtons.OK, MessageBoxIcon.Information);
-            }
-        }
-        public static void delAutoStartRegistry()
-        {
-            if (File.Exists(System.IO.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Startup), "VTCManager.appref-ms")))
-            {
-                File.Delete(System.IO.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Startup), "VTCManager.appref-ms"));
-                Utilities ut = new Utilities();
-                ut.Reg_Schreiben("Autostart", "0");
-                MessageBox.Show("Dein Programm wird jetzt nicht mehr beim Systemstart ausgeführt !", "AutoRun", MessageBoxButtons.OK, MessageBoxIcon.Information);
-            }
-        }
     }
 }
 

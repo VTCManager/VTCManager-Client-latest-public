@@ -58,9 +58,6 @@ namespace VTCManager_1._0._0
         public string settings_window_tmp_error_text;
         public string settings_window_tmp_error_text2;
         public string settings_window_tmp_error_text3;
-        public string settings_window_dir_error;
-        public string settings_log_failed;
-        public string log_ok;
         public Translation(String language)
         {
             version = "Version: 1.1.0";
@@ -112,9 +109,7 @@ namespace VTCManager_1._0._0
                 settings_window_tmp_error_text = "Es fehlt der Pfad zu TruckersMP";
                 settings_window_tmp_error_text2 = "Bitte Korrigiere die Angabe dem folgenden Fenster!";
                 settings_window_tmp_error_text3 = "Fehler bei TruckersMP Pfad";
-                settings_window_dir_error = "Das geforderte Verzeichnis wurde nicht gefunden !";
-                settings_log_failed = "Die LOG Datei konnte nicht erstellt / Aktualisiert werden !";
-                log_ok = "Log Datei wurde erstellt !";
+
             }
             else
             {
@@ -170,9 +165,6 @@ namespace VTCManager_1._0._0
                 settings_window_tmp_error_text = "The path to TruckersMP is missing";
                 settings_window_tmp_error_text2 = "Please correct the information in the following window!";
                 settings_window_tmp_error_text3 = "TruckersMP path failed";
-                settings_window_dir_error = "The Directory was not Found !";
-                settings_log_failed = "can't create the log file!";
-                log_ok = "Log File was Created !";
             }
             
         }
