@@ -184,8 +184,6 @@ namespace VTCManager_1._0._0
         public Main(string newauthcode, string username, int driven_tours, int act_bank_balance, bool last_job_canceled, string company)
         {
             // Revision
-            if (string.IsNullOrEmpty(utils.Reg_Lesen("TruckersMP_Autorun", "Count_Tourstart")))
-                utils.Reg_Schreiben("Count_Tourstart", this.tour_start_count.ToString());
 
             if (File.Exists(Environment.CurrentDirectory + @"\Ressources\insight.wav"))
             {
@@ -527,9 +525,6 @@ namespace VTCManager_1._0._0
                     double num2;
                     if (this.jobStarted)
                     {
-                        this.tour_start_count++;
-                        
-                        utils.Reg_Schreiben("Count_Tourstart", this.tour_start_count.ToString());
                         this.jobStarted = false;
                         this.lastJobDictionary.Clear();
                         notification_sound_tour_start.Play();
