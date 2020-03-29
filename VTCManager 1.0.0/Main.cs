@@ -164,11 +164,10 @@ namespace VTCManager_1._0._0
         private PictureBox Motorbremse_ICON;
         private PictureBox Retarder_ICON;
         private Label label6;
-        private GroupBox Dashboard_1;
+        public GroupBox Dashboard_1;
         private ProgressBar progressBar_F;
         public float Geschwindigkeit;
         private string logDirectory = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + @"\VTC_Manager");
-        private Label TestLabel11;
         private string logFile = @"\log.txt";
 
         // Get a handle to an application window.
@@ -429,8 +428,7 @@ namespace VTCManager_1._0._0
                         depature_lb.Visible = (data.Paused) ? false : true;
                         cargo_lb.Visible = (data.Paused) ? false : true;
                         Tollgate_Payment = data.GamePlay.TollgateEvent.PayAmount;
-                        Dashboard_1.Visible = (utils.Reg_Lesen("TruckersMP_Autorun", "Dashboard") == "1") ? true : false;
-
+                        
                         truckersMP_Button.Visible = (string.IsNullOrEmpty(utils.Reg_Lesen("TruckersMP_Autorun", "TruckersMP_Pfad"))) ? false : true;
 
                         if (data.Paused == false)
@@ -454,10 +452,6 @@ namespace VTCManager_1._0._0
                             // #########################   STRECKENVERLAUF   #######################################
                             //Streckenverlauf.Maximum = 100;
                             //Streckenverlauf.Value = (int)currentPercentage;
-
-
-                            TestLabel11.Text = data.JobValues.Market.ToString();
-
 
                             // SPEED LABEL - TRUCK LABEL
                             labelkmh = (data.Game.ToString() == "Ets2") ? " KM/H" : " mp/h";
@@ -652,8 +646,8 @@ namespace VTCManager_1._0._0
 
         private void locationupdate()
         {
-
-                double num3 = this.rotation;
+            Dashboard_1.Visible = (utils.Reg_Lesen("TruckersMP_Autorun", "Dashboard") == "1") ? true : false;
+            double num3 = this.rotation;
                 Dictionary<string, string> postParameters = new Dictionary<string, string>();
                 Dictionary<string, string> dictionary1 = postParameters;
 
@@ -766,7 +760,6 @@ namespace VTCManager_1._0._0
             this.Label_DB_Server = new System.Windows.Forms.ToolStripStatusLabel();
             this.anti_AFK_TIMER = new System.Windows.Forms.Timer(this.components);
             this.label3 = new System.Windows.Forms.Label();
-            this.TestLabel11 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.send_tour_status)).BeginInit();
             this.menuStrip1.SuspendLayout();
             this.panel2.SuspendLayout();
@@ -1005,7 +998,6 @@ namespace VTCManager_1._0._0
             // panel2
             // 
             this.panel2.BackColor = System.Drawing.Color.Transparent;
-            this.panel2.Controls.Add(this.TestLabel11);
             this.panel2.Controls.Add(this.status_jb_canc_lb);
             this.panel2.Controls.Add(this.truck_lb);
             this.panel2.Controls.Add(this.destination_lb);
@@ -1490,16 +1482,6 @@ namespace VTCManager_1._0._0
             this.label3.Text = "Version:";
             this.label3.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
-            // TestLabel11
-            // 
-            this.TestLabel11.AutoSize = true;
-            this.TestLabel11.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.TestLabel11.Location = new System.Drawing.Point(60, 311);
-            this.TestLabel11.Name = "TestLabel11";
-            this.TestLabel11.Size = new System.Drawing.Size(60, 24);
-            this.TestLabel11.TabIndex = 7;
-            this.TestLabel11.Text = "label7";
-            // 
             // Main
             // 
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
@@ -1603,7 +1585,6 @@ namespace VTCManager_1._0._0
 
 
 
-
             // ################## CHECK ob der AFK Text bei nicht Spendern stimmt ##################
             if (string.IsNullOrEmpty(utils.Reg_Lesen("TruckersMP_Autorun", "ANTI_AFK_AN")))
                 utils.Reg_Schreiben("ANTI_AFK_AN", "0");
@@ -1623,16 +1604,6 @@ namespace VTCManager_1._0._0
             if (string.IsNullOrEmpty(utils.Reg_Lesen("TruckersMP_Autorun", "Version")))
                 utils.Reg_Schreiben("Version", labelRevision.ToString());
 
-
-            if (utils.Reg_Lesen("TruckersMP_Autorun", "Background") == "oldcar2")
-            {
-
-                Dashboard_1.Location = new System.Drawing.Point(5, 10);
-            }
-            else
-            {
-                Dashboard_1.Location = new System.Drawing.Point(5, 334);
-            }
 
             //  ################## Telemetry kopieren wenn nicht vorhanden #########################
 
@@ -1727,7 +1698,7 @@ namespace VTCManager_1._0._0
             // Background Changer ENDE 
 
 
-
+            Dashboard_1.Visible = (utils.Reg_Lesen("TruckersMP_Autorun", "Dashboard") == "1") ? true : false;
             utils.Reg_Schreiben("Reload_Traffic_Sekunden", "20");
             lbl_Reload_Time.Text = "Reload-Interval: " + reload + " Sek.";
 
