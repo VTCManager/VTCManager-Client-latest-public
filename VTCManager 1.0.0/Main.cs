@@ -1577,12 +1577,13 @@ namespace VTCManager_1._0._0
         // Edit by Thommy
         private void Main_Load(object sender, EventArgs e)
         {
-            Motorbremse_ICON.Visible = false;
+           
             this.discord = new Discord();
-            lbl_Revision.Text = "2.0.4";
+            lbl_Revision.Text = "2.0.5";
             labelRevision = lbl_Revision.Text;
 
-
+            /// ######################   GEHT NOCH NICHT, DESHALB AUSBLENDEN    ###################
+            Motorbremse_ICON.Visible = false;
 
             // ################## CHECK ob der AFK Text bei nicht Spendern stimmt ##################
             if (string.IsNullOrEmpty(utils.Reg_Lesen("TruckersMP_Autorun", "ANTI_AFK_AN")))
