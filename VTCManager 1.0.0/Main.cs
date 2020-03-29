@@ -168,6 +168,7 @@ namespace VTCManager_1._0._0
         private ProgressBar progressBar_F;
         public float Geschwindigkeit;
         private string logDirectory = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + @"\VTC_Manager");
+        private Label TestLabel11;
         private string logFile = @"\log.txt";
 
         // Get a handle to an application window.
@@ -443,8 +444,6 @@ namespace VTCManager_1._0._0
                             progressBar_F.Value = Convert.ToInt32(data.TruckValues.CurrentValues.DashboardValues.FuelValue.Amount);
 
 
-            
-
                             // #########################   REST KM    ##############################################
                             Rest_KM_Label.Text = (int)data.TruckValues.CurrentValues.DashboardValues.FuelValue.Range + " KM (" + Convert.ToInt32(data.TruckValues.CurrentValues.DashboardValues.FuelValue.Amount) + " L)";
                         
@@ -452,12 +451,13 @@ namespace VTCManager_1._0._0
                             Luft_Progress.Maximum = 150;
                             Luft_Progress.Value = (int)data.TruckValues.CurrentValues.MotorValues.BrakeValues.AirPressure;
 
-                            // #########################   STRECKENVERLAUF   #############################################
+                            // #########################   STRECKENVERLAUF   #######################################
                             //Streckenverlauf.Maximum = 100;
                             //Streckenverlauf.Value = (int)currentPercentage;
-                            
 
-                    
+
+                            TestLabel11.Text = data.JobValues.Market.ToString();
+
 
                             // SPEED LABEL - TRUCK LABEL
                             labelkmh = (data.Game.ToString() == "Ets2") ? " KM/H" : " mp/h";
@@ -471,7 +471,7 @@ namespace VTCManager_1._0._0
                                 Geschwindigkeit = (float)data.TruckValues.CurrentValues.DashboardValues.Speed.Mph;
                             }
 
-                            // ##########################  AUSGABE TRUCK MODEL etc.  ##########################
+                            // ##########################  AUSGABE TRUCK MODEL etc.  #############################
                             truck_lb.Text = "Dein Truck: " + data.TruckValues.ConstantsValues.Brand + ", Modell: " + data.TruckValues.ConstantsValues.Name;
 
                             // ##############################   JOB DATA   ####################################
@@ -527,48 +527,48 @@ namespace VTCManager_1._0._0
                     {
                         this.jobStarted = false;
                         this.lastJobDictionary.Clear();
-                                    notification_sound_tour_start.Play();
-                                    this.totalDistance = (int)data.NavigationValues.NavigationDistance;
-                                    num2 = (double)data.JobValues.Income * 0.15;
-                                    this.cargo_lb.Text = "Deine Fracht: " + ((int)Math.Round((double)data.JobValues.CargoValues.Mass, 0) / 1000).ToString() + " Tonnen " + data.JobValues.CargoValues.Name;
-                                    this.depature_lb.Text = "Von: " + data.JobValues.CitySource + " ( " + data.JobValues.CompanySource + " ) nach: " + data.JobValues.CityDestination + " ( " + data.JobValues.CompanyDestination + " )";
-                                    this.fuelatstart = data.TruckValues.ConstantsValues.CapacityValues.Fuel;
+                        notification_sound_tour_start.Play();
+                        this.totalDistance = (int)data.NavigationValues.NavigationDistance;
+                        num2 = (double)data.JobValues.Income * 0.15;
+                        this.cargo_lb.Text = "Deine Fracht: " + ((int)Math.Round((double)data.JobValues.CargoValues.Mass, 0) / 1000).ToString() + " Tonnen " + data.JobValues.CargoValues.Name;
+                        this.depature_lb.Text = "Von: " + data.JobValues.CitySource + " ( " + data.JobValues.CompanySource + " ) nach: " + data.JobValues.CityDestination + " ( " + data.JobValues.CompanyDestination + " )";
+                        this.fuelatstart = data.TruckValues.ConstantsValues.CapacityValues.Fuel;
 
-                                    Dictionary<string, string> postParameters = new Dictionary<string, string>();
-                                    postParameters.Add("authcode", this.authCode);
-                                    postParameters.Add("cargo", data.JobValues.CargoValues.Name);
-                                    postParameters.Add("weight", ((int)Math.Round((double)data.JobValues.CargoValues.Mass, 0) / 1000).ToString());
-                                    postParameters.Add("depature", data.JobValues.CitySource);
-                                    postParameters.Add("depature_company", data.JobValues.CompanySource);
-                                    postParameters.Add("destination_company", data.JobValues.CompanyDestination);
-                                    postParameters.Add("destination", data.JobValues.CityDestination);
-                                    postParameters.Add("truck_manufacturer", data.TruckValues.ConstantsValues.Brand);
-                                    postParameters.Add("truck_model", data.TruckValues.ConstantsValues.Name);
-                                    postParameters.Add("distance", data.JobValues.PlannedDistanceKm.ToString());
-                                    this.jobID = this.api.HTTPSRequestPost(this.api.api_server + this.api.new_job_path, postParameters, true).ToString();
+                        Dictionary<string, string> postParameters = new Dictionary<string, string>();
+                        postParameters.Add("authcode", this.authCode);
+                        postParameters.Add("cargo", data.JobValues.CargoValues.Name);
+                        postParameters.Add("weight", ((int)Math.Round((double)data.JobValues.CargoValues.Mass, 0) / 1000).ToString());
+                        postParameters.Add("depature", data.JobValues.CitySource);
+                        postParameters.Add("depature_company", data.JobValues.CompanySource);
+                        postParameters.Add("destination_company", data.JobValues.CompanyDestination);
+                        postParameters.Add("destination", data.JobValues.CityDestination);
+                        postParameters.Add("truck_manufacturer", data.TruckValues.ConstantsValues.Brand);
+                        postParameters.Add("truck_model", data.TruckValues.ConstantsValues.Name);
+                        postParameters.Add("distance", data.JobValues.PlannedDistanceKm.ToString());
+                        this.jobID = this.api.HTTPSRequestPost(this.api.api_server + this.api.new_job_path, postParameters, true).ToString();
 
-                                    utils.Log("Tour START: " + authCode + ", Cargo: " + data.JobValues.CargoValues.Name + ", " + ((int)Math.Round((double)data.JobValues.CargoValues.Mass, 0) / 1000).ToString() + " Tonnen, Startort: " + data.JobValues.CitySource + ", Start-Firma: " + data.JobValues.CompanySource + ", Zielort: " + data.JobValues.CityDestination + ", Ziel-Firma: " + data.JobValues.CompanyDestination + ", LKW: " + data.TruckValues.ConstantsValues.Brand + " " + data.TruckValues.ConstantsValues.Name + ", Strecke: " + data.JobValues.PlannedDistanceKm.ToString() + " KM");
-                                    utils.Reg_Schreiben("jobID", this.jobID);
+                        utils.Log("Tour START: " + authCode + ", Cargo: " + data.JobValues.CargoValues.Name + ", " + ((int)Math.Round((double)data.JobValues.CargoValues.Mass, 0) / 1000).ToString() + " Tonnen, Startort: " + data.JobValues.CitySource + ", Start-Firma: " + data.JobValues.CompanySource + ", Zielort: " + data.JobValues.CityDestination + ", Ziel-Firma: " + data.JobValues.CompanyDestination + ", LKW: " + data.TruckValues.ConstantsValues.Brand + " " + data.TruckValues.ConstantsValues.Name + ", Strecke: " + data.JobValues.PlannedDistanceKm.ToString() + " KM");
+                        utils.Reg_Schreiben("jobID", this.jobID);
 
-                                        //this.settings.Cache.SaveJobID = this.jobID;
-                                        //this.settings.SaveJobID();
+                            //this.settings.Cache.SaveJobID = this.jobID;
+                            //this.settings.SaveJobID();
                                     
 
-                                    Dictionary<string, string> lastJobDictionary = this.lastJobDictionary;
-                                    this.lastJobDictionary.Add("cargo", data.JobValues.CargoValues.Name);
-                                    this.lastJobDictionary.Add("source", data.JobValues.CitySource);
-                                    this.lastJobDictionary.Add("destination", data.JobValues.CityDestination);
-                                    this.lastJobDictionary.Add("income", data.JobValues.Income.ToString());
-                                    this.lastJobDictionary.Add("weight", data.JobValues.CargoValues.Mass.ToString());
+                        Dictionary<string, string> lastJobDictionary = this.lastJobDictionary;
+                        this.lastJobDictionary.Add("cargo", data.JobValues.CargoValues.Name);
+                        this.lastJobDictionary.Add("source", data.JobValues.CitySource);
+                        this.lastJobDictionary.Add("destination", data.JobValues.CityDestination);
+                        this.lastJobDictionary.Add("income", data.JobValues.Income.ToString());
+                        this.lastJobDictionary.Add("weight", data.JobValues.CargoValues.Mass.ToString());
 
-                                    this.discord.onTour(data.JobValues.CityDestination, data.JobValues.CitySource, data.JobValues.CargoValues.Name, ((int)Math.Round((double)data.JobValues.CargoValues.Mass, 0) / 1000).ToString());
+                        this.discord.onTour(data.JobValues.CityDestination, data.JobValues.CitySource, data.JobValues.CargoValues.Name, ((int)Math.Round((double)data.JobValues.CargoValues.Mass, 0) / 1000).ToString());
 
-                                    //if(this.lastJobDictionary["mass"] == Convert.ToString(data.Job.Mass)) { MessageBox.Show("SELEBE!"); }
-                                    this.CitySource = data.JobValues.CitySource;
-                                    this.CityDestination = data.JobValues.CityDestination;
-                                    this.InitializeDiscord(1);
-                                    this.send_tour_status.Enabled = true;
-                                    this.send_tour_status.Start();
+                        //if(this.lastJobDictionary["mass"] == Convert.ToString(data.Job.Mass)) { MessageBox.Show("SELEBE!"); }
+                        this.CitySource = data.JobValues.CitySource;
+                        this.CityDestination = data.JobValues.CityDestination;
+                        this.InitializeDiscord(1);
+                        this.send_tour_status.Enabled = true;
+                        this.send_tour_status.Start();
                                     
 
                     }
@@ -766,6 +766,7 @@ namespace VTCManager_1._0._0
             this.Label_DB_Server = new System.Windows.Forms.ToolStripStatusLabel();
             this.anti_AFK_TIMER = new System.Windows.Forms.Timer(this.components);
             this.label3 = new System.Windows.Forms.Label();
+            this.TestLabel11 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.send_tour_status)).BeginInit();
             this.menuStrip1.SuspendLayout();
             this.panel2.SuspendLayout();
@@ -1004,6 +1005,7 @@ namespace VTCManager_1._0._0
             // panel2
             // 
             this.panel2.BackColor = System.Drawing.Color.Transparent;
+            this.panel2.Controls.Add(this.TestLabel11);
             this.panel2.Controls.Add(this.status_jb_canc_lb);
             this.panel2.Controls.Add(this.truck_lb);
             this.panel2.Controls.Add(this.destination_lb);
@@ -1488,6 +1490,16 @@ namespace VTCManager_1._0._0
             this.label3.Text = "Version:";
             this.label3.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
+            // TestLabel11
+            // 
+            this.TestLabel11.AutoSize = true;
+            this.TestLabel11.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.TestLabel11.Location = new System.Drawing.Point(60, 311);
+            this.TestLabel11.Name = "TestLabel11";
+            this.TestLabel11.Size = new System.Drawing.Size(60, 24);
+            this.TestLabel11.TabIndex = 7;
+            this.TestLabel11.Text = "label7";
+            // 
             // Main
             // 
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
@@ -1509,7 +1521,6 @@ namespace VTCManager_1._0._0
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "VTC-Manager";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Main_FormClosing_1);
-            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.Main_FormClosed);
             this.Load += new System.EventHandler(this.Main_Load);
             ((System.ComponentModel.ISupportInitialize)(this.send_tour_status)).EndInit();
             this.menuStrip1.ResumeLayout(false);
@@ -1591,6 +1602,8 @@ namespace VTCManager_1._0._0
             labelRevision = lbl_Revision.Text;
 
 
+
+
             // ################## CHECK ob der AFK Text bei nicht Spendern stimmt ##################
             if (string.IsNullOrEmpty(utils.Reg_Lesen("TruckersMP_Autorun", "ANTI_AFK_AN")))
                 utils.Reg_Schreiben("ANTI_AFK_AN", "0");
@@ -1654,6 +1667,9 @@ namespace VTCManager_1._0._0
                         Directory.CreateDirectory(logDirectory);
                         File.Create(logDirectory + logFile);
                     }
+
+                    if (File.Exists(logDirectory + logFile))
+                        File.WriteAllText(logDirectory + logFile, String.Empty);
 
                     string Plugins_ETS = "";
                     DirectoryInfo di = new DirectoryInfo(dest_leer + @"\bin\win_x64\plugins");
@@ -1751,6 +1767,9 @@ namespace VTCManager_1._0._0
         }
 
 
+
+
+
         private void truckersMP_Button_Click(object sender, EventArgs e)
         {
             truckersMP_Link = utils.Reg_Lesen("TruckersMP_Autorun", "TruckersMP_Pfad");
@@ -1830,9 +1849,11 @@ namespace VTCManager_1._0._0
 
         private void Main_FormClosing_1(object sender, FormClosingEventArgs e)
         {
-            TaskBar_Icon.Dispose();
+            Application.Exit();
             utils.Log("APPLICATION EXIT");
         }
+
+
 
         private void darkToolStripMenuItem_Click(object sender, EventArgs e)
         {
@@ -1962,8 +1983,7 @@ namespace VTCManager_1._0._0
             utils.Reg_Schreiben("Background", "");
         }
 
-        private void Main_FormClosed(object sender, FormClosedEventArgs e) =>
-            TaskBar_Icon.Dispose();
+
        
 
         private void ets2_button_Click(object sender, EventArgs e) =>
@@ -1997,14 +2017,11 @@ namespace VTCManager_1._0._0
         }
             
 
-        private void TelemetryFerry(object sender, EventArgs e)
-        {
+        private void TelemetryFerry(object sender, EventArgs e) =>
             this.Ferry = true;
-        }
-
 
         private void TelemetryTrain(object sender, EventArgs e) =>
-        this.Train = true;
+            this.Train = true;
 
         private void TelemetryRefuel(object sender, EventArgs e) 
         {

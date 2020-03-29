@@ -57,6 +57,7 @@ namespace VTCManager_1._0._0
         private GroupBox groupBox2;
         private CheckBox Chk_Dashboard;
         private Button VTC_Button;
+        private CheckBox Autostart_Checkbox;
         private System.Windows.Forms.OpenFileDialog openFileDialog1;
 
 
@@ -115,6 +116,7 @@ namespace VTCManager_1._0._0
             this.Diagnostic_Checkbox = new System.Windows.Forms.CheckBox();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.Chk_Dashboard = new System.Windows.Forms.CheckBox();
+            this.Autostart_Checkbox = new System.Windows.Forms.CheckBox();
             this.groupBox1.SuspendLayout();
             this.btn_TruckersMP_suchen.SuspendLayout();
             this.group_Overlay.SuspendLayout();
@@ -506,6 +508,7 @@ namespace VTCManager_1._0._0
             // 
             // groupBox2
             // 
+            this.groupBox2.Controls.Add(this.Autostart_Checkbox);
             this.groupBox2.Controls.Add(this.Chk_Dashboard);
             this.groupBox2.Location = new System.Drawing.Point(12, 322);
             this.groupBox2.Name = "groupBox2";
@@ -524,6 +527,17 @@ namespace VTCManager_1._0._0
             this.Chk_Dashboard.Text = "Dashboard anzeigen";
             this.Chk_Dashboard.UseVisualStyleBackColor = true;
             this.Chk_Dashboard.CheckedChanged += new System.EventHandler(this.Chk_Dashboard_CheckedChanged);
+            // 
+            // Autostart_Checkbox
+            // 
+            this.Autostart_Checkbox.AutoSize = true;
+            this.Autostart_Checkbox.Location = new System.Drawing.Point(10, 44);
+            this.Autostart_Checkbox.Name = "Autostart_Checkbox";
+            this.Autostart_Checkbox.Size = new System.Drawing.Size(171, 17);
+            this.Autostart_Checkbox.TabIndex = 1;
+            this.Autostart_Checkbox.Text = "Programm mit Windows starten";
+            this.Autostart_Checkbox.UseVisualStyleBackColor = true;
+            this.Autostart_Checkbox.CheckedChanged += new System.EventHandler(this.Autostart_Checkbox_CheckedChanged);
             // 
             // SettingsWindow
             // 
@@ -627,7 +641,18 @@ namespace VTCManager_1._0._0
         {
             GroupBox_Diagnostic.Visible = (utils.Reg_Lesen("TruckersMP_Autorun", "Diagnostic") == "1") ? true : false;
 
-            group_Overlay.Visible = false;
+            // ##################  AUTOSTART   #####################
+            if (File.Exists(System.IO.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Startup), "VTCManager.appref-ms")))
+            {
+                utils.Reg_Schreiben("Autostart", "1");
+                Autostart_Checkbox.CheckState = CheckState.Checked;
+            } else
+            {
+                utils.Reg_Schreiben("Autostart", "0");
+                Autostart_Checkbox.CheckState = CheckState.Unchecked;
+            }
+
+                group_Overlay.Visible = false;
             // Settings_Windows_Label_Settings.Text = translation.settings_window_titel_text; ######### GEHT NICHT ############
             Settings_Windows_Label_Settings.Text = "Einstellungen";
 
@@ -919,6 +944,39 @@ namespace VTCManager_1._0._0
 
         }
 
+        private void Autostart_Checkbox_CheckedChanged(object sender, EventArgs e)
+        {
+            if(Autostart_Checkbox.CheckState == CheckState.Checked)
+            {
+                addAutoStartRegistry();
+    
+            } else
+            {
+                delAutoStartRegistry();
+            }
+            
+        }
+
+        public static void addAutoStartRegistry()
+        {
+            if (!File.Exists(System.IO.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Startup), "VTCManager.appref-ms")))
+            {
+                System.IO.File.Copy(Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + @"\VTCManager.appref-ms", System.IO.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Startup), "VTCManager.appref-ms"));
+                Utilities ut = new Utilities();
+                ut.Reg_Schreiben("Autostart", "1");
+                MessageBox.Show("Dein Programm wird jetzt beim Systemstart ausgeführt !", "AutoRun", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+        }
+        public static void delAutoStartRegistry()
+        {
+            if (File.Exists(System.IO.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Startup), "VTCManager.appref-ms")))
+            {
+                File.Delete(System.IO.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Startup), "VTCManager.appref-ms"));
+                Utilities ut = new Utilities();
+                ut.Reg_Schreiben("Autostart", "0");
+                MessageBox.Show("Dein Programm wird jetzt nicht mehr beim Systemstart ausgeführt !", "AutoRun", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+        }
     }
 }
 
