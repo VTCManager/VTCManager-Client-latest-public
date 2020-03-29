@@ -763,23 +763,19 @@ namespace VTCManager_1._0._0
         {
             ATS_FileDialog.InitialDirectory = utils.Reg_Lesen("TruckersMP_Autorun", "ATS_Pfad") + @"bin\win_x64\";
             if (string.IsNullOrEmpty(utils.Reg_Lesen("TruckersMP_Autorun", "ATS_Pfad")))
-            {
                 ATS_FileDialog.InitialDirectory = utils.Reg_Lesen("TruckersMP_Autorun", "ETS2_Pfad");
-            }
+          
             ATS_FileDialog.Filter = "American Truck Simulator (amtrucks.exe)|amtrucks.exe";
             if (ATS_FileDialog.ShowDialog() == DialogResult.OK)
             {
                 ATS_Pfad_Textbox.Text = ATS_FileDialog.FileName.ToString();
                 ATS_Pfad_Textbox.Enabled = false;
-                utils.Reg_Schreiben("ETS2_Pfad", ATS_FileDialog.FileName.ToString());
+                utils.Reg_Schreiben("ATS_Pfad", ATS_FileDialog.FileName.ToString());
             }
         }
 
-        private void numericUpDown1_ValueChanged(object sender, EventArgs e)
-        {
+        private void numericUpDown1_ValueChanged(object sender, EventArgs e) =>
             utils.Reg_Schreiben("ANTI_AFK_RELOAD", reload_antiafk.Value.ToString());
-
-        }
 
         private void chk_antiafk_on_off_CheckedChanged(object sender, EventArgs e)
         {
