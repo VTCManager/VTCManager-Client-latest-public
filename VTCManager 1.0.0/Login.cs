@@ -29,6 +29,7 @@ namespace VTCManager_1._0._0
         private Label version_text;
         private int driven_tours;
         private int bank_balance;
+        private string patreon_state;
         private String username;
         private string profile_picture;
         private int version_int;
@@ -225,7 +226,10 @@ namespace VTCManager_1._0._0
                     this.profile_picture = strArray[3];
                     this.driven_tours = Convert.ToInt32(strArray[4]);
                     this.bank_balance = Convert.ToInt32(strArray[5]);
-                    this.Hide();
+                this.patreon_state = strArray[6];
+                Utilities ul = new Utilities();
+                ul.Reg_Schreiben("Patreon_state",this.patreon_state);
+                this.Hide();
 
                 Main Mainwindow = new Main(this.authCode, this.username, this.driven_tours, this.bank_balance, false, this.userCompany);
                 Mainwindow.ShowDialog();
