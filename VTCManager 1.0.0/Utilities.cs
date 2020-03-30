@@ -28,9 +28,9 @@ namespace VTCManager_1._0._0
 
 
         internal static string BytesToString(byte[] bytes) =>
-    ((bytes != null) ? Encoding.UTF8.GetString(bytes, 0, Array.FindIndex<byte>(bytes, b => b == 0)) : string.Empty);
+            ((bytes != null) ? Encoding.UTF8.GetString(bytes, 0, Array.FindIndex<byte>(bytes, b => b == 0)) : string.Empty);
         internal static DateTime MinutesToDate(int minutes) =>
-    SecondsToDate(minutes * 60);
+            SecondsToDate(minutes * 60);
         internal static DateTime SecondsToDate(int seconds)
         {
             if (seconds < 0)
@@ -119,9 +119,7 @@ namespace VTCManager_1._0._0
                                 }
 
                             }
-                            catch
-                            {
-                            }
+                            catch{}
                             index++;
                             continue;
                         }
@@ -137,6 +135,7 @@ namespace VTCManager_1._0._0
             }
         }
 
+        /*
         public static string WhichGameIsRunning
         {
             get
@@ -161,7 +160,7 @@ namespace VTCManager_1._0._0
                 }
                 return _chachedGame;
             }
-        }
+        } */
 
 
         // Edit by Thommy
@@ -175,13 +174,17 @@ namespace VTCManager_1._0._0
             key.SetValue(name, wert);
 
         }
+
         public string Reg_Lesen(string ordner, string value)
         {
             try
             {
                 RegistryKey key = Registry.CurrentUser.OpenSubKey(@"SOFTWARE\VTCManager\" + ordner);
                 return key.GetValue(value).ToString();
-            } catch { return null; }
+            } catch (Exception ex) {
+                Log("<ERROR> Methode Reg_Lesen in Utilities.cs -> " + ex.Message);
+                return null;
+            }
         }
 
 
@@ -193,7 +196,10 @@ namespace VTCManager_1._0._0
                 try
                 {
                     File.AppendAllText(logDirectory + logFile, "<" + DateTime.Now + "> " + text + Environment.NewLine);
-                } catch { }
+                } catch (Exception ex)
+                {
+                    Log("<ERROR> Methode LOG in Utilities.cs -> " + ex.Message);
+                }
 
             }
 

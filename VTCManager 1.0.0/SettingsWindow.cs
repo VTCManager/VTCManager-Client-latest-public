@@ -41,8 +41,6 @@ namespace VTCManager_1._0._0
         private Button Ets_Suche;
         private Label label2;
         private TextBox ETS2_Pfad_Textbox;
-        private System.Windows.Forms.OpenFileDialog ETS2_FileDialog;
-        private System.Windows.Forms.OpenFileDialog ATS_FileDialog;
         private Label label8;
         private Label label7;
         private NumericUpDown reload_antiafk;
@@ -58,6 +56,9 @@ namespace VTCManager_1._0._0
         private CheckBox Chk_Dashboard;
         private Button VTC_Button;
         private CheckBox Autostart_Checkbox;
+        private FolderBrowserDialog ETS2_folderBrowserDialog;
+        private FolderBrowserDialog ATS_folderBrowserDialog;
+        private Button Reg_Reset;
         private System.Windows.Forms.OpenFileDialog openFileDialog1;
 
 
@@ -104,8 +105,6 @@ namespace VTCManager_1._0._0
             this.reload_antiafk = new System.Windows.Forms.NumericUpDown();
             this.chk_antiafk_on_off = new System.Windows.Forms.CheckBox();
             this.txt_Anti_AFK_Text = new System.Windows.Forms.TextBox();
-            this.ETS2_FileDialog = new System.Windows.Forms.OpenFileDialog();
-            this.ATS_FileDialog = new System.Windows.Forms.OpenFileDialog();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.Settings_Windows_Label_Settings = new System.Windows.Forms.Label();
             this.GameLog_suchen = new System.Windows.Forms.Button();
@@ -115,8 +114,11 @@ namespace VTCManager_1._0._0
             this.GameLog_oeffnen = new System.Windows.Forms.Button();
             this.Diagnostic_Checkbox = new System.Windows.Forms.CheckBox();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
-            this.Chk_Dashboard = new System.Windows.Forms.CheckBox();
             this.Autostart_Checkbox = new System.Windows.Forms.CheckBox();
+            this.Chk_Dashboard = new System.Windows.Forms.CheckBox();
+            this.ETS2_folderBrowserDialog = new System.Windows.Forms.FolderBrowserDialog();
+            this.ATS_folderBrowserDialog = new System.Windows.Forms.FolderBrowserDialog();
+            this.Reg_Reset = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
             this.btn_TruckersMP_suchen.SuspendLayout();
             this.group_Overlay.SuspendLayout();
@@ -411,14 +413,6 @@ namespace VTCManager_1._0._0
             this.txt_Anti_AFK_Text.Size = new System.Drawing.Size(301, 20);
             this.txt_Anti_AFK_Text.TabIndex = 0;
             // 
-            // ETS2_FileDialog
-            // 
-            this.ETS2_FileDialog.FileName = "eurotrucks2.exe";
-            // 
-            // ATS_FileDialog
-            // 
-            this.ATS_FileDialog.FileName = "amtrucks.exe";
-            // 
             // pictureBox1
             // 
             this.pictureBox1.Image = global::VTCManager_1._0._0.Properties.Resources.einstellungen;
@@ -453,6 +447,7 @@ namespace VTCManager_1._0._0
             this.GroupBox_Diagnostic.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.GroupBox_Diagnostic.BackColor = System.Drawing.SystemColors.GradientActiveCaption;
+            this.GroupBox_Diagnostic.Controls.Add(this.Reg_Reset);
             this.GroupBox_Diagnostic.Controls.Add(this.VTC_Button);
             this.GroupBox_Diagnostic.Controls.Add(this.Registry_anzeigen);
             this.GroupBox_Diagnostic.Controls.Add(this.GameLog_oeffnen);
@@ -517,6 +512,17 @@ namespace VTCManager_1._0._0
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Sonstiges";
             // 
+            // Autostart_Checkbox
+            // 
+            this.Autostart_Checkbox.AutoSize = true;
+            this.Autostart_Checkbox.Location = new System.Drawing.Point(10, 44);
+            this.Autostart_Checkbox.Name = "Autostart_Checkbox";
+            this.Autostart_Checkbox.Size = new System.Drawing.Size(171, 17);
+            this.Autostart_Checkbox.TabIndex = 1;
+            this.Autostart_Checkbox.Text = "Programm mit Windows starten";
+            this.Autostart_Checkbox.UseVisualStyleBackColor = true;
+            this.Autostart_Checkbox.CheckedChanged += new System.EventHandler(this.Autostart_Checkbox_CheckedChanged);
+            // 
             // Chk_Dashboard
             // 
             this.Chk_Dashboard.AutoSize = true;
@@ -528,16 +534,19 @@ namespace VTCManager_1._0._0
             this.Chk_Dashboard.UseVisualStyleBackColor = true;
             this.Chk_Dashboard.CheckedChanged += new System.EventHandler(this.Chk_Dashboard_CheckedChanged);
             // 
-            // Autostart_Checkbox
+            // ETS2_folderBrowserDialog
             // 
-            this.Autostart_Checkbox.AutoSize = true;
-            this.Autostart_Checkbox.Location = new System.Drawing.Point(10, 44);
-            this.Autostart_Checkbox.Name = "Autostart_Checkbox";
-            this.Autostart_Checkbox.Size = new System.Drawing.Size(171, 17);
-            this.Autostart_Checkbox.TabIndex = 1;
-            this.Autostart_Checkbox.Text = "Programm mit Windows starten";
-            this.Autostart_Checkbox.UseVisualStyleBackColor = true;
-            this.Autostart_Checkbox.CheckedChanged += new System.EventHandler(this.Autostart_Checkbox_CheckedChanged);
+            this.ETS2_folderBrowserDialog.RootFolder = System.Environment.SpecialFolder.MyComputer;
+            // 
+            // Reg_Reset
+            // 
+            this.Reg_Reset.Location = new System.Drawing.Point(243, 20);
+            this.Reg_Reset.Name = "Reg_Reset";
+            this.Reg_Reset.Size = new System.Drawing.Size(85, 31);
+            this.Reg_Reset.TabIndex = 16;
+            this.Reg_Reset.Text = "REG Reset";
+            this.Reg_Reset.UseVisualStyleBackColor = true;
+            this.Reg_Reset.Click += new System.EventHandler(this.Reg_Reset_Click);
             // 
             // SettingsWindow
             // 
@@ -672,6 +681,7 @@ namespace VTCManager_1._0._0
             string wert28 = utils.Reg_Lesen("TruckersMP_Autorun", "TruckersMP_Pfad");
             string wert30 = utils.Reg_Lesen("TruckersMP_Autorun", "ANTI_AFK_AN");
             string wert31 = utils.Reg_Lesen("TruckersMP_Autorun", "ANTI_AFK");
+
             ETS2_Pfad_Textbox.Text = utils.Reg_Lesen("TruckersMP_Autorun", "ETS2_Pfad");
             ETS2_Pfad_Textbox.Enabled = (string.IsNullOrEmpty(utils.Reg_Lesen("TruckersMP_Autorun", "ETS2_Pfad"))) ? true : false;
 
@@ -749,28 +759,26 @@ namespace VTCManager_1._0._0
 
         private void Ets_Suche_Click(object sender, EventArgs e)
         {
-            ETS2_FileDialog.InitialDirectory = utils.Reg_Lesen("TruckersMP_Autorun", "ETS2_Pfad") + @"bin\win_x64\";
-            ETS2_FileDialog.Filter = "Eurotruck Simulator 2 (eurotrucks2.exe)|eurotrucks2.exe";
-            if (ETS2_FileDialog.ShowDialog() == DialogResult.OK)
+            ETS2_folderBrowserDialog.SelectedPath = utils.Reg_Lesen("TruckersMP_Autorun", "ETS2_Pfad");
+            if (ETS2_folderBrowserDialog.ShowDialog() == DialogResult.OK)
             {
-                ETS2_Pfad_Textbox.Text = ETS2_FileDialog.FileName.ToString();
+                ETS2_Pfad_Textbox.Text = ETS2_folderBrowserDialog.SelectedPath.ToString();
                 ETS2_Pfad_Textbox.Enabled = false;
-                utils.Reg_Schreiben("ETS2_Pfad", ETS2_FileDialog.FileName.ToString());
+                utils.Reg_Schreiben("ETS2_Pfad", ETS2_folderBrowserDialog.SelectedPath.ToString());
             }
         }
 
         private void Ats_Suche_Click(object sender, EventArgs e)
         {
-            ATS_FileDialog.InitialDirectory = utils.Reg_Lesen("TruckersMP_Autorun", "ATS_Pfad") + @"bin\win_x64\";
+            ATS_folderBrowserDialog.SelectedPath = utils.Reg_Lesen("TruckersMP_Autorun", "ATS_Pfad");
             if (string.IsNullOrEmpty(utils.Reg_Lesen("TruckersMP_Autorun", "ATS_Pfad")))
-                ATS_FileDialog.InitialDirectory = utils.Reg_Lesen("TruckersMP_Autorun", "ETS2_Pfad");
-          
-            ATS_FileDialog.Filter = "American Truck Simulator (amtrucks.exe)|amtrucks.exe";
-            if (ATS_FileDialog.ShowDialog() == DialogResult.OK)
+                ATS_folderBrowserDialog.SelectedPath = utils.Reg_Lesen("TruckersMP_Autorun", "ETS2_Pfad");
+
+            if (ATS_folderBrowserDialog.ShowDialog() == DialogResult.OK)
             {
-                ATS_Pfad_Textbox.Text = ATS_FileDialog.FileName.ToString();
+                ATS_Pfad_Textbox.Text = ATS_folderBrowserDialog.SelectedPath.ToString();
                 ATS_Pfad_Textbox.Enabled = false;
-                utils.Reg_Schreiben("ATS_Pfad", ATS_FileDialog.FileName.ToString());
+                utils.Reg_Schreiben("ATS_Pfad", ATS_folderBrowserDialog.SelectedPath.ToString());
             }
         }
 
@@ -801,7 +809,11 @@ namespace VTCManager_1._0._0
                 if (Directory.Exists(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + @"\Euro Truck Simulator 2"))
                     System.Diagnostics.Process.Start("explorer", Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + @"\Euro Truck Simulator 2");
             }
-            catch { MessageBox.Show("Der Pfad zum GameLog Ordner wurde nicht gefunden!", "Fehler", MessageBoxButtons.OK, MessageBoxIcon.Error); }
+            catch (Exception ex)
+            {
+                utils.Log("<ERROR> Methode GameLog_suchen_Click in SettingsWindow.cs -> " + ex.Message);
+                MessageBox.Show("Der Pfad zum GameLog Ordner wurde nicht gefunden!", "Fehler", MessageBoxButtons.OK, MessageBoxIcon.Error); 
+            }
 
         }
 
@@ -826,7 +838,11 @@ namespace VTCManager_1._0._0
                 if (File.Exists(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + @"\Euro Truck Simulator 2\game.log.txt"))
                     System.Diagnostics.Process.Start(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + @"\Euro Truck Simulator 2\game.log.txt");
             }
-            catch { MessageBox.Show("Der Pfad zur GameLog wurde nicht gefunden!", "Fehler", MessageBoxButtons.OK, MessageBoxIcon.Error); }
+            catch (Exception ex) 
+            {
+                utils.Log("<ERROR> Methode GameLog_oeffnen_Click in SettingsWindow.cs -> " + ex.Message);
+                MessageBox.Show("Der Pfad zur GameLog wurde nicht gefunden!", "Fehler", MessageBoxButtons.OK, MessageBoxIcon.Error); 
+            }
 
         }
 
@@ -869,6 +885,7 @@ namespace VTCManager_1._0._0
                 catch (Exception e)
                 {
                     // AAAAAAAAAAARGH, an error!
+                    utils.Log("<ERROR> Methode Read in SettingsWindow.cs -> " + e.Message);
                     MessageBox.Show(e.Message, "Reading registry " + KeyName.ToUpper());
                     return null;
                 }
@@ -973,6 +990,30 @@ namespace VTCManager_1._0._0
                 MessageBox.Show("Dein Programm wird jetzt nicht mehr beim Systemstart ausgeführt !", "AutoRun", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
         }
+
+        private void Reg_Reset_Click(object sender, EventArgs e)
+        {
+            if (SubKeyExist(@"Software\VTCManager"))
+            {
+                Registry.CurrentUser.DeleteSubKeyTree(@"Software\VTCManager");
+                MessageBox.Show("Alle Einstellungen wurden entfernt!" + Environment.NewLine + Environment.NewLine + "Dein Client wird jetzt Neu gestartet... " + Environment.NewLine + "Thommy - VTCM_DEV", "Fehler", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                Application.Restart();
+            }
+            else
+            {
+                MessageBox.Show("Es sind keine Einstellungen vorhanden!" + Environment.NewLine + "Bei Fragen wende dich an den Support des VTCM-Client" + Environment.NewLine + Environment.NewLine + "Thommy - VTCM_DEV", "Fehler", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private bool SubKeyExist(string Subkey)
+        {
+            RegistryKey myKey = Registry.CurrentUser.OpenSubKey(Subkey);
+            if (myKey == null)
+                return false;
+            else
+                return true;
+        }
+
     }
 }
 

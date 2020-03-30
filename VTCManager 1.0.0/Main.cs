@@ -169,6 +169,7 @@ namespace VTCManager_1._0._0
         public float Geschwindigkeit;
         private string logDirectory = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + @"\VTC_Manager");
         private string logFile = @"\log.txt";
+        public int spender = 0;
 
         // Get a handle to an application window.
         [DllImport("USER32.DLL", CharSet = CharSet.Unicode)]
@@ -230,6 +231,7 @@ namespace VTCManager_1._0._0
             }
             catch (Exception e)
             {
+                utils.Log("<Exception> Getting traffic data from TruckyAPI");
                 MessageBox.Show("Exception: Getting traffic data from TruckyAPI" + e.Message);
             }
             this.FormClosing += new FormClosingEventHandler(this.Main_FormClosing);
@@ -621,7 +623,7 @@ namespace VTCManager_1._0._0
                     this.invertedDistance = this.totalDistance - (int)Math.Round((double)data.NavigationValues.NavigationDistance, 0);
                 }
             }
-            catch { }
+            catch { utils.Log("<FATAL ERROR> FEHLER IN TELEMETRY DATA "); }
         }
 
         string get_unique_string(int string_length)
@@ -1579,7 +1581,7 @@ namespace VTCManager_1._0._0
         {
            
             this.discord = new Discord();
-            lbl_Revision.Text = "2.0.5";
+            lbl_Revision.Text = "2.0.6";
             labelRevision = lbl_Revision.Text;
 
             /// ######################   GEHT NOCH NICHT, DESHALB AUSBLENDEN    ###################
@@ -1589,25 +1591,22 @@ namespace VTCManager_1._0._0
             if (string.IsNullOrEmpty(utils.Reg_Lesen("TruckersMP_Autorun", "ANTI_AFK_AN")))
                 utils.Reg_Schreiben("ANTI_AFK_AN", "0");
 
+            if (spender == 0)
+                utils.Reg_Schreiben("ANTI_AFK", "VTCManager wünscht Gute und Sichere Fahrt!");
+            // ##################   ANTI AFK ENDE ##################################################
+
+
             if (string.IsNullOrEmpty(utils.Reg_Lesen("TruckersMP_Autorun", "GroupBox_Diagnostic")))
                 utils.Reg_Schreiben("Diagnostic", "0");
-
-
 
             anti_AFK_TIMER.Enabled = (Convert.ToInt32(utils.Reg_Lesen("TruckersMP_Autorun", "ANTI_AFK_AN")) == 1) ? true : false;
             utils.Log("Anti-AFK: " + anti_AFK_TIMER.Enabled);
 
-            int spender = 0;
-            if (spender == 0)
-                utils.Reg_Schreiben("ANTI_AFK", "VTCManager wünscht Gute und Sichere Fahrt!");
-
-            if (string.IsNullOrEmpty(utils.Reg_Lesen("TruckersMP_Autorun", "Version")))
-                utils.Reg_Schreiben("Version", labelRevision.ToString());
+            // ####################   VERSION IN REG SCHREIBEN   ###################################
+            utils.Reg_Schreiben("Version", labelRevision.ToString());
 
 
-            //  ################## Telemetry kopieren wenn nicht vorhanden #########################
-
-            // PLUGINS ORDNER WENN NICHT VORHANDEN
+            // ####################   ZEIGE PATH WINDOW WENN ETS2 PFAD NICHT VORHANDEN   ###########
             if (string.IsNullOrEmpty(utils.Reg_Lesen("TruckersMP_Autorun", "ETS2_Pfad")))
             {
                 ETS2_Pfad_Window win = new ETS2_Pfad_Window();
@@ -1626,22 +1625,28 @@ namespace VTCManager_1._0._0
                
                 if (!File.Exists(dest_leer + @"\bin\win_x64\plugins\scs-telemetry.dll"))
                 {
-                    utils.Log("Unsere DLL ist nicht vorhanden!");
-                    if (!Directory.Exists(dest_leer + @"\bin\win_x64\plugins")) { Directory.CreateDirectory(dest_leer + @"\bin\win_x64\plugins"); utils.Log("Verzeichnis Plugins wurde erstellt!"); }
+                    utils.Log("Unsere DLL war nicht vorhanden und wurde nach Plugins kopiert!");
+                    if (!Directory.Exists(dest_leer + @"\bin\win_x64\plugins")) 
+                    { 
+                        Directory.CreateDirectory(dest_leer + @"\bin\win_x64\plugins"); 
+                        utils.Log("Verzeichnis Plugins wurde erstellt!"); 
+                    }
                     File.Copy(Application.StartupPath + @"\Resources\scs-telemetry.dll", dest_leer + @"\bin\win_x64\plugins\scs-telemetry.dll");
                     utils.Log("DLL wurde ins Plugin Verzeichnis kopiert!");
                 } else
                 {
                     // ################  Für Diagnostikzwecke  ###########################
+                    // logDirectory = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + @"\VTC_Manager");
                     if (!File.Exists(logDirectory + logFile))
                     {
                         Directory.CreateDirectory(logDirectory);
                         File.Create(logDirectory + logFile);
                     }
-
+                    // ################    LEERE LOG DATEI BEIM START   ###################
                     if (File.Exists(logDirectory + logFile))
                         File.WriteAllText(logDirectory + logFile, String.Empty);
 
+                    //  ###############    ALLE PLUGINS IN REG SCHREIBEN   ################
                     string Plugins_ETS = "";
                     DirectoryInfo di = new DirectoryInfo(dest_leer + @"\bin\win_x64\plugins");
                     foreach (var fi in di.GetFiles())
@@ -1674,7 +1679,7 @@ namespace VTCManager_1._0._0
                         foreach (var fi in di.GetFiles())
                         { Plugins_ATS += fi.Name + "  "; }
                         utils.Reg_Schreiben("Plugins ATS", Plugins_ATS);
-                        utils.Log("ATS Pfad ist leer!");
+                        utils.Log("Alle ATS PLUGINS wurden in REG geschrieben!");
                         // ################  Diagnostikzwecke ENDE  ###########################
                     }
 
@@ -1873,6 +1878,7 @@ namespace VTCManager_1._0._0
                 utils.Log("Server WS: " + sc.WS_Check());
             } catch (Exception Fehler_Server)
             {
+                utils.Log("Verbindung zum Webserver fehlgeschlagen!");
                 MessageBox.Show("Keine Verbindung zum Webserver\n" + Fehler_Server.Message, "Fehler Verbindung", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
             // DB-Check
@@ -1884,6 +1890,7 @@ namespace VTCManager_1._0._0
             }
             catch (Exception Fehler_Server)
             {
+                utils.Log("Verbindung zum Datenbankserver fehlgeschlagen!");
                 MessageBox.Show("Keine Verbindung zum Datenbankserver\n" + Fehler_Server.Message, "Fehler Verbindung", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
 

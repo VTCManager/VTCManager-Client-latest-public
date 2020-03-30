@@ -55,8 +55,8 @@
             this.label2.Padding = new System.Windows.Forms.Padding(5);
             this.label2.Size = new System.Drawing.Size(763, 32);
             this.label2.TabIndex = 1;
-            this.label2.Text = "Dies ist eine Alpha-Version ! Wir übernehmen keine Haftung für Schäden oder Daten" +
-    "verlust !";
+            this.label2.Text = "Dies ist eine BETA-Version ! Wir übernehmen keine Haftung für Schäden oder Datenv" +
+    "erlust !";
             // 
             // label3
             // 
@@ -64,10 +64,11 @@
             this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label3.Location = new System.Drawing.Point(26, 226);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(287, 144);
+            this.label3.Size = new System.Drawing.Size(355, 144);
             this.label3.TabIndex = 2;
-            this.label3.Text = "Credits:\r\nEin Dank geht an unsere Alpha-Tester_\r\n- \r\n- \r\nProjekt-Managment: Josch" +
-    "i\r\nProjekt-Developer: \r\n- Joschi\r\n- Thommy\r\n- Epomm_Coockie\r\n";
+            this.label3.Text = "Credits:\r\nEin Dank geht an unsere Alpha- und BETA Tester_\r\n- LeonDLand\r\n- Quassel" +
+    "boy Patti\r\n\r\nProjekt-Managment: Joschi\r\nProjekt-Developer: \r\n- Joschi\r\n- Thommy\r" +
+    "\n";
             // 
             // Ueber
             // 

@@ -68,8 +68,9 @@ namespace VTCManager_1._0._0
                     File.Copy(Application.StartupPath + @"\Resources\scs-telemetry.dll", dest_Path + @"\scs-telemetry.dll");
 
                 }
-                catch {
-       
+                catch (Exception ex)
+                {
+                    utils.Log("<ERROR> Methode btn_Suche_ETS_Click in ETS2_Pfad_Window.cs -> " + ex.Message);
                 }
            
             }
@@ -97,7 +98,9 @@ namespace VTCManager_1._0._0
                 try
                 {
                     File.Copy(Application.StartupPath + @"\Resources\scs-telemetry.dll", dest_Path + @"\scs-telemetry.dll");
-                } catch {
+                } catch (Exception ex) 
+                {
+                    utils.Log("<ERROR> Methode btn_Suche_ATS_Click in ETS2_Pfad_Window.cs -> " + ex.Message);
                 }
 
 
@@ -115,10 +118,10 @@ namespace VTCManager_1._0._0
             if (!File.Exists(ets_pfad.Text + @"\bin\win_x64\eurotrucks2.exe")) { MessageBox.Show("Der Pfad von ETS ist falsch ! " + Environment.NewLine + "Bitte gib den richtigen Pfad an!", "Fehler", MessageBoxButtons.OK, MessageBoxIcon.Error); return; }
             
             // ########## ATS Pfad Check ###################
-            if(!string.IsNullOrEmpty(ats_pfad.Text))
+            /*if(!string.IsNullOrEmpty(ats_pfad.Text))
             {
                 if (!File.Exists(ats_pfad.Text + @"\bin\win_x64\amtrucks.exe")) { MessageBox.Show("Der Pfad von ATS ist falsch ! " + Environment.NewLine + "Bitte gib den richtigen Pfad an!", "Fehler", MessageBoxButtons.OK, MessageBoxIcon.Error); return; }
-            }
+           } */
 
             this.WindowState = FormWindowState.Minimized;
             MessageBox.Show("Die Einstellungen wurden Gespeichert!" + Environment.NewLine + Environment.NewLine + "Der Client wird neu Gestartet...", "Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
