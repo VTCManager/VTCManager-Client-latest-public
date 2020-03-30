@@ -1581,7 +1581,7 @@ namespace VTCManager_1._0._0
         {
            
             this.discord = new Discord();
-            lbl_Revision.Text = "2.0.6";
+            lbl_Revision.Text = "2.1.0";
             labelRevision = lbl_Revision.Text;
 
             /// ######################   GEHT NOCH NICHT, DESHALB AUSBLENDEN    ###################
@@ -1605,6 +1605,7 @@ namespace VTCManager_1._0._0
             // ####################   VERSION IN REG SCHREIBEN   ###################################
             utils.Reg_Schreiben("Version", labelRevision.ToString());
 
+            MessageBox.Show(Application.StartupPath);
 
             // ####################   ZEIGE PATH WINDOW WENN ETS2 PFAD NICHT VORHANDEN   ###########
             if (string.IsNullOrEmpty(utils.Reg_Lesen("TruckersMP_Autorun", "ETS2_Pfad")))
