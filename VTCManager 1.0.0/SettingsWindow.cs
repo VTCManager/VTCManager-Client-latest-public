@@ -731,6 +731,7 @@ namespace VTCManager_1._0._0
 
             // Variablen abrufen von Main
             var link = Main.truckersMP_Link;
+            if (utils.Reg_Lesen("TruckersMP_Autorun", "Patreon_state")=="2" || utils.Reg_Lesen("TruckersMP_Autorun", "Patreon_state") == "3") { this.txt_Anti_AFK_Text.Enabled = true; }
 
         }
 
