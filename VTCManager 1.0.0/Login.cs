@@ -75,7 +75,7 @@ namespace VTCManager_1._0._0
             }
             */
 
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Main));
+            ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Main));
             ComponentResourceManager componentResourceManager = new ComponentResourceManager(typeof(Main));
             this.login_panel = new Panel();
             this.submit_login = new Button();
@@ -219,19 +219,11 @@ namespace VTCManager_1._0._0
                 {
                     Application.Exit();
                 }
-
-                    this.userID = strArray[0];
-                    this.userCompany = strArray[1];
-                    this.username = strArray[2];
-                    this.profile_picture = strArray[3];
-                    this.driven_tours = Convert.ToInt32(strArray[4]);
-                    this.bank_balance = Convert.ToInt32(strArray[5]);
-                this.patreon_state = strArray[6];
-                Utilities ul = new Utilities();
-                ul.Reg_Schreiben("Patreon_state",this.patreon_state);
+                
+                Objekte.User user = new Objekte.User(Convert.ToInt32(strArray[0]), strArray[1], strArray[2], strArray[3], Convert.ToInt32(strArray[4]), Convert.ToInt32(strArray[5]), Convert.ToInt32(strArray[6]),this.authCode, translation);
                 this.Hide();
 
-                Main Mainwindow = new Main(this.authCode, this.username, this.driven_tours, this.bank_balance, false, this.userCompany);
+                Main Mainwindow = new Main(user);
                 Mainwindow.ShowDialog();
             }
         }

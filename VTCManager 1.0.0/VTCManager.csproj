@@ -112,7 +112,6 @@
     </Compile>
     <Compile Include="Extensions.cs" />
     <Compile Include="GameChecks.cs" />
-    <Compile Include="Job.cs" />
     <Compile Include="Login.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -121,6 +120,8 @@
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="ModifyProgressBarColor.cs" />
+    <Compile Include="Objekte\Job.cs" />
+    <Compile Include="Objekte\User.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -133,6 +134,7 @@
     <Compile Include="SettingsWindow.cs">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="Sound.cs" />
     <Compile Include="Starter.cs" />
     <Compile Include="Thommy.cs" />
     <Compile Include="Translation.cs" />
@@ -387,9 +389,7 @@
       <Install>false</Install>
     </BootstrapperPackage>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Discord\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>

@@ -6,16 +6,13 @@ using System.Diagnostics;
 using System.Drawing;
 using System.Globalization;
 using System.IO;
-using System.Media;
 using System.Net;
 using System.Runtime.InteropServices;
 using System.Security.Cryptography;
 using System.Windows.Forms;
 using Timer = System.Windows.Forms.Timer;
 using SCSSdkClient;
-using Newtonsoft.Json;
-using System.Text;
-using System.Collections;
+using VTCManager_1._0._0.Objekte;
 
 namespace VTCManager_1._0._0
 {
@@ -23,28 +20,9 @@ namespace VTCManager_1._0._0
     {
         private API api = new API();
         private Utilities utils = new Utilities();
-        public string userID = "0";
-        public string userCompanyID = "0";
-        public string jobID = "0";
         private SettingsManager settings;
-        public string authCode = "false";
         public Dictionary<string, string> lastJobDictionary = new Dictionary<string, string>();
         public SCSSdkTelemetry Telemetry;
-        public bool jobStarted;
-        public bool jobRunning;
-        private float fuelatend;
-        private float fuelconsumption;
-        public bool jobFinished;
-        public bool locationUpdate;
-        public int totalDistance;
-        public int invertedDistance;
-        public int lastNotZeroDistance;
-        public float lastCargoDamage;
-        public double currentPercentage;
-        public int updatedPercentage;
-        public int fuelValue;
-        public bool ownTrailerAttached;
-        public bool stillTheSameJob;
         private IContainer components;
         private System.Timers.Timer send_tour_status;
         private Panel panel2;
@@ -56,41 +34,29 @@ namespace VTCManager_1._0._0
         private ToolStripMenuItem topMenuAccount;
         private ToolStripMenuItem topmenuwebsite;
         private Panel panel4;
-        private System.Windows.Forms.Label speed_lb;
-        private System.Windows.Forms.Label cargo_lb;
-        private System.Windows.Forms.Label depature_lb;
-        private System.Windows.Forms.Label destination_lb;
+        private Label speed_lb;
+        private Label cargo_lb;
+        private Label depature_lb;
+        private Label destination_lb;
         private ToolStripMenuItem dateiToolStripMenuItem;
-        private System.Windows.Forms.Label truck_lb;
+        private Label truck_lb;
         private Label label1;
         public Label label2;
         private Translation translation;
+        private Sound sound;
         private TableLayoutPanel tableLayoutPanel1;
         private string traffic_response;
-        public string username;
-        public int driven_tours;
-        public int act_bank_balance;
-        public SoundPlayer notification_sound_tour_start;
-        public SoundPlayer notification_sound_success;
-        public SoundPlayer notification_sound_fail;
         private Label status_jb_canc_lb;
-        public SoundPlayer notification_sound_tour_end;
-
-        private string speed;
-        private int rpm;
         private double CoordinateX;
         private double CoordinateZ;
         private double rotation;
         private double num1;
         private double num2;
-        public string userCompany;
         private Label version_lb;
         private ToolStripMenuItem MenuAbmeldenButton;
-        private float fuelatstart;
         private ToolStripMenuItem creditsToolStripMenuItem;
         public bool discordRPCalreadrunning;
-        public string CityDestination;
-        public string CitySource;
+        public bool stillTheSameJob;
         private NotifyIcon TaskBar_Icon;
         private ContextMenuStrip contextTaskbar;
         private ToolStripMenuItem öffnenToolStripMenuItem;
@@ -138,17 +104,8 @@ namespace VTCManager_1._0._0
         private PictureBox ets2_button;
         private PictureBox ats_button;
         public static string labelRevision;
-        private string meins;
-        public bool Tollgate;
-        public float Tollgate_Payment;
-        public bool Ferry;
-        public bool Train;
         public int GameRuns;
         public string Spiel;
-        public string Refuel_Amount;
-        public string Strafe;
-        public string Faehre;
-        public string FaehreKosten;
         public string labelkmh;
         public bool refuel_beendet;
         private int jobrunningcounter;
@@ -170,6 +127,9 @@ namespace VTCManager_1._0._0
         private string logDirectory = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + @"\VTC_Manager");
         private string logFile = @"\log.txt";
         public int spender = 0;
+        private User user;
+        private Job job;
+        private bool jobStarted;
 
         // Get a handle to an application window.
         [DllImport("USER32.DLL", CharSet = CharSet.Unicode)]
@@ -181,38 +141,15 @@ namespace VTCManager_1._0._0
         public static extern bool SetForegroundWindow(IntPtr hWnd);
 
 
-        public Main(string newauthcode, string username, int driven_tours, int act_bank_balance, bool last_job_canceled, string company)
+        public Main(Objekte.User user)
         {
-            // Revision
-            if (File.Exists(Environment.CurrentDirectory + @"\Ressources\insight.wav"))
-            {
-                this.notification_sound_success = new SoundPlayer(Environment.CurrentDirectory + @"\Ressources\insight.wav");
-            }
-            if (File.Exists(Environment.CurrentDirectory + @"\Ressources\time-is-now.wav.wav"))
-            {
-                this.notification_sound_fail = new SoundPlayer(Environment.CurrentDirectory + @"\Ressources\time-is-now.wav");
-            }
-            if (File.Exists(Environment.CurrentDirectory + @"\Ressources\AutopilotStart_fx.wav"))
-            {
-                this.notification_sound_tour_start = new SoundPlayer(Environment.CurrentDirectory + @"\Ressources\AutopilotStart_fx.wav");
-            }
-            if (File.Exists(Environment.CurrentDirectory + @"\Ressources\AutopilotEnd_fx.wav"))
-            {
-                this.notification_sound_tour_end = new SoundPlayer(Environment.CurrentDirectory + @"\Ressources\AutopilotEnd_fx.wav");
-            }
-
-
-            
-            this.username = username;
-            this.driven_tours = driven_tours;
-            this.act_bank_balance = act_bank_balance;
+            this.user = user;
+            //Laden der Anzeigesprache
             CultureInfo ci = CultureInfo.InstalledUICulture;
             this.translation = new Translation(ci.DisplayName);
-            
-            userCompany = (company == "0") ? this.userCompany = translation.no_company_text : this.userCompany = company;
+            //Laden des Sound-Systems
+            this.sound = new Sound(translation);
 
-            if (last_job_canceled == true)
-                this.status_jb_canc_lb.Text = translation.jb_canc_lb;
             
             this.settings = new SettingsManager();
             this.settings.CreateCache();
@@ -222,7 +159,6 @@ namespace VTCManager_1._0._0
                 this.settings.Cache.speed_mode = "kmh";
                 this.settings.SaveJobID(); ;
             }
-            this.authCode = newauthcode;
             this.InitializeComponent();
             this.InitializeTranslation();
             try
@@ -259,39 +195,16 @@ namespace VTCManager_1._0._0
 
         }
 
-
-
-        private void InitializeDiscord(int mode)
-        {
-            /*  DISABLED WEIL FEHLER WENN DISCORD AUS IST !!
-             *  
-                this.client = new DiscordRpcClient("659036297561767948");
-                this.client.Logger = new ConsoleLogger() { Level = LogLevel.Warning };
-                this.client.OnReady += (sender, e) =>
-                {
-                    Console.WriteLine("Received Ready from user {0}", e.User.Username);
-                };
-                this.client.OnPresenceUpdate += (sender, e) =>
-                {
-                    Console.WriteLine("Received Update! {0}", e.Presence);
-                };
-                this.client.Initialize();
-                client.Invoke();
-            */
-        }
-
-
-
         private void InitializeTranslation()
         {
             this.label1.Text = translation.traffic_main_lb;
             this.einstellungenToolStripMenuItem.Text = translation.settings_lb;
             this.beendenToolStripMenuItem.Text = translation.exit_lb;
             this.topMenuAccount.Text = translation.topmenuaccount_lb;
-            this.statistic_panel_topic.Text = translation.statistic_panel_topic + this.username.ToUpper();
-            this.driven_tours_lb.Text = translation.driven_tours_lb + this.driven_tours;
-            this.act_bank_balance_lb.Text = translation.act_bank_balance + this.act_bank_balance + "€";
-            this.user_company_lb.Text = translation.user_company_lb + this.userCompany;
+            this.statistic_panel_topic.Text = translation.statistic_panel_topic + user.username.ToUpper();
+            this.driven_tours_lb.Text = translation.driven_tours_lb + user.driven_tours;
+            this.act_bank_balance_lb.Text = translation.act_bank_balance + user.bank_balance + "€";
+            this.user_company_lb.Text = translation.user_company_lb + user.company;
             //this.version_lb.Text = translation.version;
             this.MenuAbmeldenButton.Text = translation.logout;
 
@@ -377,32 +290,24 @@ namespace VTCManager_1._0._0
 
         public bool CancelTour()
         {
-            notification_sound_fail.Play();
+            this.sound.Play(sound.ton_fehler);
             this.settings.Cache.SaveJobID = "0";
             this.settings.SaveJobID();
             API api = new API();
             api.HTTPSRequestPost(api.api_server + api.canceltourpath, new Dictionary<string, string>()
               {
-                { "authcode", this.authCode },
-                { "job_id", this.jobID }
+                { "authcode", user.authcode },
+                { "job_id", job.ID.ToString() }
               }, true).ToString();
-            this.totalDistance = 0;
-            this.currentPercentage = 0;
-            this.invertedDistance = 0;
-            this.lastNotZeroDistance = 0;
-            this.lastCargoDamage = 0.0f;
-            this.jobID = "0";
-
-            utils.Log("Tour Cancel: " + authCode + " - " + jobID);
-
-            this.InitializeDiscord(0);
+            utils.Log("Tour Cancel: " + user.authcode + " - " + job.ID);
+            job.clear();
             return true;
         }
 
         private void TelemetryOnJobFinished(object sender, EventArgs args)
         {
             this.send_tour_status.Enabled = false;
-            this.jobFinished = true;
+            job.jobFinished = true;
         }
 
         private void TelemetryOnJobStarted(object sender, EventArgs e)
@@ -443,7 +348,7 @@ namespace VTCManager_1._0._0
                         destination_lb.Visible = (data.Paused) ? false : true;
                         depature_lb.Visible = (data.Paused) ? false : true;
                         cargo_lb.Visible = (data.Paused) ? false : true;
-                        Tollgate_Payment = data.GamePlay.TollgateEvent.PayAmount;
+                        job.Tollgate_Payment = data.GamePlay.TollgateEvent.PayAmount;
                         
                         truckersMP_Button.Visible = (string.IsNullOrEmpty(utils.Reg_Lesen("TruckersMP_Autorun", "TruckersMP_Pfad"))) ? false : true;
 
@@ -451,7 +356,7 @@ namespace VTCManager_1._0._0
                         {
                             GameRuns = 1;
 
-                           this.currentPercentage = (((((double)data.NavigationValues.NavigationDistance / 1000) / (double)data.JobValues.PlannedDistanceKm) * 100)-100)*-1;
+                           job.currentPercentage = (((((double)data.NavigationValues.NavigationDistance / 1000) / (double)data.JobValues.PlannedDistanceKm) * 100)-100)*-1;
 
                             // ###################   FUEL PROGRESS    ##############################################
                             progressBar_F.Maximum = Convert.ToInt32(data.TruckValues.ConstantsValues.CapacityValues.Fuel);
@@ -499,21 +404,16 @@ namespace VTCManager_1._0._0
                                     Console.WriteLine("tiick");
                                     this.api.HTTPSRequestPost(this.api.api_server + this.api.job_update_path, new Dictionary<string, string>()
                                     {
-                                        { "authcode", this.authCode },
-                                        { "job_id", this.jobID },
-                                        { "percentage", this.currentPercentage.ToString() }
+                                        { "authcode", user.authcode },
+                                        { "job_id", job.ID.ToString() },
+                                        { "percentage", job.currentPercentage.ToString() }
                                     }, false).ToString();
                                     this.jobrunningcounter = 0;
-                                    utils.Log("Tour Tick: " + authCode + " - " + jobID + " - " + currentPercentage.ToString());
+                                    utils.Log("Tour Tick: " + user.authcode + " - " + job.ID + " - " + job.currentPercentage.ToString());
                                 }
                                 this.jobrunningcounter++;
                             }
-                                
-                            if (this.discordRPCalreadrunning == false)
-                            {
-                                this.InitializeDiscord(0); //ot working uff cant update RPC
-                                this.discordRPCalreadrunning = true;
-                            }
+                               
                         }
                         else
                         {
@@ -535,17 +435,18 @@ namespace VTCManager_1._0._0
                     double num2;
                     if (this.jobStarted)
                     {
+                        job = new Job();
                         this.jobStarted = false;
                         this.lastJobDictionary.Clear();
-                        notification_sound_tour_start.Play();
-                        this.totalDistance = (int)data.NavigationValues.NavigationDistance;
+                        this.sound.Play(sound.ton_tour_gestartet);
+                        job.totalDistance = (int)data.NavigationValues.NavigationDistance;
                         num2 = (double)data.JobValues.Income * 0.15;
                         this.cargo_lb.Text = "Deine Fracht: " + ((int)Math.Round((double)data.JobValues.CargoValues.Mass, 0) / 1000).ToString() + " Tonnen " + data.JobValues.CargoValues.Name;
                         this.depature_lb.Text = "Von: " + data.JobValues.CitySource + " ( " + data.JobValues.CompanySource + " ) nach: " + data.JobValues.CityDestination + " ( " + data.JobValues.CompanyDestination + " )";
-                        this.fuelatstart = data.TruckValues.ConstantsValues.CapacityValues.Fuel;
+                        job.fuelatstart = data.TruckValues.ConstantsValues.CapacityValues.Fuel;
 
                         Dictionary<string, string> postParameters = new Dictionary<string, string>();
-                        postParameters.Add("authcode", this.authCode);
+                        postParameters.Add("authcode", user.authcode);
                         postParameters.Add("cargo", data.JobValues.CargoValues.Name);
                         postParameters.Add("weight", ((int)Math.Round((double)data.JobValues.CargoValues.Mass, 0) / 1000).ToString());
                         postParameters.Add("depature", data.JobValues.CitySource);
@@ -555,13 +456,9 @@ namespace VTCManager_1._0._0
                         postParameters.Add("truck_manufacturer", data.TruckValues.ConstantsValues.Brand);
                         postParameters.Add("truck_model", data.TruckValues.ConstantsValues.Name);
                         postParameters.Add("distance", data.JobValues.PlannedDistanceKm.ToString());
-                        this.jobID = this.api.HTTPSRequestPost(this.api.api_server + this.api.new_job_path, postParameters, true).ToString();
+                        job.ID = Convert.ToInt32(this.api.HTTPSRequestPost(this.api.api_server + this.api.new_job_path, postParameters, true).ToString());
 
-                        utils.Log("Tour START: " + authCode + ", Cargo: " + data.JobValues.CargoValues.Name + ", " + ((int)Math.Round((double)data.JobValues.CargoValues.Mass, 0) / 1000).ToString() + " Tonnen, Startort: " + data.JobValues.CitySource + ", Start-Firma: " + data.JobValues.CompanySource + ", Zielort: " + data.JobValues.CityDestination + ", Ziel-Firma: " + data.JobValues.CompanyDestination + ", LKW: " + data.TruckValues.ConstantsValues.Brand + " " + data.TruckValues.ConstantsValues.Name + ", Strecke: " + data.JobValues.PlannedDistanceKm.ToString() + " KM");
-                        utils.Reg_Schreiben("jobID", this.jobID);
-
-                            //this.settings.Cache.SaveJobID = this.jobID;
-                            //this.settings.SaveJobID();
+                        utils.Log("Tour START: " + user.authcode + ", Cargo: " + data.JobValues.CargoValues.Name + ", " + ((int)Math.Round((double)data.JobValues.CargoValues.Mass, 0) / 1000).ToString() + " Tonnen, Startort: " + data.JobValues.CitySource + ", Start-Firma: " + data.JobValues.CompanySource + ", Zielort: " + data.JobValues.CityDestination + ", Ziel-Firma: " + data.JobValues.CompanyDestination + ", LKW: " + data.TruckValues.ConstantsValues.Brand + " " + data.TruckValues.ConstantsValues.Name + ", Strecke: " + data.JobValues.PlannedDistanceKm.ToString() + " KM");
                                     
 
                         Dictionary<string, string> lastJobDictionary = this.lastJobDictionary;
@@ -574,9 +471,8 @@ namespace VTCManager_1._0._0
                         this.discord.onTour(data.JobValues.CityDestination, data.JobValues.CitySource, data.JobValues.CargoValues.Name, ((int)Math.Round((double)data.JobValues.CargoValues.Mass, 0) / 1000).ToString());
 
                         //if(this.lastJobDictionary["mass"] == Convert.ToString(data.Job.Mass)) { MessageBox.Show("SELEBE!"); }
-                        this.CitySource = data.JobValues.CitySource;
-                        this.CityDestination = data.JobValues.CityDestination;
-                        this.InitializeDiscord(1);
+                        job.CitySource = data.JobValues.CitySource;
+                        job.CityDestination = data.JobValues.CityDestination;
                         this.send_tour_status.Enabled = true;
                         this.send_tour_status.Start();
                                     
@@ -584,58 +480,51 @@ namespace VTCManager_1._0._0
                     }
 
 
-                    if (this.jobRunning)
+                    if (job.jobRunning)
                     {
-                                this.jobRunning = false;
+                                job.jobRunning = false;
                                     
                     }
 
 
 
-                    if (this.jobFinished)
+                    if (job.jobFinished)
                     {
-                        //if (this.lastJobDictionary["cargo"] == data.JobValues.CargoValues.Name && this.lastJobDictionary["source"] == data.JobValues.CitySource && this.lastJobDictionary["destination"] == data.JobValues.CityDestination)
-                        //{
-                            Console.WriteLine("jobfinsiehed");
-                            notification_sound_tour_end.Play();
-                            this.send_tour_status.Enabled = false;
-                            this.jobRunning = false;
-                            this.fuelatend = (float)data.TruckValues.ConstantsValues.CapacityValues.Fuel;
-                            this.fuelconsumption = this.fuelatstart - this.fuelatend;
-                            Console.WriteLine(this.fuelconsumption);
+                        if (this.lastJobDictionary["cargo"] == data.JobValues.CargoValues.Name && this.lastJobDictionary["source"] == data.JobValues.CitySource && this.lastJobDictionary["destination"] == data.JobValues.CityDestination)
+                        {
+                        this.sound.Play(sound.ton_tour_beendet);
+                        this.send_tour_status.Enabled = false;
+                            job.jobFinished = false;
+                            job.fuelatend = (float)data.TruckValues.ConstantsValues.CapacityValues.Fuel;
+                            job.fuelconsumption = job.fuelatstart - job.fuelatend;
+                            Console.WriteLine(job.fuelconsumption);
                             Dictionary<string, string> postParameters = new Dictionary<string, string>();
-                            postParameters.Add("authcode", this.authCode);
-                            postParameters.Add("job_id", this.jobID);
+                            postParameters.Add("authcode", user.authcode);
+                            postParameters.Add("job_id", job.ID.ToString());
                             Dictionary<string, string> dictionary2 = postParameters;
                             num2 = Math.Floor((double)data.TruckValues.CurrentValues.DamageValues.Transmission * 100.0 / 1.0);
                             string str3 = num2.ToString();
                             dictionary2.Add("trailer_damage", str3);
                             postParameters.Add("income", data.JobValues.Income.ToString());
-                            if (this.fuelconsumption > data.TruckValues.ConstantsValues.CapacityValues.Fuel)
+                            if (job.fuelconsumption > data.TruckValues.ConstantsValues.CapacityValues.Fuel)
                             {
                                 postParameters.Add("refueled", "true");
                             }
-                            postParameters.Add("fuelconsumption", this.fuelconsumption.ToString());
+                            postParameters.Add("fuelconsumption", job.fuelconsumption.ToString());
 
                             Console.WriteLine(this.api.HTTPSRequestPost(this.api.api_server + this.api.finishjob_path, postParameters, true).ToString());
-                            this.InitializeDiscord(0);
-                            this.totalDistance = 0;
-                            this.invertedDistance = 0;
-                            this.currentPercentage = 0;
-                            this.lastNotZeroDistance = 0;
-                            this.lastCargoDamage = 0.0f;
-                            this.jobID = "0";
-                            this.jobID = null;
+                            job.jobFinished = false;
+                            utils.Log("Tour FINISH: " + user.authcode + ", " + job.ID + ", Einkommen: " + data.JobValues.Income.ToString() + " €" + ", Damage: " + str3);
+                            job.clear();
                             this.destination_lb.Text = "";
                             this.depature_lb.Text = "";
                         //this.cargo_lb.Text = translation.no_cargo_lb;
-                        this.jobFinished = false;
-                        utils.Log("Tour FINISH: " + authCode + ", " + this.jobID + ", Einkommen: " + data.JobValues.Income.ToString() + " €" + ", Damage: " + str3);
+                    
 
 
-                        //}
+                        }
                     }
-                    this.invertedDistance = this.totalDistance - (int)Math.Round((double)data.NavigationValues.NavigationDistance, 0);
+                    job.invertedDistance = job.totalDistance - (int)Math.Round((double)data.NavigationValues.NavigationDistance, 0);
                 }
             }
             catch { utils.Log("<FATAL ERROR> FEHLER IN TELEMETRY DATA "); }
@@ -655,7 +544,7 @@ namespace VTCManager_1._0._0
 
         private void send_tour_status_Tick(object sender, EventArgs e)
         {
-            this.jobRunning = true;
+            job.jobRunning = true;
             this.locationupdate();
             
         }
@@ -679,12 +568,12 @@ namespace VTCManager_1._0._0
                 num2 = -(num3 * 180.0 / Math.PI);
                 string str3 = num2.ToString();
                 dictionary3.Add("rotation", str3);
-                postParameters.Add("authcode", this.authCode);
-                postParameters.Add("percentage", this.currentPercentage.ToString());
+                postParameters.Add("authcode", user.authcode);
+                postParameters.Add("percentage", job.currentPercentage.ToString());
                 postParameters.Add("game", this.Spiel);
 
                 this.api.HTTPSRequestPost(this.api.api_server + this.api.loc_update_path, postParameters, false).ToString();
-            utils.Log("Tour UPDATE: " + this.authCode + ", " + this.jobID + ", " + this.currentPercentage.ToString() + ", " + this.Spiel);
+            utils.Log("Tour UPDATE: " + user.authcode + ", " + job.ID + ", " + job.currentPercentage.ToString() + ", " + this.Spiel);
 
 
 
@@ -698,7 +587,7 @@ namespace VTCManager_1._0._0
 
         private void send_location_Tick(object sender, EventArgs e)
         {
-            this.locationUpdate = true;
+            job.locationUpdate = true;
         }
         private void InitializeComponent()
         {
@@ -1975,35 +1864,35 @@ namespace VTCManager_1._0._0
         private void TelemetryJobCancelled(object sender, EventArgs e)
         {
             this.jobStarted = false;
-            this.jobRunning = false;
+            job.jobRunning = false;
             CancelTour();
         }
 
         
 
         private void TelemetryJobDelivered(object sender, EventArgs e) =>
-            this.jobFinished = true;
+            job.jobFinished = true;
 
         private void TelemetryFined(object sender, EventArgs e) =>
             MessageBox.Show("Fined");
         private void TelemetryTollgate(object sender, EventArgs e)
         {
             Thommy th3 = new Thommy(); 
-            th3.Sende_TollGate(this.authCode, this.Tollgate_Payment, 1);
+            th3.Sende_TollGate(user.authcode, job.Tollgate_Payment, 1);
         
         }
             
 
         private void TelemetryFerry(object sender, EventArgs e) =>
-            this.Ferry = true;
+            job.Ferry = true;
 
         private void TelemetryTrain(object sender, EventArgs e) =>
-            this.Train = true;
+            job.Train = true;
 
         private void TelemetryRefuel(object sender, EventArgs e) 
         {
                 Thommy th3 = new Thommy();
-                th3.Sende_Refuel(this.authCode, this.Tollgate_Payment, this.jobID);
+                th3.Sende_Refuel(user.authcode, job.Tollgate_Payment, job.ID.ToString());
 
         }
 

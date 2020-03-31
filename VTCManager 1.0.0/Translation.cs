@@ -8,7 +8,7 @@ using System.Windows.Forms;
 
 namespace VTCManager_1._0._0
 {
-    class Translation
+    public class Translation
     {
         public string login_username;
         public string version;
@@ -61,6 +61,11 @@ namespace VTCManager_1._0._0
         public string settings_window_dir_error;
         public string settings_log_failed;
         public string log_ok;
+        public string error;
+        public string warning;
+        public string error_sound_load;
+        public string error_sound_missing_file;
+
         public Translation(String language)
         {
             version = "Version: 1.1.0";
@@ -115,6 +120,10 @@ namespace VTCManager_1._0._0
                 settings_window_dir_error = "Das geforderte Verzeichnis wurde nicht gefunden !";
                 settings_log_failed = "Die LOG Datei konnte nicht erstellt / Aktualisiert werden !";
                 log_ok = "Log Datei wurde erstellt !";
+                error = "Fehler";
+                warning = "Warnung";
+                error_sound_load = "Das Sound-System konnte nicht initialisiert werden";
+                error_sound_missing_file = "Das Sound-System konnte initialisiert werden, aber einige Töne sind nicht verfügbar.";
             }
             else
             {
@@ -173,6 +182,10 @@ namespace VTCManager_1._0._0
                 settings_window_dir_error = "The Directory was not Found !";
                 settings_log_failed = "can't create the log file!";
                 log_ok = "Log File was Created !";
+                error = "Error";
+                warning = "Warning";
+                error_sound_load = "An error occured while initialising the sound system";
+                error_sound_missing_file = "The sound system has been initialised but some sound my not be available.";
             }
             
         }
