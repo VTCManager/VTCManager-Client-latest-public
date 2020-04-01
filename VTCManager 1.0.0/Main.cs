@@ -129,6 +129,7 @@ namespace VTCManager_1._0._0
         public int spender = 0;
         private User user;
         private Job job;
+        private ToolStripMenuItem frachtmarktToolStripMenuItem;
         private bool jobStarted;
 
         // Get a handle to an application window.
@@ -377,6 +378,8 @@ namespace VTCManager_1._0._0
                             // SPEED LABEL - TRUCK LABEL
                             labelkmh = (data.Game.ToString() == "Ets2") ? " KM/H" : " mp/h";
 
+                           
+
                             if (data.Game.ToString() == "Ets2") {
                                 speed_lb.Text = (int)data.TruckValues.CurrentValues.DashboardValues.Speed.Kph + labelkmh;
                                 Geschwindigkeit = (float)data.TruckValues.CurrentValues.DashboardValues.Speed.Kph;
@@ -527,7 +530,7 @@ namespace VTCManager_1._0._0
                     job.invertedDistance = job.totalDistance - (int)Math.Round((double)data.NavigationValues.NavigationDistance, 0);
                 }
             }
-            catch { utils.Log("<FATAL ERROR> FEHLER IN TELEMETRY DATA "); }
+            catch {  }
         }
 
         string get_unique_string(int string_length)
@@ -665,6 +668,7 @@ namespace VTCManager_1._0._0
             this.Label_DB_Server = new System.Windows.Forms.ToolStripStatusLabel();
             this.anti_AFK_TIMER = new System.Windows.Forms.Timer(this.components);
             this.label3 = new System.Windows.Forms.Label();
+            this.frachtmarktToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.send_tour_status)).BeginInit();
             this.menuStrip1.SuspendLayout();
             this.panel2.SuspendLayout();
@@ -710,7 +714,8 @@ namespace VTCManager_1._0._0
             this.GUI_SIZE_BUTTON,
             this.lbl_Overlay,
             this.darkToolStripMenuItem,
-            this.toolStripMenuItem1});
+            this.toolStripMenuItem1,
+            this.frachtmarktToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Size = new System.Drawing.Size(1388, 32);
@@ -1387,6 +1392,13 @@ namespace VTCManager_1._0._0
             this.label3.Text = "Version:";
             this.label3.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
+            // frachtmarktToolStripMenuItem
+            // 
+            this.frachtmarktToolStripMenuItem.Name = "frachtmarktToolStripMenuItem";
+            this.frachtmarktToolStripMenuItem.Size = new System.Drawing.Size(106, 28);
+            this.frachtmarktToolStripMenuItem.Text = "Frachtmarkt";
+            this.frachtmarktToolStripMenuItem.Click += new System.EventHandler(this.frachtmarktToolStripMenuItem_Click);
+            // 
             // Main
             // 
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
@@ -1896,9 +1908,17 @@ namespace VTCManager_1._0._0
 
         }
 
+        private void frachtmarktToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Frachtmarkt fm = new Frachtmarkt();
+            fm.Show();
+        }
+
+
 
 
     }
+
 
 
 }

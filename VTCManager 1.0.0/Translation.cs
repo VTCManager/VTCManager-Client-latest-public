@@ -65,7 +65,11 @@ namespace VTCManager_1._0._0
         public string warning;
         public string error_sound_load;
         public string error_sound_missing_file;
-
+        public string Frachtmarkt_no_profiles;
+        public string Frachtmarkt_from_City;
+        public string Frachtmarkt_from_Company;
+        public string Frachtmarkt_to_City;
+        public string Frachtmarkt_to_Company;
         public Translation(String language)
         {
             version = "Version: 1.1.0";
@@ -124,6 +128,13 @@ namespace VTCManager_1._0._0
                 warning = "Warnung";
                 error_sound_load = "Das Sound-System konnte nicht initialisiert werden";
                 error_sound_missing_file = "Das Sound-System konnte initialisiert werden, aber einige Töne sind nicht verfügbar.";
+                Frachtmarkt_no_profiles = "Keine Profile gefunden!";
+                Frachtmarkt_from_City = "Start-Ort: ";
+                Frachtmarkt_from_Company = "Start-Firma: ";
+                Frachtmarkt_to_City = "Ziel-Ort: ";
+                Frachtmarkt_to_Company = "Ziel-Firma: ";
+
+
             }
             else
             {
@@ -186,8 +197,15 @@ namespace VTCManager_1._0._0
                 warning = "Warning";
                 error_sound_load = "An error occured while initialising the sound system";
                 error_sound_missing_file = "The sound system has been initialised but some sound my not be available.";
+                Frachtmarkt_no_profiles = "No Profiles found!";
+                Frachtmarkt_from_City = "Start-City: ";
+                Frachtmarkt_from_Company = "Start-Company: ";
+                Frachtmarkt_to_City = "Destination-City: ";
+                Frachtmarkt_to_Company = "Destination-Company: ";
+
+
             }
-            
+
         }
     }
 }

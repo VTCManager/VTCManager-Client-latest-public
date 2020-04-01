@@ -104,6 +104,7 @@
     <Compile Include="API.cs" />
     <Compile Include="CacheDataObject.cs" />
     <Compile Include="Discord.cs" />
+    <Compile Include="DispoMethoden.cs" />
     <Compile Include="ETS2-Pfad_Window.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -111,6 +112,12 @@
       <DependentUpon>ETS2-Pfad_Window.cs</DependentUpon>
     </Compile>
     <Compile Include="Extensions.cs" />
+    <Compile Include="Frachtmarkt.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Frachtmarkt.Designer.cs">
+      <DependentUpon>Frachtmarkt.cs</DependentUpon>
+    </Compile>
     <Compile Include="GameChecks.cs" />
     <Compile Include="Login.cs">
       <SubType>Form</SubType>
@@ -204,6 +211,7 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="System.Management" />
+    <Reference Include="System.Net.Http" />
     <Reference Include="System.Runtime.InteropServices.RuntimeInformation, Version=4.0.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Runtime.InteropServices.RuntimeInformation.4.3.0\lib\net45\System.Runtime.InteropServices.RuntimeInformation.dll</HintPath>
       <Private>True</Private>
@@ -252,6 +260,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="ETS2-Pfad_Window.resx">
       <DependentUpon>ETS2-Pfad_Window.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Frachtmarkt.resx">
+      <DependentUpon>Frachtmarkt.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Main.resx">
       <DependentUpon>Main.cs</DependentUpon>
