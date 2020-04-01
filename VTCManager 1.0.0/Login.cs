@@ -6,6 +6,7 @@ using System.Drawing;
 using System.Globalization;
 using System.Net;
 using System.Windows.Forms;
+using VTCManager_1._0._0.Objekte;
 
 namespace VTCManager_1._0._0
 {
@@ -27,24 +28,11 @@ namespace VTCManager_1._0._0
         private TextBox email_input;
         private Button submit_login;
         private Label version_text;
-        private int driven_tours;
-        private int bank_balance;
-        private string patreon_state;
-        private String username;
-        private string profile_picture;
-        private int version_int;
         private ProgressBar progressBardownload;
-        private string downloaddirectory;
-        private string userFolder;
-        private string conv_fileName;
-        private int fileName_int;
         private Translation translation;
         private SettingsManager settings;
-        private String first_start;
         public bool debug = false;
         // Edit by Thommy
-        // Auf Öffentlichkeit prüfen || true = Öffentlich || false = keine Prüfung
-        private bool oeffentlich = false;
         public int spender = 0;
 
         public Login(bool debug) {
@@ -56,24 +44,11 @@ namespace VTCManager_1._0._0
         }
         private void Main_FormClosing(object sender, FormClosingEventArgs e)
         {
-            System.Windows.Forms.Application.Exit();
+            Application.Exit();
         }
         private void InitializeComponent()
         {
             this.settings = new SettingsManager();
-            this.settings.CreateCache();
-            this.settings.LoadJobID();
-
-            /* DISBLED WEGEN NEUEM UPDATE WINDOW
-            if (this.settings.Cache.first_start == "true" || string.IsNullOrEmpty(this.settings.Cache.first_start) == true) {
-                this.first_start = "false";
-                this.settings.Cache.first_start = "false";
-                this.settings.SaveJobID();
-                MessageBoxButtons buttons = MessageBoxButtons.OK;
-                DialogResult result;
-                result = MessageBox.Show(translation.update_message, translation.update_caption, buttons);
-            }
-            */
 
             ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Main));
             ComponentResourceManager componentResourceManager = new ComponentResourceManager(typeof(Main));
@@ -220,7 +195,7 @@ namespace VTCManager_1._0._0
                     Application.Exit();
                 }
                 
-                Objekte.User user = new Objekte.User(Convert.ToInt32(strArray[0]), strArray[1], strArray[2], strArray[3], Convert.ToInt32(strArray[4]), Convert.ToInt32(strArray[5]), Convert.ToInt32(strArray[6]),this.authCode, translation);
+                User user = new User(Convert.ToInt32(strArray[0]), strArray[1], strArray[2], strArray[3], Convert.ToInt32(strArray[4]), Convert.ToInt32(strArray[5]), Convert.ToInt32(strArray[6]),this.authCode);
                 this.Hide();
 
                 Main Mainwindow = new Main(user);

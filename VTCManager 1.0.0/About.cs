@@ -21,7 +21,7 @@ namespace VTCManager_1._0._0
         {
             this.Close();
             Utilities util = new Utilities();
-            util.Reg_Schreiben("Version", Main.labelRevision);
+            util.Reg_Schreiben("Version", Main.labelRevision, "TruckersMP_Autorun");
         }
     }
 }

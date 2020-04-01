@@ -55,7 +55,7 @@ namespace VTCManager_1._0._0
 
             if (pfad_suchen == DialogResult.OK)
             {
-                utils.Reg_Schreiben("ETS2_Pfad", folderBrowserDialog_ETS.SelectedPath);
+                utils.Reg_Schreiben("ETS2_Pfad", folderBrowserDialog_ETS.SelectedPath, "TruckersMP_Autorun");
                 ets_pfad.Text = folderBrowserDialog_ETS.SelectedPath.ToString();
 
                 // Telemetry kopierens();
@@ -85,7 +85,7 @@ namespace VTCManager_1._0._0
             if (pfad_suchen == DialogResult.OK)
             {
                 Utilities util = new Utilities();
-                util.Reg_Schreiben("ATS_Pfad", folderBrowserDialog_ATS.SelectedPath);
+                util.Reg_Schreiben("ATS_Pfad", folderBrowserDialog_ATS.SelectedPath, "TruckersMP_Autorun");
                 ats_pfad.Text = folderBrowserDialog_ATS.SelectedPath.ToString();
 
                 // Telemetry kopieren

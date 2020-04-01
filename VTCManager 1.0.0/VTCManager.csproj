@@ -102,7 +102,6 @@
       <DependentUpon>About.cs</DependentUpon>
     </Compile>
     <Compile Include="API.cs" />
-    <Compile Include="CacheDataObject.cs" />
     <Compile Include="Discord.cs" />
     <Compile Include="DispoMethoden.cs" />
     <Compile Include="ETS2-Pfad_Window.cs">

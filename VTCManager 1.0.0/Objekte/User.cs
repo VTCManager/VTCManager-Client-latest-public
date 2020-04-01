@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Globalization;
 
 namespace VTCManager_1._0._0.Objekte
 {
@@ -14,9 +15,17 @@ namespace VTCManager_1._0._0.Objekte
         public String authcode;
         public Translation translation;
 
-        public User(int userID, String company, String username,String profile_picture, int driven_tours, int bank_balance, int patreon_state,String authcode, Translation translation)
+        public double CoordinateX;
+        public double CoordinateZ;
+        public double rotation;
+        public float Geschwindigkeit;
+
+        public string Spiel;
+
+        public User(int userID, String company, String username,String profile_picture, int driven_tours, int bank_balance, int patreon_state,String authcode)
         {
-            this.translation = translation;
+            CultureInfo ci = CultureInfo.InstalledUICulture;
+            this.translation = new Translation(ci.DisplayName);
             this.userID = userID;
             this.company = (company == "0") ? this.company = this.translation.no_company_text : this.company = company;
             this.username = username;

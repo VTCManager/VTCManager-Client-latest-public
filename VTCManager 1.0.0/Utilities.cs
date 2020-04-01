@@ -1,14 +1,11 @@
 ﻿using Microsoft.Win32;
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
 using System.IO;
-using System.Runtime.CompilerServices;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading;
-using System.Windows;
 
 namespace VTCManager_1._0._0
 {
@@ -66,12 +63,15 @@ namespace VTCManager_1._0._0
                             Process process = processes[index];
                             try
                             {
-                                if ((process.MainWindowTitle.StartsWith("Euro Truck Simulator 2") || (process.ProcessName == "eurotrucks2")))
+                                if (process.MainWindowTitle.StartsWith("Euro Truck Simulator 2") || (process.ProcessName == "eurotrucks2") || (process.ProcessName == "amtrucks"))
                                 {
                                     _cachedRunningFlag = true;
                                     if (process.ProcessName == "eurotrucks2")
                                     {
                                         LastRunningGameName = "ETS2";
+                                    }else if (process.ProcessName == "amtrucks")
+                                    {
+                                        LastRunningGameName = "ATS";
                                     }
                                     return _cachedRunningFlag;
                                 }
@@ -164,13 +164,13 @@ namespace VTCManager_1._0._0
 
 
         // Edit by Thommy
-        public void Reg_Schreiben(string name, string wert)
+        public void Reg_Schreiben(string name, string wert, string ordner)
         {
             RegistryKey key = Registry.CurrentUser.OpenSubKey("Software", true);
             key.CreateSubKey("VTCManager");
             key = key.OpenSubKey("VTCManager", true);
-            key.CreateSubKey("TruckersMP_Autorun");
-            key = key.OpenSubKey("TruckersMP_Autorun", true);
+            key.CreateSubKey(ordner);
+            key = key.OpenSubKey(ordner, true);
             key.SetValue(name, wert);
 
         }

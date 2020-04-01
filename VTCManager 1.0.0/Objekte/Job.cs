@@ -9,12 +9,12 @@ namespace VTCManager_1._0._0.Objekte
     class Job
     {
         public int ID;
-        public bool jobStarted;
-        public bool jobRunning;
+        public bool jobStarted = false;
+        public bool jobRunning = false;
         public float fuelatend;
         public float fuelconsumption;
-        public bool jobFinished;
-        public bool locationUpdate;
+        public bool jobFinished = false;
+        public bool locationUpdate = false;
         public int totalDistance;
         public int invertedDistance;
         public int lastNotZeroDistance;
@@ -96,6 +96,20 @@ namespace VTCManager_1._0._0.Objekte
             this.Faehre = "";
             this.FaehreKosten = "";
             this.fuelatstart = 0;
+        }
+
+        public void cancel(Sound sound, Utilities utils, User user)
+        {
+            jobRunning = false;
+            sound.Play(sound.ton_fehler);
+            API api = new API();
+            api.HTTPSRequestPost(api.api_server + api.canceltourpath, new Dictionary<string, string>()
+              {
+                { "authcode", user.authcode },
+                { "job_id", ID.ToString() }
+              }, true).ToString();
+            utils.Log("Tour Cancel: " + user.authcode + " - " + ID);
+            clear();
         }
     }
 }

@@ -65,14 +65,13 @@ namespace VTCManager_1._0._0
         public SettingsWindow(Translation translation)
         {
             this.data = new SettingsManager();
-            this.data.LoadJobID();
 
             this.InitializeComponent();
             this.save_button.Text = translation.settings_window_save_button;
             this.groupBox1.Text = translation.settings_window_groupBox1text;
             this.btn_TruckersMP_suchen.Text = translation.btn_TruckersMP_suchentext;
             this.label3.Text = translation.settings_window_label3text;
-            this.comboBox1.Text = this.data.Cache.truckersmp_server;
+            this.comboBox1.Text = this.data.tmp_server;
 
         }
         private void InitializeComponent()
@@ -592,36 +591,36 @@ namespace VTCManager_1._0._0
             if (this.comboBox1.Text == "Simulation 1")
             {
                 this.selected_server_tm = "sim1";
-                this.data.Cache.truckersmp_server = this.selected_server_tm;
+                this.data.tmp_server = this.selected_server_tm;
                 // Edit by Thommy
 
-                utils.Reg_Schreiben("verkehr_SERVER", "sim1");
+                utils.Reg_Schreiben("verkehr_SERVER", "sim1", "TruckersMP_Autorun");
 
             }
             else if (this.comboBox1.Text == "Simulation 2")
             {
                 this.selected_server_tm = "sim2";
-                this.data.Cache.truckersmp_server = this.selected_server_tm;
-                utils.Reg_Schreiben("verkehr_SERVER", "sim2");
+                this.data.tmp_server = this.selected_server_tm;
+                utils.Reg_Schreiben("verkehr_SERVER", "sim2", "TruckersMP_Autorun");
 
             }
             else if (this.comboBox1.Text == "Arcade")
             {
                 this.selected_server_tm = "arc1";
-                this.data.Cache.truckersmp_server = this.selected_server_tm;
-                utils.Reg_Schreiben("verkehr_SERVER", "arc1");
+                this.data.tmp_server = this.selected_server_tm;
+                utils.Reg_Schreiben("verkehr_SERVER", "arc1", "TruckersMP_Autorun");
             }
             else if (this.comboBox1.Text == "EU Promods 1")
             {
                 this.selected_server_tm = "eupromods1";
-                this.data.Cache.truckersmp_server = this.selected_server_tm;
-                utils.Reg_Schreiben("verkehr_SERVER", "eupromods1");
+                this.data.tmp_server = this.selected_server_tm;
+                utils.Reg_Schreiben("verkehr_SERVER", "eupromods1", "TruckersMP_Autorun");
             }
             else if (this.comboBox1.Text == "EU Promods 2")
             {
                 this.selected_server_tm = "eupromods2";
-                this.data.Cache.truckersmp_server = this.selected_server_tm;
-                utils.Reg_Schreiben("verkehr_SERVER", "eupromods2");
+                this.data.tmp_server = this.selected_server_tm;
+                utils.Reg_Schreiben("verkehr_SERVER", "eupromods2", "TruckersMP_Autorun");
             }
 
 
@@ -629,20 +628,19 @@ namespace VTCManager_1._0._0
             // TODO-- SPENDER 
 
 
-            utils.Reg_Schreiben("ANTI_AFK", txt_Anti_AFK_Text.Text);
+            utils.Reg_Schreiben("ANTI_AFK", txt_Anti_AFK_Text.Text, "TruckersMP_Autorun");
             if (chk_antiafk_on_off.CheckState == CheckState.Checked)
             {
                 if (txt_Anti_AFK_Text.Text == "")
                 {
-                    utils.Reg_Schreiben("ANTI_AFK", "VTCManager wünscht Gute und Sichere Fahrt!");
+                    utils.Reg_Schreiben("ANTI_AFK", "VTCManager wünscht Gute und Sichere Fahrt!", "TruckersMP_Autorun");
                 }
-                utils.Reg_Schreiben("ANTI_AFK_AN", "1");
+                utils.Reg_Schreiben("ANTI_AFK_AN", "1", "TruckersMP_Autorun");
             }
             else
             {
-                utils.Reg_Schreiben("ANTI_AFK_AN", "0");
+                utils.Reg_Schreiben("ANTI_AFK_AN", "0", "TruckersMP_Autorun");
             }
-            this.data.SaveJobID();
             this.Close();
         }
 
@@ -653,11 +651,11 @@ namespace VTCManager_1._0._0
             // ##################  AUTOSTART   #####################
             if (File.Exists(System.IO.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Startup), "VTCManager.appref-ms")))
             {
-                utils.Reg_Schreiben("Autostart", "1");
+                utils.Reg_Schreiben("Autostart", "1", "TruckersMP_Autorun");
                 Autostart_Checkbox.CheckState = CheckState.Checked;
             } else
             {
-                utils.Reg_Schreiben("Autostart", "0");
+                utils.Reg_Schreiben("Autostart", "0", "TruckersMP_Autorun");
                 Autostart_Checkbox.CheckState = CheckState.Unchecked;
             }
 
@@ -667,7 +665,7 @@ namespace VTCManager_1._0._0
 
             // #############  DASHBOARD ############################
             if (string.IsNullOrEmpty(utils.Reg_Lesen("TruckersMP_Autorun", "Dashboard")))
-                utils.Reg_Schreiben("Dashboard", "0");
+                utils.Reg_Schreiben("Dashboard", "0", "TruckersMP_Autorun");
 
             Chk_Dashboard.CheckState = (utils.Reg_Lesen("TruckersMP_Autorun", "Dashboard") == "1") ? CheckState.Checked : CheckState.Unchecked;
 
@@ -699,7 +697,7 @@ namespace VTCManager_1._0._0
             }
 
             // Server COMBO vorauswahl
-            if (wert27 == null) { comboBox1.Text = "Simulation 1"; utils.Reg_Schreiben("verkehr_SERVER", "sim1"); }
+            if (wert27 == null) { comboBox1.Text = "Simulation 1"; utils.Reg_Schreiben("verkehr_SERVER", "sim1", "TruckersMP_Autorun"); }
             if (wert27 == "sim1") { comboBox1.Text = "Simulation 1"; }
             if (wert27 == "sim2") { comboBox1.Text = "Simulation 2"; }
             if (wert27 == "arc1") { comboBox1.Text = "Arcade 1"; }
@@ -752,7 +750,7 @@ namespace VTCManager_1._0._0
             if (tmp_Trucker.ShowDialog() == DialogResult.OK)
             {
                 Utilities util = new Utilities();
-                util.Reg_Schreiben("TruckersMP_Pfad", tmp_Trucker.FileName);
+                util.Reg_Schreiben("TruckersMP_Pfad", tmp_Trucker.FileName, "TruckersMP_Autorun");
                 truckersMP_Pfad_TextBox.Text = tmp_Trucker.FileName.ToString();
             }
 
@@ -765,7 +763,7 @@ namespace VTCManager_1._0._0
             {
                 ETS2_Pfad_Textbox.Text = ETS2_folderBrowserDialog.SelectedPath.ToString();
                 ETS2_Pfad_Textbox.Enabled = false;
-                utils.Reg_Schreiben("ETS2_Pfad", ETS2_folderBrowserDialog.SelectedPath.ToString());
+                utils.Reg_Schreiben("ETS2_Pfad", ETS2_folderBrowserDialog.SelectedPath.ToString(), "TruckersMP_Autorun");
             }
         }
 
@@ -779,27 +777,27 @@ namespace VTCManager_1._0._0
             {
                 ATS_Pfad_Textbox.Text = ATS_folderBrowserDialog.SelectedPath.ToString();
                 ATS_Pfad_Textbox.Enabled = false;
-                utils.Reg_Schreiben("ATS_Pfad", ATS_folderBrowserDialog.SelectedPath.ToString());
+                utils.Reg_Schreiben("ATS_Pfad", ATS_folderBrowserDialog.SelectedPath.ToString(), "TruckersMP_Autorun");
             }
         }
 
         private void numericUpDown1_ValueChanged(object sender, EventArgs e) =>
-            utils.Reg_Schreiben("ANTI_AFK_RELOAD", reload_antiafk.Value.ToString());
+            utils.Reg_Schreiben("ANTI_AFK_RELOAD", reload_antiafk.Value.ToString(), "TruckersMP_Autorun");
 
         private void chk_antiafk_on_off_CheckedChanged(object sender, EventArgs e)
         {
             if (chk_antiafk_on_off.CheckState == CheckState.Checked)
             {
                 if (txt_Anti_AFK_Text.Text == "")
-                    utils.Reg_Schreiben("ANTI_AFK", "VTCManager wünscht Gute und Sichere Fahrt!");
+                    utils.Reg_Schreiben("ANTI_AFK", "VTCManager wünscht Gute und Sichere Fahrt!", "TruckersMP_Autorun");
 
-                utils.Reg_Schreiben("ANTI_AFK_AN", "1");
-                utils.Reg_Schreiben("ANTI_AFK_RELOAD", reload_antiafk.Value.ToString());
+                utils.Reg_Schreiben("ANTI_AFK_AN", "1", "TruckersMP_Autorun");
+                utils.Reg_Schreiben("ANTI_AFK_RELOAD", reload_antiafk.Value.ToString(), "TruckersMP_Autorun");
             }
             else
             {
-                utils.Reg_Schreiben("ANTI_AFK_AN", "0");
-                utils.Reg_Schreiben("ANTI_AFK_RELOAD", reload_antiafk.Value.ToString());
+                utils.Reg_Schreiben("ANTI_AFK_AN", "0", "TruckersMP_Autorun");
+                utils.Reg_Schreiben("ANTI_AFK_RELOAD", reload_antiafk.Value.ToString(), "TruckersMP_Autorun");
             }
         }
 
@@ -822,12 +820,12 @@ namespace VTCManager_1._0._0
         {
             if (Diagnostic_Checkbox.CheckState == CheckState.Checked)
             {
-                utils.Reg_Schreiben("Diagnostic", "1");
+                utils.Reg_Schreiben("Diagnostic", "1", "TruckersMP_Autorun");
                 GroupBox_Diagnostic.Visible = true;
             }
             else
             {
-                utils.Reg_Schreiben("Diagnostic", "0");
+                utils.Reg_Schreiben("Diagnostic", "0", "TruckersMP_Autorun");
                 GroupBox_Diagnostic.Visible = false;
             }
         }
@@ -897,11 +895,11 @@ namespace VTCManager_1._0._0
         {
             if (Chk_Dashboard.CheckState == CheckState.Checked)
             {
-                utils.Reg_Schreiben("Dashboard", "1");
+                utils.Reg_Schreiben("Dashboard", "1", "TruckersMP_Autorun");
             }
             else
             {
-                utils.Reg_Schreiben("Dashboard", "0");
+                utils.Reg_Schreiben("Dashboard", "0", "TruckersMP_Autorun");
             }
         }
 
@@ -977,7 +975,7 @@ namespace VTCManager_1._0._0
             {
                 System.IO.File.Copy(Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + @"\VTCManager.appref-ms", System.IO.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Startup), "VTCManager.appref-ms"));
                 Utilities ut = new Utilities();
-                ut.Reg_Schreiben("Autostart", "1");
+                ut.Reg_Schreiben("Autostart", "1", "TruckersMP_Autorun");
                 MessageBox.Show("Dein Programm wird jetzt beim Systemstart ausgeführt !", "AutoRun", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
         }
@@ -987,7 +985,7 @@ namespace VTCManager_1._0._0
             {
                 File.Delete(System.IO.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Startup), "VTCManager.appref-ms"));
                 Utilities ut = new Utilities();
-                ut.Reg_Schreiben("Autostart", "0");
+                ut.Reg_Schreiben("Autostart", "0", "TruckersMP_Autorun");
                 MessageBox.Show("Dein Programm wird jetzt nicht mehr beim Systemstart ausgeführt !", "AutoRun", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
         }

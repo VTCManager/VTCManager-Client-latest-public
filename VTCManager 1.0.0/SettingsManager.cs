@@ -12,26 +12,17 @@ namespace VTCManager_1._0._0
     class SettingsManager
     {
         private string settingsDirectory;
-        private string cacheFile;
-        private string m_sCacheFileName;
         private string settingsFile;
-        private string m_sConfigFileName;
-        private CacheDataObject m_oConfigJob;
         public static string userFolder;
-        private SettingsDataObject m_oConfig;
         private Utilities utils = new Utilities();
-
+        public string geschwindigkeits_modus;
+        public string tmp_server;
         public SettingsManager()
         {
             this.settingsDirectory = Path.Combine(userFolder, ".vtcmanager");
             this.settingsFile = "settings.xml";
-            this.m_sConfigFileName = Path.GetFileNameWithoutExtension(Application.ExecutablePath) + ".xml";
-            this.m_oConfig = new SettingsDataObject();
-
-
-            this.cacheFile = "cache.xml";
-            this.m_sCacheFileName = Path.GetFileNameWithoutExtension(Application.ExecutablePath) + ".xml";
-            this.m_oConfigJob = new CacheDataObject();
+            this.SConfigFileName = Path.GetFileNameWithoutExtension(Application.ExecutablePath) + ".xml";
+            this.Config = new SettingsDataObject();
         }
         static SettingsManager()
         {
@@ -56,8 +47,8 @@ namespace VTCManager_1._0._0
             if (File.Exists(Path.Combine(this.settingsDirectory, this.settingsFile)))
             {
                 StreamReader textReader = File.OpenText(Path.Combine(this.settingsDirectory, this.settingsFile));
-                object obj2 = new XmlSerializer(this.m_oConfig.GetType()).Deserialize(textReader);
-                this.m_oConfig = (SettingsDataObject)obj2;
+                object obj2 = new XmlSerializer(this.Config.GetType()).Deserialize(textReader);
+                this.Config = (SettingsDataObject)obj2;
                 textReader.Close();
             }
         }
@@ -65,10 +56,10 @@ namespace VTCManager_1._0._0
         public void SaveConfig()
         {
             StreamWriter writer = File.CreateText(Path.Combine(this.settingsDirectory, this.settingsFile));
-            Type type = this.m_oConfig.GetType();
+            Type type = this.Config.GetType();
             if (type.IsSerializable)
             {
-                new XmlSerializer(type).Serialize((TextWriter)writer, this.m_oConfig);
+                new XmlSerializer(type).Serialize((TextWriter)writer, this.Config);
                 writer.Close();
             }
         }
@@ -91,66 +82,28 @@ namespace VTCManager_1._0._0
                 Console.WriteLine(ioExp.Message);
             }
         }
-        public void CreateCache()
-        {
-            if (!Directory.Exists(this.settingsDirectory))
-            {
-                Directory.CreateDirectory(this.settingsDirectory);
-            }
-            if (!File.Exists(Path.Combine(this.settingsDirectory, this.cacheFile)))
-            {
-                File.Create(Path.Combine(this.settingsDirectory, this.cacheFile)).Dispose();
-                string[] contents = new string[] { "<CacheDataObject></CacheDataObject>" };
-                File.AppendAllLines(Path.Combine(this.settingsDirectory, this.cacheFile), contents);
-            }
-        }
-        public void SaveJobID()
-        {
-            StreamWriter writer = File.CreateText(Path.Combine(this.settingsDirectory, this.cacheFile));
-            Type type = this.m_oConfigJob.GetType();
-            if (type.IsSerializable)
-            {
-                new XmlSerializer(type).Serialize((TextWriter)writer, this.m_oConfigJob);
-                writer.Close();
-            }
-        }
-        public void LoadJobID()
-        {
 
-            utils.Reg_Lesen("TruckersMP_Autorun", "jobID");
-
-            /*
-            if (File.Exists(Path.Combine(this.settingsDirectory, this.settingsFile)))
-            { 
-                try
-                {
-
-                    StreamReader textReader = File.OpenText(Path.Combine(this.settingsDirectory, this.cacheFile));
-                    object obj2 = new XmlSerializer(this.m_oConfigJob.GetType()).Deserialize(textReader);
-                    this.m_oConfigJob = (CacheDataObject)obj2;
-                    textReader.Close();
-                }
-                catch { }
-            }
-            */
-           
-        }
 
         // Properties
-        public SettingsDataObject Config
-        {
-            get =>
-                this.m_oConfig;
-            set =>
-                this.m_oConfig = value;
-        }
+        public SettingsDataObject Config { get; set; }
 
-        public CacheDataObject Cache
+        public string SConfigFileName { get; }
+
+        public void LoadConfiguration()
         {
-            get =>
-                this.m_oConfigJob;
-            set =>
-                this.m_oConfigJob = value;
+            geschwindigkeits_modus = utils.Reg_Lesen("Config", "geschwindigkeits_modus");
+            if (string.IsNullOrEmpty(geschwindigkeits_modus))
+            {
+                utils.Reg_Schreiben("geschwindigkeits_modus", "kmh", "Config");
+                geschwindigkeits_modus = "kmh";
+            }
+
+            tmp_server = utils.Reg_Lesen("Config", "TMP_server");
+            if (string.IsNullOrEmpty(tmp_server))
+            {
+                utils.Reg_Schreiben("TMP_server", "sim1", "Config");
+                tmp_server = "sim1";
+            }
         }
 
     }
