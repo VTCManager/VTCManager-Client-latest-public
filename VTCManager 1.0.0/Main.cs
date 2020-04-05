@@ -378,10 +378,10 @@ namespace VTCManager_1._0._0
 
                 //label_25:
                         double num2;
-                    if (this.jobStarted)
+                    if (job.jobStarted)
                     {
                         job = new Job();
-                        this.jobStarted = false;
+                        job.jobStarted = false;
                         this.lastJobDictionary.Clear();
                         this.sound.Play(sound.ton_tour_gestartet);
                         job.totalDistance = (int)data.NavigationValues.NavigationDistance;
