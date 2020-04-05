@@ -135,6 +135,7 @@ namespace VTCManager_1._0._0
 
         public Main(User user)
         {
+            job = new Job();
             //Daten werden übernommen von Login.cs
             this.user = user;
             
@@ -196,7 +197,7 @@ namespace VTCManager_1._0._0
         private void load_traffic()
         {
             //Tabelle zurücksetzen
-            this.tableLayoutPanel1.Visible = false;
+            /*this.tableLayoutPanel1.Visible = false;
             this.tableLayoutPanel1.Controls.Clear();
             this.tableLayoutPanel1.RowStyles.Clear();
             this.tableLayoutPanel1.ColumnCount = 2;
@@ -240,7 +241,7 @@ namespace VTCManager_1._0._0
             if (settings.tmp_server == "eupromods1") { label2.Text = "Server: ProMods 1"; }
             if (settings.tmp_server == "eupromods2") { label2.Text = "Server: ProMods 2"; }
             //Tabelle sichtbar 
-            this.tableLayoutPanel1.Visible = true;
+            this.tableLayoutPanel1.Visible = true;*/
         }
 
 
@@ -1317,6 +1318,7 @@ namespace VTCManager_1._0._0
             this.frachtmarktToolStripMenuItem.Name = "frachtmarktToolStripMenuItem";
             this.frachtmarktToolStripMenuItem.Size = new System.Drawing.Size(106, 28);
             this.frachtmarktToolStripMenuItem.Text = "Frachtmarkt";
+            this.frachtmarktToolStripMenuItem.Visible = false;
             this.frachtmarktToolStripMenuItem.Click += new System.EventHandler(this.frachtmarktToolStripMenuItem_Click);
             // 
             // Main
