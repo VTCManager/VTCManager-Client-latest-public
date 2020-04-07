@@ -92,6 +92,9 @@
       <Link>.editorconfig</Link>
     </None>
     <None Include="App.config" />
+    <None Include="Dateien\cities.CSV">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>

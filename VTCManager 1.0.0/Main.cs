@@ -257,7 +257,8 @@ namespace VTCManager_1._0._0
         //Telemetry Handler
         private void TelemetryOnJobFinished(object sender, EventArgs args) => job.jobFinished = true;
 
-        private void TelemetryOnJobStarted(object sender, EventArgs e) => job.jobStarted = true;
+        private void TelemetryOnJobStarted(object sender, EventArgs e) => 
+            job.jobStarted = true;
 
 
 

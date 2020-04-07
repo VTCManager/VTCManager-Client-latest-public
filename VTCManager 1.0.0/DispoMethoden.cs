@@ -13,19 +13,6 @@ namespace VTCManager_1._0._0
     class DispoMethoden
     {
 
-
-
-        public void Suche_Profil_Pfad()
-        {
-       
-
-        }
-
-
-        public void FillProfiles()
-        {
-     
-        }
         public string FromHexToString(string _hex)
         {
             try
