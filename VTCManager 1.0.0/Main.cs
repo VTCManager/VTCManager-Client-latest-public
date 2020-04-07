@@ -416,14 +416,10 @@ namespace VTCManager_1._0._0
                         this.lastJobDictionary.Add("weight", data.JobValues.CargoValues.Mass.ToString());
 
                         this.discord.onTour(data.JobValues.CityDestination, data.JobValues.CitySource, data.JobValues.CargoValues.Name, ((int)Math.Round((double)data.JobValues.CargoValues.Mass, 0) / 1000).ToString());
-
-                        //if(this.lastJobDictionary["mass"] == Convert.ToString(data.Job.Mass)) { MessageBox.Show("SELEBE!"); }
                         job.CitySource = data.JobValues.CitySource;
                         job.CityDestination = data.JobValues.CityDestination;
                         this.send_tour_status.Enabled = true;
                         this.send_tour_status.Start();
-                                    
-
                     }
 
                     if (job.jobFinished)
@@ -432,7 +428,7 @@ namespace VTCManager_1._0._0
                         {
                             this.send_tour_status.Enabled = false;
                             this.sound.Play(sound.ton_tour_beendet);
-                        this.send_tour_status.Enabled = false;
+                            this.send_tour_status.Enabled = false;
                             job.jobFinished = false;
                             job.fuelatend = (float)data.TruckValues.ConstantsValues.CapacityValues.Fuel;
                             job.fuelconsumption = job.fuelatstart - job.fuelatend;
@@ -500,16 +496,13 @@ namespace VTCManager_1._0._0
                 postParameters.Add("game", user.Spiel);
 
                 this.api.HTTPSRequestPost(this.api.api_server + this.api.loc_update_path, postParameters, false).ToString();
-            utils.Log("Tour UPDATE: " + user.authcode + ", " + job.ID + ", " + job.currentPercentage.ToString() + ", " + user.Spiel);
-
-
-
+                utils.Log("Tour UPDATE: " + user.authcode + ", " + job.ID + ", " + job.currentPercentage.ToString() + ", " + user.Spiel);
         }
         private void Main_FormClosing(object sender, FormClosingEventArgs e)
         {
             Application.Exit();
             TaskBar_Icon.Dispose();
-            utils.Log("Client wurde geschlossen !");
+            utils.Log("<INFO> CLIENT_CLOSED");
         }
 
         private void send_location_Tick(object sender, EventArgs e)
@@ -1393,7 +1386,7 @@ namespace VTCManager_1._0._0
         private void beendenToolStripMenuItemClick(object sender, EventArgs e)
         {
             Application.Exit();
-            utils.Log("Client wurde geschlossen !");
+            utils.Log("<INFO> CLIENT_CLOSED");
         }
 
         private void einstellungenToolStripMenuItemClick(object sender, EventArgs e)
@@ -1401,7 +1394,7 @@ namespace VTCManager_1._0._0
             SettingsWindow Settingswindow = new SettingsWindow(user.translation);
             Settingswindow.FormClosing += new FormClosingEventHandler(ChildFormClosing);
             Settingswindow.ShowDialog();
-            utils.Log("Einstellungen geöffnet!");
+            utils.Log("<INFO> SETTINGS_OPEN");
         }
 
         private void ChildFormClosing(object sender, FormClosingEventArgs e)
@@ -1412,7 +1405,7 @@ namespace VTCManager_1._0._0
 
         private void MenuAbmeldenButton_Click(object sender, EventArgs e)
         {
-            utils.Log("User hat sich Abgemeldet!");
+            utils.Log("<INFO> USER_LOGGED_OFF");
             this.settings.DeleteConfig();
             Application.Restart();
 
@@ -1420,7 +1413,7 @@ namespace VTCManager_1._0._0
 
         private void CreditsToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            utils.Log("Fenster Über angeklickt!");
+            utils.Log("<INFO> WINDOW_UEBER_OPEN");
             Ueber ueber = new Ueber();
             ueber.ShowDialog();
         }
@@ -1458,7 +1451,7 @@ namespace VTCManager_1._0._0
                 utils.Reg_Schreiben("Diagnostic", "0", "TruckersMP_Autorun");
 
             anti_AFK_TIMER.Enabled = (Convert.ToInt32(utils.Reg_Lesen("TruckersMP_Autorun", "ANTI_AFK_AN")) == 1) ? true : false;
-            utils.Log("Anti-AFK: " + anti_AFK_TIMER.Enabled);
+            utils.Log("<INFO> ANTI_AFK_TEXT > " + anti_AFK_TIMER.Enabled);
 
             // ####################   VERSION IN REG SCHREIBEN   ###################################
             utils.Reg_Schreiben("Version", labelRevision.ToString(), "TruckersMP_Autorun");
@@ -1483,14 +1476,15 @@ namespace VTCManager_1._0._0
                
                 if (!File.Exists(dest_leer + @"\bin\win_x64\plugins\scs-telemetry.dll"))
                 {
-                    utils.Log("Unsere DLL war nicht vorhanden und wurde nach Plugins kopiert!");
+                    utils.Log("<ERROR> DLL NOT IN PLUGINS");
                     if (!Directory.Exists(dest_leer + @"\bin\win_x64\plugins")) 
-                    { 
+                    {
+                        utils.Log("<ERROR> FOLDER PLUGINS IN ETS2 NOT AVAIBLE");
                         Directory.CreateDirectory(dest_leer + @"\bin\win_x64\plugins"); 
-                        utils.Log("Verzeichnis Plugins wurde erstellt!"); 
+                        utils.Log("<ERROR> FOLDER PLUGINS CREATED"); 
                     }
                     File.Copy(Application.StartupPath + @"\Resources\scs-telemetry.dll", dest_leer + @"\bin\win_x64\plugins\scs-telemetry.dll");
-                    utils.Log("DLL wurde ins Plugin Verzeichnis kopiert!");
+                    utils.Log("<INFO> DLL IN PLUGINS FOLDER COPIED!");
                 } else
                 {
                     // ################  Für Diagnostikzwecke  ###########################
@@ -1510,7 +1504,7 @@ namespace VTCManager_1._0._0
                     foreach (var fi in di.GetFiles())
                     { Plugins_ETS += fi.Name + "  "; }
                     utils.Reg_Schreiben("Plugins ETS", Plugins_ETS, "TruckersMP_Autorun");
-                    utils.Log("Plugins wurden in die REG geschrieben!");
+                    utils.Log("<INFO> WRITE ALL PLUGINS IN REGISTRY");
                     // ################  Diagnostikzwecke ENDE  ###########################
                 }
 
@@ -1518,7 +1512,7 @@ namespace VTCManager_1._0._0
                 string dest_leer2 = utils.Reg_Lesen("TruckersMP_Autorun", "ATS_Pfad");
                 if (!string.IsNullOrEmpty(dest_leer2))
                 {
-                    utils.Log("ATS Pfad in REG ist angegeben!");
+                    utils.Log("<INFO> ATS PATH IS NOT NULL OR EMPTY");
                     ats_button.Visible = true;
                     ToolTip tt2 = new ToolTip();
                     tt2.SetToolTip(this.ats_button, "Starte ATS im Singleplayer !");
@@ -1537,7 +1531,7 @@ namespace VTCManager_1._0._0
                         foreach (var fi in di.GetFiles())
                         { Plugins_ATS += fi.Name + "  "; }
                         utils.Reg_Schreiben("Plugins ATS", Plugins_ATS, "TruckersMP_Autorun");
-                        utils.Log("Alle ATS PLUGINS wurden in REG geschrieben!");
+                        utils.Log("<INFO> ALL ATS PLUGIN WRITE IN REGISTRY");
                         // ################  Diagnostikzwecke ENDE  ###########################
                     }
 
@@ -1562,7 +1556,7 @@ namespace VTCManager_1._0._0
 
 
             Dashboard_1.Visible = (utils.Reg_Lesen("TruckersMP_Autorun", "Dashboard") == "1") ? true : false;
-            utils.Reg_Schreiben("Reload_Traffic_Sekunden", "20", "TruckersMP_Autorun");
+            utils.Reg_Schreiben("Reload_Traffic_Sekunden", "300", "TruckersMP_Autorun");
             lbl_Reload_Time.Text = "Reload-Interval: " + reload + " Sek.";
 
 
@@ -1593,11 +1587,11 @@ namespace VTCManager_1._0._0
             truckersMP_Link = utils.Reg_Lesen("TruckersMP_Autorun", "TruckersMP_Pfad");
             if (truckersMP_Link != null)
             {
-                utils.Log("TruckersMP wurde geöffnet!");
+                utils.Log("<INFO> TRUCKERSMP OPENING");
                 Process.Start(truckersMP_Link);
             } else
             {
-                utils.Log("Link zu TMP fehlt => MessageBox ausgegeben!");
+                utils.Log("<ERROR> LINK2TMP IS MISSING->MESSAGEBOXING | TODO GERM-ENG VERSION");
                 MessageBox.Show("Kein Link zu Truckers-MP angegeben!\nBitte schaue in den Einstellungen nach.", "Kein Link!", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
 
@@ -1605,7 +1599,7 @@ namespace VTCManager_1._0._0
 
         private void linkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            utils.Log("TruckyApp angeklickt!");
+            utils.Log("<INFO> TRUCKYAPP CLICKED");
             Process.Start("https://truckyapp.com/");
         }
 
@@ -1637,7 +1631,7 @@ namespace VTCManager_1._0._0
                 GUI_SIZE_BUTTON.Image = GetImageFromURL("https://zwpc.de/icons/expand.png");
                 // COMMIT - eventuell die beiden Bilder über Ressourcen laden
                 this.BackgroundImage = null;
-                utils.Log("GUI SIZE geändert zu Klein");
+                utils.Log("<INFO> GUI SIZE 1>0");
             }
             else
             {
@@ -1654,7 +1648,7 @@ namespace VTCManager_1._0._0
                 else if (hintergrund == "oldcar3") { this.BackgroundImage = Properties.Resources.oldcar3; }
                 else if (hintergrund == "oldcar4") { this.BackgroundImage = Properties.Resources.oldcar4; }
                 else { this.BackgroundImage = null; }
-                utils.Log("GUI SIZE geändert zu Groß");
+                utils.Log("<INFO> GUI SIZE 0>1");
             }
 
 
@@ -1668,7 +1662,7 @@ namespace VTCManager_1._0._0
         private void Main_FormClosing_1(object sender, FormClosingEventArgs e)
         {
             Application.Exit();
-            utils.Log("APPLICATION EXIT");
+            utils.Log("<INFO> APPLICATION EXIT");
         }
 
 
@@ -1683,7 +1677,7 @@ namespace VTCManager_1._0._0
                 menuStrip1.ForeColor = System.Drawing.Color.Gray;
                 BackColor = System.Drawing.Color.FromArgb(46, 46, 46);
                 ForeColor = System.Drawing.Color.LightGray;
-                utils.Log("DARK MODE ON");
+                utils.Log("<INFO> DARK MODE ON");
             } else
             {
                 Is_DarkMode_On = 0;
@@ -1698,7 +1692,7 @@ namespace VTCManager_1._0._0
                 menuStrip1.ForeColor = System.Drawing.Color.Gray;
                 BackColor = System.Drawing.Color.FromArgb(255, 255, 255);
                 ForeColor = System.Drawing.Color.Black;
-                utils.Log("DARK MODE OFF");
+                utils.Log("<INFO> DARK MODE OFF");
             }
         }
 
@@ -1717,10 +1711,10 @@ namespace VTCManager_1._0._0
             {
                 WebServer_Status_label.Text = "←Webserver";
                 WebServer_Status_label.Image = (sc.WS_Check() == true) ? green : red;
-                utils.Log("Server WS: " + sc.WS_Check());
+                utils.Log("<INFO> SERVER_WS: " + sc.WS_Check());
             } catch (Exception Fehler_Server)
             {
-                utils.Log("Verbindung zum Webserver fehlgeschlagen!");
+                utils.Log("<ERROR> WEBSERVER NOT AVAILABLE | TODO GER-ENG TRANSLATE");
                 MessageBox.Show("Keine Verbindung zum Webserver\n" + Fehler_Server.Message, "Fehler Verbindung", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
             // DB-Check
@@ -1728,11 +1722,11 @@ namespace VTCManager_1._0._0
             {
                 Label_DB_Server.Text = "←Datenbank";
                 Label_DB_Server.Image = (sc.DB_Check() == true) ? green : red;
-                utils.Log("Server DB: " + sc.DB_Check());
+                utils.Log("<INFO> SERVER_DB: " + sc.DB_Check());
             }
             catch (Exception Fehler_Server)
             {
-                utils.Log("Verbindung zum Datenbankserver fehlgeschlagen!");
+                utils.Log("<ERROR> DATABASE_SERVER NOT AVAILABLE | TODO GER-ENG TRANSLATE");
                 MessageBox.Show("Keine Verbindung zum Datenbankserver\n" + Fehler_Server.Message, "Fehler Verbindung", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
 
