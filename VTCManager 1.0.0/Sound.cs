@@ -52,7 +52,7 @@ namespace VTCManager_1._0._0
                 }
                 if (this.missing_file)
                 {
-                    MessageBox.Show(translation.error_sound_missing_file, translation.warning, MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    //MessageBox.Show(translation.error_sound_missing_file, translation.warning, MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 }
             }
             catch
