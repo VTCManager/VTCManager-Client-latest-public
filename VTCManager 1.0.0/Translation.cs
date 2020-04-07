@@ -70,6 +70,7 @@ namespace VTCManager_1._0._0
         public string Frachtmarkt_from_Company;
         public string Frachtmarkt_to_City;
         public string Frachtmarkt_to_Company;
+        public string error_sound_play;
         public Translation(String language)
         {
             version = "Version: 1.1.0";
@@ -133,6 +134,7 @@ namespace VTCManager_1._0._0
                 Frachtmarkt_from_Company = "Start-Firma: ";
                 Frachtmarkt_to_City = "Ziel-Ort: ";
                 Frachtmarkt_to_Company = "Ziel-Firma: ";
+                error_sound_play = "Ein kritischer Fehler ist bei der Wiedergabe eines Tones aufgetreten.";
 
 
             }
@@ -202,6 +204,7 @@ namespace VTCManager_1._0._0
                 Frachtmarkt_from_Company = "Start-Company: ";
                 Frachtmarkt_to_City = "Destination-City: ";
                 Frachtmarkt_to_Company = "Destination-Company: ";
+                error_sound_play = "An error occured while playing a sound.";
 
 
             }

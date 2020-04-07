@@ -148,7 +148,7 @@ namespace VTCManager_1._0._0
             //UI init
             this.InitializeComponent();
             this.InitializeTranslation();
-            try
+            /*try
             {
                 this.load_traffic();
             }
@@ -156,7 +156,7 @@ namespace VTCManager_1._0._0
             {
                 utils.Log("Fehler beim Abrufen der Verkehrsdaten");
                 MessageBox.Show("Fehler: Fehler beim Abrufen der Verkehrsdaten" + e.Message);
-            }
+            }*/
             this.FormClosing += new FormClosingEventHandler(this.Main_FormClosing);
 
             //Telemetry Handler setzen
