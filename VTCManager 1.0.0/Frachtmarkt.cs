@@ -42,16 +42,44 @@ namespace VTCManager_1._0._0
 
             // string alleStaedte = @"https://api.truckyapp.com/v2/map/cities/all";
 
-        
 
-
+            Lade_Von_Staedte();
+            Lade_Nach_Staedte();
 
         }
 
-        public void Lade_Staedte()
+        public void Lade_Von_Staedte()
         {
-            
+            if (File.Exists("Dateien/cities.CSV"))
+            {
+                string line;
+                StreamReader staedte = new StreamReader("Dateien/cities.CSV");
+                while ((line = staedte.ReadLine()) != null)
+                {
+                    System.Globalization.TextInfo ti = System.Globalization.CultureInfo.CurrentCulture.TextInfo;
+                    string[] teile = line.Split(';');
+                    Combo_From_City.Items.Add(ti.ToTitleCase(teile[0]));
+                }
+                staedte.Close();
+            }
         }
+
+        public void Lade_Nach_Staedte()
+        {
+            if (File.Exists("Dateien/cities.CSV"))
+            {
+                string line;
+                StreamReader staedte = new StreamReader("Dateien/cities.CSV");
+                while ((line = staedte.ReadLine()) != null)
+                {
+                    System.Globalization.TextInfo ti = System.Globalization.CultureInfo.CurrentCulture.TextInfo;
+                    string[] teile = line.Split(';');
+                    Combo_To_City.Items.Add(ti.ToTitleCase(teile[0]));
+                }
+                staedte.Close();
+            }
+        }
+
 
         public void Lade_ETS_Profile()
         {

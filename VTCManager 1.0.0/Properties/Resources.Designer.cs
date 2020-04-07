@@ -63,79 +63,9 @@ namespace VTCManager_1._0._0.Properties {
         /// <summary>
         ///   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
         /// </summary>
-        public static System.Drawing.Bitmap _00 {
-            get {
-                object obj = ResourceManager.GetObject("00", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
-        /// </summary>
-        public static System.Drawing.Bitmap _120 {
-            get {
-                object obj = ResourceManager.GetObject("_120", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
-        /// </summary>
         public static System.Drawing.Bitmap _280px_Ets2_logo {
             get {
                 object obj = ResourceManager.GetObject("280px-Ets2_logo", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
-        /// </summary>
-        public static System.Drawing.Bitmap _30 {
-            get {
-                object obj = ResourceManager.GetObject("_30", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
-        /// </summary>
-        public static System.Drawing.Bitmap _50 {
-            get {
-                object obj = ResourceManager.GetObject("_50", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
-        /// </summary>
-        public static System.Drawing.Bitmap _70 {
-            get {
-                object obj = ResourceManager.GetObject("_70", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
-        /// </summary>
-        public static System.Drawing.Bitmap _80 {
-            get {
-                object obj = ResourceManager.GetObject("_80", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
-        /// </summary>
-        public static System.Drawing.Bitmap _90 {
-            get {
-                object obj = ResourceManager.GetObject("_90", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -203,79 +133,9 @@ namespace VTCManager_1._0._0.Properties {
         /// <summary>
         ///   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
         /// </summary>
-        public static System.Drawing.Bitmap gang0 {
+        public static System.Drawing.Bitmap gabelstapler_64 {
             get {
-                object obj = ResourceManager.GetObject("gang0", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
-        /// </summary>
-        public static System.Drawing.Bitmap gang1 {
-            get {
-                object obj = ResourceManager.GetObject("gang1", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
-        /// </summary>
-        public static System.Drawing.Bitmap gang2 {
-            get {
-                object obj = ResourceManager.GetObject("gang2", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
-        /// </summary>
-        public static System.Drawing.Bitmap gang3 {
-            get {
-                object obj = ResourceManager.GetObject("gang3", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
-        /// </summary>
-        public static System.Drawing.Bitmap gang4 {
-            get {
-                object obj = ResourceManager.GetObject("gang4", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
-        /// </summary>
-        public static System.Drawing.Bitmap gang5 {
-            get {
-                object obj = ResourceManager.GetObject("gang5", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
-        /// </summary>
-        public static System.Drawing.Bitmap gang6 {
-            get {
-                object obj = ResourceManager.GetObject("gang6", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
-        /// </summary>
-        public static System.Drawing.Bitmap gangr {
-            get {
-                object obj = ResourceManager.GetObject("gangr", resourceCulture);
+                object obj = ResourceManager.GetObject("gabelstapler-64", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -406,16 +266,6 @@ namespace VTCManager_1._0._0.Properties {
         public static System.Drawing.Bitmap rpc1 {
             get {
                 object obj = ResourceManager.GetObject("rpc1", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
-        /// </summary>
-        public static System.Drawing.Bitmap test_bg_1 {
-            get {
-                object obj = ResourceManager.GetObject("test_bg_1", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
