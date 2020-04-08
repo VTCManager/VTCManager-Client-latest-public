@@ -60,6 +60,7 @@ namespace VTCManager_1._0._0
             {
                 str2 = new StreamReader(stream).ReadToEnd();
             }
+            Console.WriteLine(str2);
             response.Close();
             return str2;
         }
