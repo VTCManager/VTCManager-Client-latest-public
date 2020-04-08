@@ -93,6 +93,7 @@
             this.Combo_From_City.Name = "Combo_From_City";
             this.Combo_From_City.Size = new System.Drawing.Size(198, 24);
             this.Combo_From_City.TabIndex = 4;
+            this.Combo_From_City.SelectedIndexChanged += new System.EventHandler(this.Combo_From_City_SelectedIndexChanged);
             // 
             // Label_From_City
             // 

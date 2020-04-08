@@ -64,6 +64,28 @@ namespace VTCManager_1._0._0
 
         }
 
+        private void Combo_From_City_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            string stadtname = Combo_From_City.Text;
+             
+            API api = new API();
+            string test1 = this.api.HTTPSRequestPost(this.api.api_server + this.api.load_firmen_in_city, new Dictionary<string, string>()
+                                    {
+                                        { "stadtname", stadtname.ToString() }
+                                    }, false).ToString();
+
+
+            string values2 = api.HTTPSRequestGet(api.api_server + api.load_firmen_in_city);
+
+            Combo_To_City.Items.Add(test1);
+  
+            
+               
+
+
+           
+        }
+
 
         public void Lade_ETS_Profile()
         {
@@ -165,6 +187,7 @@ namespace VTCManager_1._0._0
                 
             }
         }
+
 
     }
 
