@@ -69,15 +69,15 @@ namespace VTCManager_1._0._0
             string stadtname = Combo_From_City.Text;
              
             API api = new API();
-            string test1 = this.api.HTTPSRequestPost(this.api.api_server + this.api.load_firmen_in_city, new Dictionary<string, string>()
+            string answer = this.api.HTTPSRequestPost(this.api.api_server + this.api.load_firmen_in_city, new Dictionary<string, string>()
                                     {
                                         { "stadtname", stadtname.ToString() }
                                     }, false).ToString();
 
-
             string values2 = api.HTTPSRequestGet(api.api_server + api.load_firmen_in_city);
 
-            Combo_To_City.Items.Add(test1);
+            // TODO Firmen noch eintragen
+            Combo_From_Company.Items.Add(answer);
   
             
                
