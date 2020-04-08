@@ -50,34 +50,18 @@ namespace VTCManager_1._0._0
 
         public void Lade_Von_Staedte()
         {
-            if (File.Exists("Dateien/cities.CSV"))
-            {
-                string line;
-                StreamReader staedte = new StreamReader("Dateien/cities.CSV");
-                while ((line = staedte.ReadLine()) != null)
-                {
-                    System.Globalization.TextInfo ti = System.Globalization.CultureInfo.CurrentCulture.TextInfo;
-                    string[] teile = line.Split(';');
-                    Combo_From_City.Items.Add(ti.ToTitleCase(teile[0]));
-                }
-                staedte.Close();
-            }
+            API api = new API();
+            string values = api.HTTPSRequestGet(api.api_server + api.get_cities_path);
+            string[] values2 = values.Split(';');
+
+            foreach (string word in values2)
+                Combo_From_City.Items.Add(word);
+
         }
 
         public void Lade_Nach_Staedte()
         {
-            if (File.Exists("Dateien/cities.CSV"))
-            {
-                string line;
-                StreamReader staedte = new StreamReader("Dateien/cities.CSV");
-                while ((line = staedte.ReadLine()) != null)
-                {
-                    System.Globalization.TextInfo ti = System.Globalization.CultureInfo.CurrentCulture.TextInfo;
-                    string[] teile = line.Split(';');
-                    Combo_To_City.Items.Add(ti.ToTitleCase(teile[0]));
-                }
-                staedte.Close();
-            }
+
         }
 
 
