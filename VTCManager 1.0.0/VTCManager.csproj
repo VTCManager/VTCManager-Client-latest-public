@@ -267,8 +267,8 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="SettingsWindow.resx">
       <DependentUpon>SettingsWindow.cs</DependentUpon>
@@ -287,57 +287,17 @@
     <Content Include="iconfinder_bullet-red_84435.png" />
     <None Include="Resources\iconfinder_bullet-red_84435.png" />
     <None Include="Resources\iconfinder_bulled-green_1930264.png" />
-    <None Include="Resources\test_bg_1.png" />
     <None Include="Resources\oldcar1.jpg" />
     <None Include="Resources\oldcar2.jpg" />
     <None Include="Resources\oldcar3.jpg" />
     <None Include="Resources\oldcar4.jpg" />
     <None Include="Resources\rpc1.jpg" />
-    <None Include="Resources\00.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <Content Include="Resources\10.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Resources\100.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Resources\120.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
     <None Include="Resources\280px-Ets2_logo.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <Content Include="Resources\30.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Resources\50.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Resources\70.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Resources\80.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Resources\90.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
     <None Include="Resources\ats2l.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Resources\test1.jpg" />
-    <None Include="Resources\test2.jpg" />
-    <None Include="Resources\test21.jpg" />
-    <None Include="Resources\test11.jpg" />
-    <None Include="Resources\gang0.png" />
-    <None Include="Resources\gang1.png" />
-    <None Include="Resources\gang2.png" />
-    <None Include="Resources\gang3.png" />
-    <None Include="Resources\gang4.png" />
-    <None Include="Resources\gang5.png" />
-    <None Include="Resources\gangr.png" />
-    <None Include="Resources\gang6.png" />
     <None Include="Resources\favicon.png" />
     <None Include="Resources\backi.png" />
     <None Include="Resources\einstellungen.png" />
@@ -348,6 +308,10 @@
     <None Include="Resources\bremse_rot.png" />
     <None Include="Resources\icons8-motor-128.png" />
     <None Include="Resources\retarder1.png" />
+    <Content Include="Resources\gabelstapler-64.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <None Include="Resources\gabelstapler-641.png" />
     <Content Include="Resources\scs-telemetry.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

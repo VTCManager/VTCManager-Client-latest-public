@@ -23,6 +23,7 @@ namespace VTCManager_1._0._0
         public string tollgate_path;
         public string new_job_path;
         public string trucky_api_server;
+        public string get_cities_path = "load_cities.php";
         public API()
         {
             this.login_path = "login.php";

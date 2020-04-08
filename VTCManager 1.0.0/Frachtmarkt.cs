@@ -42,18 +42,28 @@ namespace VTCManager_1._0._0
 
             // string alleStaedte = @"https://api.truckyapp.com/v2/map/cities/all";
 
-        
 
-
+            Lade_Von_Staedte();
+            Lade_Nach_Staedte();
 
         }
 
-        public void Lade_Staedte()
+        public void Lade_Von_Staedte()
         {
-     
+            API api = new API();
+            string values = api.HTTPSRequestGet(api.api_server + api.get_cities_path);
+            string[] values2 = values.Split(';');
 
+            foreach (string word in values2)
+                Combo_From_City.Items.Add(word);
 
         }
+
+        public void Lade_Nach_Staedte()
+        {
+
+        }
+
 
         public void Lade_ETS_Profile()
         {
