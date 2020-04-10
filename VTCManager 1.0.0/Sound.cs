@@ -23,7 +23,7 @@ namespace VTCManager_1._0._0
                 if (File.Exists(Environment.CurrentDirectory + @"\Ressources\insight.wav"))
                 {
                     this.ton_erfolg = new SoundPlayer(Environment.CurrentDirectory + @"\Ressources\insight.wav");
-                    Console.WriteLine("insight.wav geladen");
+                    Console.WriteLine("insight.wav geladen");         
                 }
                 else
                 {
@@ -34,12 +34,10 @@ namespace VTCManager_1._0._0
                 {
                     this.ton_fehler = new SoundPlayer(Environment.CurrentDirectory + @"\Ressources\time-is-now.wav");
                     Console.WriteLine("time-is-now.wav geladen");
-
                 }
                 else
                 {
                     Console.WriteLine("time-is-now.wav nicht geladen");
-
                     this.missing_file = true;
                 }
                 if (File.Exists(Environment.CurrentDirectory + @"\Ressources\AutopilotStart_fx.wav"))
@@ -50,7 +48,6 @@ namespace VTCManager_1._0._0
                 else
                 {
                     this.missing_file = true;
-                    Console.WriteLine("AutopilotStart_fx.wav nicht geladen");
                 }
                 if (File.Exists(Environment.CurrentDirectory + @"\Ressources\AutopilotEnd_fx.wav"))
                 {

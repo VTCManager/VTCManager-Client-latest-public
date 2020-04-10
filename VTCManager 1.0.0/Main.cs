@@ -11,6 +11,7 @@ using System.Windows.Forms;
 using Timer = System.Windows.Forms.Timer;
 using SCSSdkClient;
 using VTCManager_1._0._0.Objekte;
+//using System.Windows;
 
 namespace VTCManager_1._0._0
 {
@@ -130,19 +131,19 @@ namespace VTCManager_1._0._0
             string lpWindowName);
 
         // Activate an application window.
-        [DllImport("USER32.DLL")]
+       [DllImport("USER32.DLL")]
         public static extern bool SetForegroundWindow(IntPtr hWnd);
 
 
         public Main(User user)
         {
+
             job = new Job();
             //Daten werden übernommen von Login.cs
             this.user = user;
             
             //Laden des Sound-Systems
             this.sound = new Sound(user.translation);
-
             //Benutzerkonfiguration laden
             this.settings = new SettingsManager();
             settings.LoadConfiguration();
@@ -276,9 +277,11 @@ namespace VTCManager_1._0._0
                 }
                 else
                 {
+
                     //Läuft das Spiel?
                     if (Utilities.IsGameRunning)
                     {
+
                         //falls Daten erhalten werden
                         if (data.SdkActive)
                         {
@@ -302,7 +305,6 @@ namespace VTCManager_1._0._0
                             if (data.Paused == false)
                             {
                                 GameRuns = 1;
-
                                 job.currentPercentage = (((((double)data.NavigationValues.NavigationDistance / 1000) / (double)data.JobValues.PlannedDistanceKm) * 100) - 100) * -1;
 
                                 // ###################   FUEL PROGRESS    ##############################################
@@ -362,6 +364,7 @@ namespace VTCManager_1._0._0
                             }
                             else
                             {
+                
                                 speed_lb.Text = user.translation.waiting_for_ets;
                             }
                             bool flag;
@@ -475,6 +478,7 @@ namespace VTCManager_1._0._0
 
         private void locationupdate()
         {
+
             Dashboard_1.Visible = (utils.Reg_Lesen("TruckersMP_Autorun", "Dashboard") == "1") ? true : false;
             double num3 = user.rotation;
                 Dictionary<string, string> postParameters = new Dictionary<string, string>();
@@ -1423,7 +1427,7 @@ namespace VTCManager_1._0._0
         // Edit by Thommy
         private void Main_Load(object sender, EventArgs e)
         {
-           
+
             this.discord = new Discord();
             lbl_Revision.Text = "2.1.2";
             labelRevision = lbl_Revision.Text;
@@ -1732,7 +1736,11 @@ namespace VTCManager_1._0._0
             }
 
 
+
         }
+
+
+
 
         private void serverstatusToolStripMenuItem_Click(object sender, EventArgs e)
         {
@@ -1747,16 +1755,21 @@ namespace VTCManager_1._0._0
 
             anti_AFK_TIMER.Interval = Convert.ToInt32(utils.Reg_Lesen("TruckersMP_Autorun", "ANTI_AFK_RELOAD").ToString()) * 60000;
 
+          
+
             if(GameRuns == 1)
             {
-                if (user.Geschwindigkeit < 1)
-                {
-                    SendKeys.Send("y");
-                    SendKeys.Send(utils.Reg_Lesen("TruckersMP_Autorun", "ANTI_AFK"));
-                    SendKeys.Send("{Enter}");
+                    if (user.Geschwindigkeit < 1)
+                    {
+                        utils.Log("<INFO> SENDE ANTI_AFK");
+                        SendKeys.Send("y");
+                        SendKeys.Send(utils.Reg_Lesen("TruckersMP_Autorun", "ANTI_AFK"));
+                        SendKeys.Send("{Enter}");
 
-                }
+                    }
+                
             }
+
         }
 
         private void oldCar1ToolStripMenuItem_Click(object sender, EventArgs e)
