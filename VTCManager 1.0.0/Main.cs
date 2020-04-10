@@ -1428,7 +1428,7 @@ namespace VTCManager_1._0._0
         {
            
             this.discord = new Discord();
-            lbl_Revision.Text = "2.1.2";
+            lbl_Revision.Text = "2.1.3";
             labelRevision = lbl_Revision.Text;
 
             /// ######################   GEHT NOCH NICHT, DESHALB AUSBLENDEN    ###################
