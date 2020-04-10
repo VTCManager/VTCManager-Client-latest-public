@@ -162,7 +162,7 @@ namespace VTCManager_1._0._0
             this.FormClosing += new FormClosingEventHandler(this.Main_FormClosing);
 
             //Telemetry Handler setzen
-            /*this.Telemetry = new SCSSdkTelemetry();
+            this.Telemetry = new SCSSdkTelemetry();
             this.Telemetry.Data += this.Telemetry_Data;
             this.Telemetry.JobStarted += this.TelemetryOnJobStarted;
             this.Telemetry.JobCancelled += this.TelemetryJobCancelled;
@@ -177,7 +177,7 @@ namespace VTCManager_1._0._0
             if (this.Telemetry.Error == null)
                 return;
             int num = (int)MessageBox.Show("Fehler beim Ausführen von:" + this.Telemetry.Map + "\r\n" + this.Telemetry.Error.Message + "\r\n\r\nStacktrace:\r\n" + this.Telemetry.Error.StackTrace);
-        */
+        
             }
 
         private void InitializeTranslation()
