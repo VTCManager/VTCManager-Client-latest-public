@@ -161,7 +161,7 @@ namespace VTCManager_1._0._0
             this.FormClosing += new FormClosingEventHandler(this.Main_FormClosing);
 
             //Telemetry Handler setzen
-            /*this.Telemetry = new SCSSdkTelemetry();
+            this.Telemetry = new SCSSdkTelemetry();
             this.Telemetry.Data += this.Telemetry_Data;
             this.Telemetry.JobStarted += this.TelemetryOnJobStarted;
             this.Telemetry.JobCancelled += this.TelemetryJobCancelled;
@@ -176,7 +176,7 @@ namespace VTCManager_1._0._0
             if (this.Telemetry.Error == null)
                 return;
             int num = (int)MessageBox.Show("Fehler beim Ausführen von:" + this.Telemetry.Map + "\r\n" + this.Telemetry.Error.Message + "\r\n\r\nStacktrace:\r\n" + this.Telemetry.Error.StackTrace);
-        */
+        
             }
 
         private void InitializeTranslation()
@@ -279,6 +279,7 @@ namespace VTCManager_1._0._0
                     //Läuft das Spiel?
                     if (Utilities.IsGameRunning)
                     {
+
                         //falls Daten erhalten werden
                         if (data.SdkActive)
                         {
@@ -302,6 +303,7 @@ namespace VTCManager_1._0._0
                             if (data.Paused == false)
                             {
                                 GameRuns = 1;
+                               
 
                                 job.currentPercentage = (((((double)data.NavigationValues.NavigationDistance / 1000) / (double)data.JobValues.PlannedDistanceKm) * 100) - 100) * -1;
 
@@ -362,6 +364,7 @@ namespace VTCManager_1._0._0
                             }
                             else
                             {
+                                GameRuns = 0;
                                 speed_lb.Text = user.translation.waiting_for_ets;
                             }
                             bool flag;
@@ -1749,6 +1752,7 @@ namespace VTCManager_1._0._0
 
             if(GameRuns == 1)
             {
+                utils.Log("<INFO> Game ist Running - Anti_AFK Online");
                 if (user.Geschwindigkeit < 1)
                 {
                     SendKeys.Send("y");
@@ -1756,6 +1760,9 @@ namespace VTCManager_1._0._0
                     SendKeys.Send("{Enter}");
 
                 }
+            } else
+            {
+                utils.Log("<INFO> Game ist Paused - Anti_AFK Offline");
             }
         }
 
