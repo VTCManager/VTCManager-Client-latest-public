@@ -804,7 +804,7 @@ namespace VTCManager_1._0._0
             }
             catch (Exception ex)
             {
-                utils.Log("<ERROR> Methode GameLog_suchen_Click in SettingsWindow.cs -> " + ex.Message);
+                utils.Log("<ERROR> Methode GameLog_suchen_Click in SettingsWindow.cs -> " + ex.Message + " [SettingsWindow.cs->807]");
                 MessageBox.Show("Der Pfad zum GameLog Ordner wurde nicht gefunden!", "Fehler", MessageBoxButtons.OK, MessageBoxIcon.Error); 
             }
 
@@ -833,7 +833,7 @@ namespace VTCManager_1._0._0
             }
             catch (Exception ex) 
             {
-                utils.Log("<ERROR> Methode GameLog_oeffnen_Click in SettingsWindow.cs -> " + ex.Message);
+                utils.Log("<ERROR> Methode GameLog_oeffnen_Click in SettingsWindow.cs -> " + ex.Message + " [SettingsWindow.cs->836]");
                 MessageBox.Show("Der Pfad zur GameLog wurde nicht gefunden!", "Fehler", MessageBoxButtons.OK, MessageBoxIcon.Error); 
             }
 
@@ -878,7 +878,7 @@ namespace VTCManager_1._0._0
                 catch (Exception e)
                 {
                     // AAAAAAAAAAARGH, an error!
-                    utils.Log("<ERROR> Methode Read in SettingsWindow.cs -> " + e.Message);
+                    utils.Log("<ERROR> Methode Read in SettingsWindow.cs -> " + e.Message + " [SettingsWindow.cs->881]");
                     MessageBox.Show(e.Message, "Reading registry " + KeyName.ToUpper());
                     return null;
                 }

@@ -182,7 +182,7 @@ namespace VTCManager_1._0._0
                 RegistryKey key = Registry.CurrentUser.OpenSubKey(@"SOFTWARE\VTCManager\" + ordner);
                 return key.GetValue(value).ToString();
             } catch (Exception ex) {
-                Log("<ERROR> Methode Reg_Lesen in Utilities.cs -> " + ex.Message);
+                Log("<ERROR> Methode Reg_Lesen in Utilities.cs -> " + ex.Message + ex.StackTrace + "Given String->Folder:" + ordner + " + Value: " + value + " in [Utilities.cs->185]");
                 return null;
             }
         }
@@ -198,7 +198,7 @@ namespace VTCManager_1._0._0
                     File.AppendAllText(logDirectory + logFile, "<" + DateTime.Now + "> " + text + Environment.NewLine);
                 } catch (Exception ex)
                 {
-                    Log("<ERROR> Methode LOG in Utilities.cs -> " + ex.Message);
+                    Log("<ERROR> Methode LOG in Utilities.cs -> " + ex.Message + ex.StackTrace + "Given String: "+ text + " [Utilities.cs->201]");
                 }
 
             }

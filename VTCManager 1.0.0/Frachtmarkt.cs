@@ -104,7 +104,7 @@ namespace VTCManager_1._0._0
             }
             catch
             {
-                utils.Log("Keine Profilordner in ETS gefunden  !");
+                utils.Log("<ERROR> Keine Profilordner in ETS gefunden  ! [Frachtmartkt.cs->85]");
             }
         }
 
@@ -127,7 +127,7 @@ namespace VTCManager_1._0._0
             }
             catch
             {
-                utils.Log("Keine Profilordner in ATS gefunden !");
+                utils.Log("<ERROR> Keine Profilordner in ATS gefunden ! [Frachtmarkt.cs->111]");
             }
         }
 
@@ -148,7 +148,7 @@ namespace VTCManager_1._0._0
         {
             Backup_Game_Sii_ETS();
             Lade_ETS_Profile();
-            this.utils.Log("ETS2 Profile wurden im Frachtmarkt geladen!");
+            this.utils.Log("<INFO> ETS2 Profile wurden im Frachtmarkt geladen! [Frachtmartkt.cs->147]");
 
         }
 
@@ -158,7 +158,7 @@ namespace VTCManager_1._0._0
         {
             Backup_Game_Sii_ATS();
             Lade_ATS_Profile();
-            this.utils.Log("ATS Profile wurden im Frachtmarkt geladen!");
+            this.utils.Log("<INFO> ATS Profile wurden im Frachtmarkt geladen! [Frachtmartkt.cs->157]");
         }
 
         public void Backup_Game_Sii_ETS()
@@ -174,7 +174,7 @@ namespace VTCManager_1._0._0
                     File.Copy(SiiSourcePath, SiiDestPath, true);
 
                 }
-                catch { utils.Log("Keine Profile für Backup in ETS gefunden!"); }
+                catch { utils.Log("<ERROR> Keine Profile für Backup in ETS gefunden! [Frachtmartkt.cs->164]"); }
             }
         }
 
@@ -190,7 +190,7 @@ namespace VTCManager_1._0._0
                 {
                     File.Copy(SiiSourcePath, SiiDestPath, true);
                 }
-                catch { utils.Log("Keine Profile für Backup in ATS gefunden!"); }
+                catch { utils.Log("<ERROR> Keine Profile für Backup in ATS gefunden! [Frachtmartkt.cs->181]"); }
 
             }
         }
