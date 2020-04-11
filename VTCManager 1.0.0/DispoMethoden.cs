@@ -31,6 +31,19 @@ namespace VTCManager_1._0._0
             }
         }
 
+
+        public string FromStringToHex(string hexstring)
+        {
+            StringBuilder sb = new StringBuilder();
+            foreach (char t in hexstring)
+            {
+                //Note: X for upper, x for lower case letters
+                sb.Append(Convert.ToInt32(t).ToString("x"));
+            }
+            return sb.ToString();
+        }
+
+
     }
 }
 

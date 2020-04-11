@@ -11,6 +11,7 @@ using System.Windows.Forms;
 using Timer = System.Windows.Forms.Timer;
 using SCSSdkClient;
 using VTCManager_1._0._0.Objekte;
+using System.Text;
 
 namespace VTCManager_1._0._0
 {
@@ -124,6 +125,7 @@ namespace VTCManager_1._0._0
         private ToolStripStatusLabel User_Patreon_State;
         private bool jobStarted;
 
+
         // Get a handle to an application window.
         [DllImport("USER32.DLL", CharSet = CharSet.Unicode)]
         public static extern IntPtr FindWindow(string lpClassName,
@@ -132,6 +134,12 @@ namespace VTCManager_1._0._0
         // Activate an application window.
         [DllImport("USER32.DLL")]
         public static extern bool SetForegroundWindow(IntPtr hWnd);
+
+        [DllImport("user32.dll")]
+        static extern IntPtr GetForegroundWindow();
+        [DllImport("user32.dll")]
+        static extern int GetWindowText(IntPtr hWnd, StringBuilder text, int count);
+
 
 
         public Main(User user)
@@ -478,6 +486,8 @@ namespace VTCManager_1._0._0
 
         private void locationupdate()
         {
+            utils.Log("<INFO> FOREGROUND: " + GetActiveWindowTitle());
+
             Dashboard_1.Visible = (utils.Reg_Lesen("TruckersMP_Autorun", "Dashboard") == "1") ? true : false;
             double num3 = user.rotation;
                 Dictionary<string, string> postParameters = new Dictionary<string, string>();
@@ -1435,8 +1445,9 @@ namespace VTCManager_1._0._0
             Motorbremse_ICON.Visible = false;
 
             User_Patreon_State.Text = "PT: " + user.patreon_state.ToString();
-
-            if(user.patreon_state >= 2)
+            Frachtmarkt fm = new Frachtmarkt();
+            fm.FM_Patreon_State = user.patreon_state;
+            if (user.patreon_state >= 2)
             {
                 frachtmarktToolStripMenuItem.Visible = Visible;
             }
@@ -1564,7 +1575,7 @@ namespace VTCManager_1._0._0
             lbl_Reload_Time.Text = "Reload-Interval: " + reload + " Sek.";
 
 
-            if(Utilities.IsGameRunning == false)
+            if(Utilities.IsGameRunning == true)
             {
                 speed_lb.Text = user.translation.loading_text;
                 truck_lb.Visible = false;
@@ -1742,6 +1753,19 @@ namespace VTCManager_1._0._0
 
         }
 
+        private string GetActiveWindowTitle()
+        {
+            const int nChars = 256;
+            StringBuilder Buff = new StringBuilder(nChars);
+            IntPtr handle = GetForegroundWindow();
+
+            if (GetWindowText(handle, Buff, nChars) > 0)
+            {
+                return Buff.ToString();
+            }
+            return null;
+        }
+
 
         private void anti_AFK_TIMER_Tick(object sender, EventArgs e)
         {
@@ -1750,19 +1774,27 @@ namespace VTCManager_1._0._0
 
             anti_AFK_TIMER.Interval = Convert.ToInt32(utils.Reg_Lesen("TruckersMP_Autorun", "ANTI_AFK_RELOAD").ToString()) * 60000;
 
-            if(GameRuns == 1)
-            {
-                utils.Log("<INFO> Game ist Running - Anti_AFK Online");
-                if (user.Geschwindigkeit < 1)
-                {
-                    SendKeys.Send("y");
-                    SendKeys.Send(utils.Reg_Lesen("TruckersMP_Autorun", "ANTI_AFK"));
-                    SendKeys.Send("{Enter}");
 
+            if (GetActiveWindowTitle().Contains("Euro Truck Simulator 2"))
+            {
+                utils.Log("<INFO> ETS FOREGROUND->ANTI_AFK ACTIVE");
+                if (GameRuns == 1)
+                {
+
+
+                    utils.Log("<INFO> Game ist Running - Anti_AFK_Online");
+                    if (user.Geschwindigkeit < 1)
+                    {
+                        utils.Log("<INFO> ANTI_AFK FIRED");
+                        SendKeys.Send("y");
+                        SendKeys.Send(utils.Reg_Lesen("TruckersMP_Autorun", "ANTI_AFK"));
+                        SendKeys.Send("{Enter}");
+
+                    }
                 }
             } else
             {
-                utils.Log("<INFO> Game ist Paused - Anti_AFK Offline");
+                utils.Log("<INFO> ETS BACKGROUND OR OFF->ANTI_AFK INACTIVE");
             }
         }
 

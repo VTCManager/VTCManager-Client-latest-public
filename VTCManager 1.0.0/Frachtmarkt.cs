@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Diagnostics;
 using System.Drawing;
 using System.Globalization;
 using System.IO;
@@ -17,9 +18,12 @@ namespace VTCManager_1._0._0
     public partial class Frachtmarkt : Form
     {
         DispoMethoden dp = new DispoMethoden();
+        MethodsDecodeSave ms = new MethodsDecodeSave();
         Utilities utils = new Utilities();
         Translation trans;
         API api = new API();
+
+        public int FM_Patreon_State { get; set; }
 
         public string folderETS = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + @"\Euro Truck Simulator 2\profiles";
         public string folderATS = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + @"\American Truck Simulator\profiles";
@@ -50,7 +54,6 @@ namespace VTCManager_1._0._0
 
         public void Lade_Von_Staedte()
         {
-            API api = new API();
             string values = api.HTTPSRequestGet(api.api_server + api.get_cities_path);
             string[] values2 = values.Split(';');
 
@@ -67,8 +70,6 @@ namespace VTCManager_1._0._0
         private void Combo_From_City_SelectedIndexChanged(object sender, EventArgs e)
         {
             string stadtname = Combo_From_City.Text;
-             
-            API api = new API();
             string answer = this.api.HTTPSRequestPost(this.api.api_server + this.api.load_firmen_in_city, new Dictionary<string, string>()
                                     {
                                         { "stadtname", stadtname.ToString() }
@@ -78,12 +79,6 @@ namespace VTCManager_1._0._0
 
             // TODO Firmen noch eintragen
             Combo_From_Company.Items.Add(answer);
-  
-            
-               
-
-
-           
         }
 
 
@@ -100,10 +95,12 @@ namespace VTCManager_1._0._0
                 {
                     i++;
                     ordnername = dir.Substring(dir.LastIndexOf("\\") + 1);
+
                     comboBoxProfiles.Items.Add(dp.FromHexToString(ordnername));
                 }
-                if(i == 0) { comboBoxProfiles.Text = trans.Frachtmarkt_no_profiles; comboBoxProfiles.Enabled = false; } else { comboBoxProfiles.Enabled = true; }
+                if (i == 0) { comboBoxProfiles.Text = trans.Frachtmarkt_no_profiles; comboBoxProfiles.Enabled = false; } else { comboBoxProfiles.Enabled = true; }
                 comboBoxProfiles.SelectedIndex = 0;
+                this.Decrypt_SII(dp.FromStringToHex(comboBoxProfiles.Text));
             }
             catch
             {
@@ -139,6 +136,12 @@ namespace VTCManager_1._0._0
         {
             // TODO -> Vorwauswahl anhand des Games aus der Main.cs
             Radio_Button_ETS2.Checked = true;
+            if (FM_Patreon_State >= 2)
+            {
+                textBox_Money.Visible = true;
+
+                lbl_Guhaben.Visible = true;
+            }
         }
 
         private void Radio_Button_ETS2_CheckedChanged(object sender, EventArgs e)
@@ -146,8 +149,10 @@ namespace VTCManager_1._0._0
             Backup_Game_Sii_ETS();
             Lade_ETS_Profile();
             this.utils.Log("ETS2 Profile wurden im Frachtmarkt geladen!");
-      
+
         }
+
+
 
         private void Radio_Button_ATS_CheckedChanged(object sender, EventArgs e)
         {
@@ -162,11 +167,12 @@ namespace VTCManager_1._0._0
             foreach (string dir in dirs)
             {
                 ordnername = dir.Substring(dir.LastIndexOf("\\") + 1);
-                string SiiSourcePath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + @"\Euro truck Simulator 2\profiles\" + ordnername + @"\save\autosave\game.sii";
-                string SiiDestPath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + @"\Euro truck Simulator 2\profiles\" + ordnername + @"\save\autosave\VTC_Backup.sii";
+                string SiiSourcePath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + @"\Euro Truck Simulator 2\profiles\" + ordnername + @"\save\autosave\game.sii";
+                string SiiDestPath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + @"\Euro Truck Simulator 2\profiles\" + ordnername + @"\save\autosave\VTC_Backup.sii";
                 try
                 {
                     File.Copy(SiiSourcePath, SiiDestPath, true);
+
                 }
                 catch { utils.Log("Keine Profile für Backup in ETS gefunden!"); }
             }
@@ -183,15 +189,30 @@ namespace VTCManager_1._0._0
                 try
                 {
                     File.Copy(SiiSourcePath, SiiDestPath, true);
-                } catch { utils.Log("Keine Profile für Backup in ATS gefunden!"); }
-                
+                }
+                catch { utils.Log("Keine Profile für Backup in ATS gefunden!"); }
+
             }
         }
 
+        private void Button_Setze_Money_Click(object sender, EventArgs e)
+        {
+            MessageBox.Show("Schreibe *.sii Datei...");
+        }
+
+        private void Decrypt_SII(string ordnername)
+        {
+            string ordner = ordnername.ToUpper();
+
+            string dateiname = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + @"\Euro Truck Simulator 2\profiles\" + ordner + @"\save\autosave\game.sii";
+
+
+        }
+
+        private void comboBoxProfiles_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
 
     }
-
-
-
-
 }

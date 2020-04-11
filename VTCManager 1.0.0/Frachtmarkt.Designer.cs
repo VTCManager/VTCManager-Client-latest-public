@@ -41,6 +41,9 @@
             this.Label_To_Company = new System.Windows.Forms.Label();
             this.Label_To_City = new System.Windows.Forms.Label();
             this.Combo_To_City = new System.Windows.Forms.ComboBox();
+            this.textBox_Money = new System.Windows.Forms.TextBox();
+            this.lbl_Guhaben = new System.Windows.Forms.Label();
+            this.Button_Setze_Money = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // comboBoxProfiles
@@ -50,6 +53,7 @@
             this.comboBoxProfiles.Name = "comboBoxProfiles";
             this.comboBoxProfiles.Size = new System.Drawing.Size(294, 21);
             this.comboBoxProfiles.TabIndex = 0;
+            this.comboBoxProfiles.SelectedIndexChanged += new System.EventHandler(this.comboBoxProfiles_SelectedIndexChanged);
             // 
             // label1
             // 
@@ -158,11 +162,41 @@
             this.Combo_To_City.Size = new System.Drawing.Size(198, 24);
             this.Combo_To_City.TabIndex = 8;
             // 
+            // textBox_Money
+            // 
+            this.textBox_Money.Location = new System.Drawing.Point(134, 176);
+            this.textBox_Money.Name = "textBox_Money";
+            this.textBox_Money.Size = new System.Drawing.Size(198, 20);
+            this.textBox_Money.TabIndex = 12;
+            // 
+            // lbl_Guhaben
+            // 
+            this.lbl_Guhaben.AutoSize = true;
+            this.lbl_Guhaben.Location = new System.Drawing.Point(22, 179);
+            this.lbl_Guhaben.Name = "lbl_Guhaben";
+            this.lbl_Guhaben.Size = new System.Drawing.Size(106, 13);
+            this.lbl_Guhaben.TabIndex = 13;
+            this.lbl_Guhaben.Text = "Aktuelles Guthaben: ";
+            this.lbl_Guhaben.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // Button_Setze_Money
+            // 
+            this.Button_Setze_Money.Location = new System.Drawing.Point(333, 175);
+            this.Button_Setze_Money.Name = "Button_Setze_Money";
+            this.Button_Setze_Money.Size = new System.Drawing.Size(47, 22);
+            this.Button_Setze_Money.TabIndex = 14;
+            this.Button_Setze_Money.Text = "Set";
+            this.Button_Setze_Money.UseVisualStyleBackColor = true;
+            this.Button_Setze_Money.Click += new System.EventHandler(this.Button_Setze_Money_Click);
+            // 
             // Frachtmarkt
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Controls.Add(this.Button_Setze_Money);
+            this.Controls.Add(this.lbl_Guhaben);
+            this.Controls.Add(this.textBox_Money);
             this.Controls.Add(this.Combo_To_Company);
             this.Controls.Add(this.Label_To_Company);
             this.Controls.Add(this.Label_To_City);
@@ -198,5 +232,8 @@
         private System.Windows.Forms.Label Label_To_Company;
         private System.Windows.Forms.Label Label_To_City;
         private System.Windows.Forms.ComboBox Combo_To_City;
+        private System.Windows.Forms.TextBox textBox_Money;
+        private System.Windows.Forms.Label lbl_Guhaben;
+        private System.Windows.Forms.Button Button_Setze_Money;
     }
 }
