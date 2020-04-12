@@ -70,6 +70,7 @@ namespace VTCManager_1._0._0
         }
         private void InitializeComponent()
         {
+            #region Designersachen
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(SettingsWindow));
             this.comboBox1 = new System.Windows.Forms.ComboBox();
             this.label1 = new System.Windows.Forms.Label();
@@ -576,7 +577,7 @@ namespace VTCManager_1._0._0
             this.groupBox2.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
-
+            #endregion
         }
 
         private void save_button_Click(object sender, EventArgs e)

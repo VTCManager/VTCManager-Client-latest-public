@@ -121,12 +121,9 @@
     <Compile Include="Login.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="MailMaker.cs" />
     <Compile Include="Main.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="MethodsDecodeSave.cs" />
-    <Compile Include="ModifyProgressBarColor.cs" />
     <Compile Include="Objekte\Job.cs" />
     <Compile Include="Objekte\User.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -326,6 +323,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <None Include="Resources\upd1.png" />
+    <None Include="Resources\SII_Decrypt.exe">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <Content Include="Ressources\AutopilotEnd_fx.wav">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
