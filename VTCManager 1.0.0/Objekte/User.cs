@@ -12,6 +12,7 @@ namespace VTCManager_1._0._0.Objekte
         public int driven_tours;
         public int bank_balance;
         public int patreon_state;
+        public int team_state;
         public String authcode;
         public Translation translation;
 

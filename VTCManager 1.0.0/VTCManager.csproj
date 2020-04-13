@@ -314,11 +314,16 @@
     <None Include="Resources\bremse_rot.png" />
     <None Include="Resources\icons8-motor-128.png" />
     <None Include="Resources\retarder1.png" />
+    <None Include="Resources\admin.jpg" />
     <Content Include="Resources\gabelstapler-64.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <None Include="Resources\gabelstapler-641.png" />
     <None Include="Resources\patreon-24.png" />
+    <None Include="Resources\pat1.jpg" />
+    <None Include="Resources\pat2.jpg" />
+    <None Include="Resources\pat3.jpg" />
+    <None Include="Resources\mod.jpg" />
     <Content Include="Resources\scs-telemetry.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -326,6 +331,7 @@
     <None Include="Resources\SII_Decrypt.exe">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Include="Resources\sup.jpg" />
     <Content Include="Ressources\AutopilotEnd_fx.wav">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

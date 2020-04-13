@@ -73,6 +73,16 @@ namespace VTCManager_1._0._0.Properties {
         /// <summary>
         ///   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
         /// </summary>
+        public static System.Drawing.Bitmap admin {
+            get {
+                object obj = ResourceManager.GetObject("admin", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
+        /// </summary>
         public static System.Drawing.Bitmap ats2l {
             get {
                 object obj = ResourceManager.GetObject("ats2l", resourceCulture);
@@ -213,6 +223,16 @@ namespace VTCManager_1._0._0.Properties {
         /// <summary>
         ///   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
         /// </summary>
+        public static System.Drawing.Bitmap mod {
+            get {
+                object obj = ResourceManager.GetObject("mod", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
+        /// </summary>
         public static System.Drawing.Bitmap oldcar1 {
             get {
                 object obj = ResourceManager.GetObject("oldcar1", resourceCulture);
@@ -246,6 +266,36 @@ namespace VTCManager_1._0._0.Properties {
         public static System.Drawing.Bitmap oldcar4 {
             get {
                 object obj = ResourceManager.GetObject("oldcar4", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
+        /// </summary>
+        public static System.Drawing.Bitmap pat1 {
+            get {
+                object obj = ResourceManager.GetObject("pat1", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
+        /// </summary>
+        public static System.Drawing.Bitmap pat2 {
+            get {
+                object obj = ResourceManager.GetObject("pat2", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
+        /// </summary>
+        public static System.Drawing.Bitmap pat3 {
+            get {
+                object obj = ResourceManager.GetObject("pat3", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -287,6 +337,16 @@ namespace VTCManager_1._0._0.Properties {
             get {
                 object obj = ResourceManager.GetObject("SII_Decrypt", resourceCulture);
                 return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
+        /// </summary>
+        public static System.Drawing.Bitmap sup {
+            get {
+                object obj = ResourceManager.GetObject("sup", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
             }
         }
         

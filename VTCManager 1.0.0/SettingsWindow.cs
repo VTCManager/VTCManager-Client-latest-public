@@ -54,9 +54,11 @@ namespace VTCManager_1._0._0
         private FolderBrowserDialog ATS_folderBrowserDialog;
         private Button Reg_Reset;
         private System.Windows.Forms.OpenFileDialog openFileDialog1;
+        private PictureBox patreon_image;
+        private PictureBox team_image;
+        public int Patreon;
 
-
-        public SettingsWindow(Translation translation)
+        public SettingsWindow(Translation translation, int patreon)
         {
             this.data = new SettingsManager();
 
@@ -66,11 +68,10 @@ namespace VTCManager_1._0._0
             this.btn_TruckersMP_suchen.Text = translation.btn_TruckersMP_suchentext;
             this.label3.Text = translation.settings_window_label3text;
             this.comboBox1.Text = this.data.tmp_server;
-
+            this.Patreon = patreon;
         }
         private void InitializeComponent()
         {
-            #region Designersachen
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(SettingsWindow));
             this.comboBox1 = new System.Windows.Forms.ComboBox();
             this.label1 = new System.Windows.Forms.Label();
@@ -103,6 +104,7 @@ namespace VTCManager_1._0._0
             this.Settings_Windows_Label_Settings = new System.Windows.Forms.Label();
             this.GameLog_suchen = new System.Windows.Forms.Button();
             this.GroupBox_Diagnostic = new System.Windows.Forms.GroupBox();
+            this.Reg_Reset = new System.Windows.Forms.Button();
             this.VTC_Button = new System.Windows.Forms.Button();
             this.Registry_anzeigen = new System.Windows.Forms.Button();
             this.GameLog_oeffnen = new System.Windows.Forms.Button();
@@ -112,7 +114,8 @@ namespace VTCManager_1._0._0
             this.Chk_Dashboard = new System.Windows.Forms.CheckBox();
             this.ETS2_folderBrowserDialog = new System.Windows.Forms.FolderBrowserDialog();
             this.ATS_folderBrowserDialog = new System.Windows.Forms.FolderBrowserDialog();
-            this.Reg_Reset = new System.Windows.Forms.Button();
+            this.patreon_image = new System.Windows.Forms.PictureBox();
+            this.team_image = new System.Windows.Forms.PictureBox();
             this.groupBox1.SuspendLayout();
             this.btn_TruckersMP_suchen.SuspendLayout();
             this.group_Overlay.SuspendLayout();
@@ -122,6 +125,8 @@ namespace VTCManager_1._0._0
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.GroupBox_Diagnostic.SuspendLayout();
             this.groupBox2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.patreon_image)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.team_image)).BeginInit();
             this.SuspendLayout();
             // 
             // comboBox1
@@ -454,6 +459,16 @@ namespace VTCManager_1._0._0
             this.GroupBox_Diagnostic.TabStop = false;
             this.GroupBox_Diagnostic.Text = "Diagnose-Daten";
             // 
+            // Reg_Reset
+            // 
+            this.Reg_Reset.Location = new System.Drawing.Point(243, 20);
+            this.Reg_Reset.Name = "Reg_Reset";
+            this.Reg_Reset.Size = new System.Drawing.Size(85, 31);
+            this.Reg_Reset.TabIndex = 16;
+            this.Reg_Reset.Text = "REG Reset";
+            this.Reg_Reset.UseVisualStyleBackColor = true;
+            this.Reg_Reset.Click += new System.EventHandler(this.Reg_Reset_Click);
+            // 
             // VTC_Button
             // 
             this.VTC_Button.Location = new System.Drawing.Point(338, 19);
@@ -532,19 +547,31 @@ namespace VTCManager_1._0._0
             // 
             this.ETS2_folderBrowserDialog.RootFolder = System.Environment.SpecialFolder.MyComputer;
             // 
-            // Reg_Reset
+            // patreon_image
             // 
-            this.Reg_Reset.Location = new System.Drawing.Point(243, 20);
-            this.Reg_Reset.Name = "Reg_Reset";
-            this.Reg_Reset.Size = new System.Drawing.Size(85, 31);
-            this.Reg_Reset.TabIndex = 16;
-            this.Reg_Reset.Text = "REG Reset";
-            this.Reg_Reset.UseVisualStyleBackColor = true;
-            this.Reg_Reset.Click += new System.EventHandler(this.Reg_Reset_Click);
+            this.patreon_image.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.patreon_image.Location = new System.Drawing.Point(12, 429);
+            this.patreon_image.Name = "patreon_image";
+            this.patreon_image.Padding = new System.Windows.Forms.Padding(10);
+            this.patreon_image.Size = new System.Drawing.Size(52, 50);
+            this.patreon_image.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.patreon_image.TabIndex = 16;
+            this.patreon_image.TabStop = false;
+            // 
+            // team_image
+            // 
+            this.team_image.Location = new System.Drawing.Point(70, 429);
+            this.team_image.Name = "team_image";
+            this.team_image.Size = new System.Drawing.Size(52, 50);
+            this.team_image.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.team_image.TabIndex = 17;
+            this.team_image.TabStop = false;
             // 
             // SettingsWindow
             // 
             this.ClientSize = new System.Drawing.Size(630, 599);
+            this.Controls.Add(this.team_image);
+            this.Controls.Add(this.patreon_image);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.Diagnostic_Checkbox);
             this.Controls.Add(this.GroupBox_Diagnostic);
@@ -575,10 +602,13 @@ namespace VTCManager_1._0._0
             this.GroupBox_Diagnostic.ResumeLayout(false);
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.patreon_image)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.team_image)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
-            #endregion
+
         }
+
 
         private void save_button_Click(object sender, EventArgs e)
         {
@@ -642,6 +672,7 @@ namespace VTCManager_1._0._0
         private void SettingsWindow_Load(object sender, EventArgs e)
         {
             GroupBox_Diagnostic.Visible = (utils.Reg_Lesen("TruckersMP_Autorun", "Diagnostic") == "1") ? true : false;
+            Chk_Dashboard.CheckState = (utils.Reg_Lesen("TruckersMP_Autorun", "Dashboard") == "1") ? CheckState.Checked : CheckState.Unchecked;
 
             // ##################  AUTOSTART   #####################
             if (File.Exists(System.IO.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Startup), "VTCManager.appref-ms")))
@@ -662,13 +693,11 @@ namespace VTCManager_1._0._0
             if (string.IsNullOrEmpty(utils.Reg_Lesen("TruckersMP_Autorun", "Dashboard")))
                 utils.Reg_Schreiben("Dashboard", "0", "TruckersMP_Autorun");
 
-            Chk_Dashboard.CheckState = (utils.Reg_Lesen("TruckersMP_Autorun", "Dashboard") == "1") ? CheckState.Checked : CheckState.Unchecked;
 
-            var test = utils.Reg_Lesen("TruckersMP_Autorun", "TruckersMP_Pfad");
-            if (test == "")
-            {
+   
+            if (string.IsNullOrEmpty(utils.Reg_Lesen("TruckersMP_Autorun", "TruckersMP_Pfad")))
                 MessageBox.Show("der Pfad zu TruckersMP stimmt nicht" + Environment.NewLine + "Bitte korrigiere diesen im folgenden Fenster", "Fehler TruckersMP", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
+       
 
             string wert27 = utils.Reg_Lesen("TruckersMP_Autorun", "verkehr_SERVER");
             string wert28 = utils.Reg_Lesen("TruckersMP_Autorun", "TruckersMP_Pfad");
@@ -723,8 +752,27 @@ namespace VTCManager_1._0._0
             }
 
             // Variablen abrufen von Main
-            var link = Main.truckersMP_Link;
-            if (utils.Reg_Lesen("TruckersMP_Autorun", "Patreon_state")=="2" || utils.Reg_Lesen("TruckersMP_Autorun", "Patreon_state") == "3") { this.txt_Anti_AFK_Text.Enabled = true; }
+            txt_Anti_AFK_Text.Enabled = (Patreon >= 2) ? true : false;
+
+            switch (Patreon)
+            {
+                case 1:
+                    patreon_image.Image = Properties.Resources.pat1;
+                    ToolTip tip1 = new ToolTip();
+                    tip1.SetToolTip(patreon_image, "Patreon Level 1");
+                    break;
+                case 2:
+                    patreon_image.Image = Properties.Resources.pat2;
+                    ToolTip tip2 = new ToolTip();
+                    tip2.SetToolTip(patreon_image, "Patreon Level 2");
+                    break;
+                default:
+                    patreon_image.Image = Properties.Resources.pat3;
+                    ToolTip tip3 = new ToolTip();
+                    tip3.SetToolTip(patreon_image, "Patreon Level 3 -> Vielen Dank !");
+                    break;
+            }
+            
 
         }
 

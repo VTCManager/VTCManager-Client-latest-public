@@ -98,7 +98,7 @@ namespace VTCManager_1._0._0
                 comboBoxProfiles.SelectedIndex = 0;
 
                 Decrypt_SII(dp.FromStringToHex(comboBoxProfiles.Text).ToUpper());
-                    MessageBox.Show("Send");
+                   // MessageBox.Show("Send");
 
                 
             }
@@ -202,9 +202,17 @@ namespace VTCManager_1._0._0
         private void Decrypt_SII(string ordnername)
         {
             string destination = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + @"\Euro Truck Simulator 2\profiles\" + ordnername + @"\save\autosave\";
-            Process.Start(destination + "SII_Decrypt.exe game.sii");
+           try
+            {
+                //Process.Start(destination + "SII_Decrypt.exe -i game.sii -o game_neu.sii");
 
-           
+            }catch (Exception ex)
+            {
+                MessageBox.Show("Fehler: " + ex.Message + " - " + ex.StackTrace);
+            }
+
+
+
         }
 
         private void comboBoxProfiles_SelectedIndexChanged(object sender, EventArgs e)
