@@ -12,6 +12,7 @@ using Timer = System.Windows.Forms.Timer;
 using SCSSdkClient;
 using VTCManager_1._0._0.Objekte;
 using System.Text;
+using ManagedWinapi;
 
 namespace VTCManager_1._0._0
 {
@@ -123,6 +124,12 @@ namespace VTCManager_1._0._0
         private Job job;
         private ToolStripMenuItem frachtmarktToolStripMenuItem;
         private ToolStripStatusLabel User_Patreon_State;
+        public Label lbl_NUM3_Text;
+        private Label NUM3_Label;
+        public  Label lbl_NUM2_Text;
+        private Label NUM2_Label;
+        public Label lbl_NUM1_Text;
+        private Label NUM1_Label;
         private bool jobStarted;
 
 
@@ -482,7 +489,13 @@ namespace VTCManager_1._0._0
         {
             utils.Log("<INFO> FOREGROUND: " + GetActiveWindowTitle() + " [Main.cs->489]");
 
+            // ######   LADE HOTKEY TEXTE NEU    ######################
+            lade_NUMx_TEXTE();
+
+            // ##########################   Dashboaard An/Ausschalten   #####################################
             Dashboard_1.Visible = (utils.Reg_Lesen("TruckersMP_Autorun", "Dashboard") == "1") ? true : false;
+
+
             double num3 = user.rotation;
                 Dictionary<string, string> postParameters = new Dictionary<string, string>();
                 Dictionary<string, string> dictionary1 = postParameters;
@@ -547,6 +560,12 @@ namespace VTCManager_1._0._0
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.panel2 = new System.Windows.Forms.Panel();
+            this.lbl_NUM3_Text = new System.Windows.Forms.Label();
+            this.NUM3_Label = new System.Windows.Forms.Label();
+            this.lbl_NUM2_Text = new System.Windows.Forms.Label();
+            this.NUM2_Label = new System.Windows.Forms.Label();
+            this.lbl_NUM1_Text = new System.Windows.Forms.Label();
+            this.NUM1_Label = new System.Windows.Forms.Label();
             this.status_jb_canc_lb = new System.Windows.Forms.Label();
             this.truck_lb = new System.Windows.Forms.Label();
             this.destination_lb = new System.Windows.Forms.Label();
@@ -842,6 +861,12 @@ namespace VTCManager_1._0._0
             // panel2
             // 
             this.panel2.BackColor = System.Drawing.Color.Transparent;
+            this.panel2.Controls.Add(this.lbl_NUM3_Text);
+            this.panel2.Controls.Add(this.NUM3_Label);
+            this.panel2.Controls.Add(this.lbl_NUM2_Text);
+            this.panel2.Controls.Add(this.NUM2_Label);
+            this.panel2.Controls.Add(this.lbl_NUM1_Text);
+            this.panel2.Controls.Add(this.NUM1_Label);
             this.panel2.Controls.Add(this.status_jb_canc_lb);
             this.panel2.Controls.Add(this.truck_lb);
             this.panel2.Controls.Add(this.destination_lb);
@@ -853,6 +878,63 @@ namespace VTCManager_1._0._0
             this.panel2.Name = "panel2";
             this.panel2.Size = new System.Drawing.Size(551, 582);
             this.panel2.TabIndex = 2;
+            // 
+            // lbl_NUM3_Text
+            // 
+            this.lbl_NUM3_Text.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.lbl_NUM3_Text.Location = new System.Drawing.Point(15, 395);
+            this.lbl_NUM3_Text.Name = "lbl_NUM3_Text";
+            this.lbl_NUM3_Text.Size = new System.Drawing.Size(525, 25);
+            this.lbl_NUM3_Text.TabIndex = 12;
+            this.lbl_NUM3_Text.Text = "label8";
+            this.lbl_NUM3_Text.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // NUM3_Label
+            // 
+            this.NUM3_Label.AutoSize = true;
+            this.NUM3_Label.Location = new System.Drawing.Point(12, 378);
+            this.NUM3_Label.Name = "NUM3_Label";
+            this.NUM3_Label.Size = new System.Drawing.Size(65, 13);
+            this.NUM3_Label.TabIndex = 11;
+            this.NUM3_Label.Text = "NUM3-Text:";
+            // 
+            // lbl_NUM2_Text
+            // 
+            this.lbl_NUM2_Text.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.lbl_NUM2_Text.Location = new System.Drawing.Point(15, 335);
+            this.lbl_NUM2_Text.Name = "lbl_NUM2_Text";
+            this.lbl_NUM2_Text.Size = new System.Drawing.Size(525, 25);
+            this.lbl_NUM2_Text.TabIndex = 10;
+            this.lbl_NUM2_Text.Text = "label8";
+            this.lbl_NUM2_Text.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // NUM2_Label
+            // 
+            this.NUM2_Label.AutoSize = true;
+            this.NUM2_Label.Location = new System.Drawing.Point(12, 318);
+            this.NUM2_Label.Name = "NUM2_Label";
+            this.NUM2_Label.Size = new System.Drawing.Size(65, 13);
+            this.NUM2_Label.TabIndex = 9;
+            this.NUM2_Label.Text = "NUM2-Text:";
+            // 
+            // lbl_NUM1_Text
+            // 
+            this.lbl_NUM1_Text.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.lbl_NUM1_Text.Location = new System.Drawing.Point(15, 279);
+            this.lbl_NUM1_Text.Name = "lbl_NUM1_Text";
+            this.lbl_NUM1_Text.Size = new System.Drawing.Size(525, 25);
+            this.lbl_NUM1_Text.TabIndex = 8;
+            this.lbl_NUM1_Text.Text = "label8";
+            this.lbl_NUM1_Text.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // NUM1_Label
+            // 
+            this.NUM1_Label.AutoSize = true;
+            this.NUM1_Label.Location = new System.Drawing.Point(12, 262);
+            this.NUM1_Label.Name = "NUM1_Label";
+            this.NUM1_Label.Size = new System.Drawing.Size(65, 13);
+            this.NUM1_Label.TabIndex = 7;
+            this.NUM1_Label.Text = "NUM1-Text:";
             // 
             // status_jb_canc_lb
             // 
@@ -1451,7 +1533,43 @@ namespace VTCManager_1._0._0
 
             if (user.patreon_state == 0)
                 utils.Reg_Schreiben("ANTI_AFK", "VTCManager wünscht Gute und Sichere Fahrt!", "TruckersMP_Autorun");
+
             // ##################   ANTI AFK ENDE ##################################################
+
+            // ##################   HOTKEY   #######################################################
+
+            // #############  !!! Text werden bei locationupdate() neu geladen !!!  ################
+            lade_NUMx_TEXTE();   // FIRST LOAD -> dann über locationupdate()
+
+
+            Hotkey _Hotkey1 = new Hotkey();
+            _Hotkey1.KeyCode = Keys.NumPad1;
+            _Hotkey1.HotkeyPressed += new EventHandler(NUM_PAD_1_PRESSED);
+            try
+            {
+                _Hotkey1.Enabled = true;
+            }
+            catch { throw new Exception("key already token"); }
+
+            Hotkey _Hotkey2 = new Hotkey();
+            _Hotkey2.KeyCode = Keys.NumPad2;
+            _Hotkey2.HotkeyPressed += new EventHandler(NUM_PAD_2_PRESSED);
+            try
+            {
+                _Hotkey2.Enabled = true;
+            }
+            catch { throw new Exception("key already token"); }
+
+            Hotkey _Hotkey3 = new Hotkey();
+            _Hotkey3.KeyCode = Keys.NumPad3;
+            _Hotkey3.HotkeyPressed += new EventHandler(NUM_PAD_3_PRESSED);
+            try
+            {
+                _Hotkey3.Enabled = true;
+            }
+            catch { throw new Exception("key already token"); }
+
+            // ##################   HOTKEY ENDE    #################################################
 
 
             if (string.IsNullOrEmpty(utils.Reg_Lesen("TruckersMP_Autorun", "GroupBox_Diagnostic")))
@@ -1590,9 +1708,60 @@ namespace VTCManager_1._0._0
 
         }
 
+        private void lade_NUMx_TEXTE()
+        {
+            if (string.IsNullOrEmpty(utils.Reg_Lesen("TruckersMP_Autorun", "NUM1")))
+                NUM1_Label.Visible = true; lbl_NUM1_Text.Text = utils.Reg_Lesen("TruckersMP_Autorun", "NUM1");
 
+            if (string.IsNullOrEmpty(utils.Reg_Lesen("TruckersMP_Autorun", "NUM2")))
+                NUM2_Label.Visible = true; lbl_NUM2_Text.Text = utils.Reg_Lesen("TruckersMP_Autorun", "NUM2");
 
+            if (string.IsNullOrEmpty(utils.Reg_Lesen("TruckersMP_Autorun", "NUM3")))
+                NUM3_Label.Visible = true; lbl_NUM3_Text.Text = utils.Reg_Lesen("TruckersMP_Autorun", "NUM3");
+        }
 
+        void NUM_PAD_1_PRESSED(object sender, EventArgs e)
+        {
+            string text1 = (string.IsNullOrEmpty(utils.Reg_Lesen("TruckersMP_Autorun", "NUM1"))) ? "..." : utils.Reg_Lesen("TruckersMP_Autorun", "NUM1");
+            if (GetActiveWindowTitle().Contains("Euro Truck Simulator 2") || GetActiveWindowTitle().Contains("American Truck Simulator"))
+            {
+                SendKeys.Send("y");
+                SendKeys.Send(text1);
+                SendKeys.Send("{Enter}");
+            } else
+            {
+                MessageBox.Show("Dafür muss ETS2 oder ATS laufen !", "Fehler", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
+        }
+
+        void NUM_PAD_2_PRESSED(object sender, EventArgs e)
+        {
+            string text2 = (string.IsNullOrEmpty(utils.Reg_Lesen("TruckersMP_Autorun", "NUM2"))) ? "..." : utils.Reg_Lesen("TruckersMP_Autorun", "NUM2");
+            if (GetActiveWindowTitle().Contains("Euro Truck Simulator 2") || GetActiveWindowTitle().Contains("American Truck Simulator"))
+            {
+                SendKeys.Send("y");
+                SendKeys.Send(text2);
+                SendKeys.Send("{Enter}");
+            }
+            else
+            {
+                MessageBox.Show("Dafür muss ETS2 oder ATS laufen !", "Fehler", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
+        }
+        void NUM_PAD_3_PRESSED(object sender, EventArgs e)
+        {
+            string text3 = (string.IsNullOrEmpty(utils.Reg_Lesen("TruckersMP_Autorun", "NUM3"))) ? "..." : utils.Reg_Lesen("TruckersMP_Autorun", "NUM3");
+            if (GetActiveWindowTitle().Contains("Euro Truck Simulator 2") || GetActiveWindowTitle().Contains("American Truck Simulator"))
+            {
+                SendKeys.Send("y");
+                SendKeys.Send(text3);
+                SendKeys.Send("{Enter}");
+            }
+            else
+            {
+                MessageBox.Show("Dafür muss ETS2 oder ATS laufen !", "Fehler", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
+        }
 
         private void truckersMP_Button_Click(object sender, EventArgs e)
         {
@@ -1784,7 +1953,6 @@ namespace VTCManager_1._0._0
                         SendKeys.Send("y");
                         SendKeys.Send(utils.Reg_Lesen("TruckersMP_Autorun", "ANTI_AFK"));
                         SendKeys.Send("{Enter}");
-
                     }
                 }
             } else
@@ -1883,10 +2051,7 @@ namespace VTCManager_1._0._0
             Frachtmarkt fm = new Frachtmarkt();
             fm.Show();
         }
-
-
-
-
+        
     }
 
 

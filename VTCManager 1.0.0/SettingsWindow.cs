@@ -9,10 +9,13 @@ namespace VTCManager_1._0._0
     class SettingsWindow : Form
     {
         public Utilities utils = new Utilities();
+        
+
         private ComboBox comboBox1;
         private Label label1;
         private SettingsManager data;
         private Translation translation;
+        private Main mi;
         private Button save_button;
         private GroupBox groupBox1;
         private GroupBox btn_TruckersMP_suchen;
@@ -56,6 +59,15 @@ namespace VTCManager_1._0._0
         private System.Windows.Forms.OpenFileDialog openFileDialog1;
         private PictureBox patreon_image;
         private PictureBox team_image;
+        private GroupBox groupBox3;
+        private Label label13;
+        private Label label12;
+        private TextBox Num3_Text;
+        private Label label11;
+        private TextBox Num2_Text;
+        private Label label10;
+        private TextBox Num1_Text;
+        private Label label14;
         public int Patreon;
 
         public SettingsWindow(Translation translation, int patreon)
@@ -69,6 +81,7 @@ namespace VTCManager_1._0._0
             this.label3.Text = translation.settings_window_label3text;
             this.comboBox1.Text = this.data.tmp_server;
             this.Patreon = patreon;
+           
         }
         private void InitializeComponent()
         {
@@ -116,6 +129,15 @@ namespace VTCManager_1._0._0
             this.ATS_folderBrowserDialog = new System.Windows.Forms.FolderBrowserDialog();
             this.patreon_image = new System.Windows.Forms.PictureBox();
             this.team_image = new System.Windows.Forms.PictureBox();
+            this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.label13 = new System.Windows.Forms.Label();
+            this.label12 = new System.Windows.Forms.Label();
+            this.Num3_Text = new System.Windows.Forms.TextBox();
+            this.label11 = new System.Windows.Forms.Label();
+            this.Num2_Text = new System.Windows.Forms.TextBox();
+            this.label10 = new System.Windows.Forms.Label();
+            this.Num1_Text = new System.Windows.Forms.TextBox();
+            this.label14 = new System.Windows.Forms.Label();
             this.groupBox1.SuspendLayout();
             this.btn_TruckersMP_suchen.SuspendLayout();
             this.group_Overlay.SuspendLayout();
@@ -127,6 +149,7 @@ namespace VTCManager_1._0._0
             this.groupBox2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.patreon_image)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.team_image)).BeginInit();
+            this.groupBox3.SuspendLayout();
             this.SuspendLayout();
             // 
             // comboBox1
@@ -155,7 +178,7 @@ namespace VTCManager_1._0._0
             // 
             // save_button
             // 
-            this.save_button.Location = new System.Drawing.Point(469, 546);
+            this.save_button.Location = new System.Drawing.Point(686, 545);
             this.save_button.Name = "save_button";
             this.save_button.Size = new System.Drawing.Size(149, 41);
             this.save_button.TabIndex = 3;
@@ -276,7 +299,7 @@ namespace VTCManager_1._0._0
             this.group_Overlay.Controls.Add(this.num_Overlay_Transparenz);
             this.group_Overlay.Controls.Add(this.label5);
             this.group_Overlay.Controls.Add(this.combo_Bildschirme);
-            this.group_Overlay.Location = new System.Drawing.Point(288, 23);
+            this.group_Overlay.Location = new System.Drawing.Point(551, 12);
             this.group_Overlay.Name = "group_Overlay";
             this.group_Overlay.Size = new System.Drawing.Size(270, 100);
             this.group_Overlay.TabIndex = 7;
@@ -335,7 +358,7 @@ namespace VTCManager_1._0._0
             this.groupBox_AntiAFK.Controls.Add(this.txt_Anti_AFK_Text);
             this.groupBox_AntiAFK.Location = new System.Drawing.Point(288, 198);
             this.groupBox_AntiAFK.Name = "groupBox_AntiAFK";
-            this.groupBox_AntiAFK.Size = new System.Drawing.Size(321, 117);
+            this.groupBox_AntiAFK.Size = new System.Drawing.Size(547, 117);
             this.groupBox_AntiAFK.TabIndex = 9;
             this.groupBox_AntiAFK.TabStop = false;
             this.groupBox_AntiAFK.Text = "Anti - AFK";
@@ -352,7 +375,7 @@ namespace VTCManager_1._0._0
             // label8
             // 
             this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(268, 69);
+            this.label8.Location = new System.Drawing.Point(495, 70);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(38, 13);
             this.label8.TabIndex = 4;
@@ -361,7 +384,7 @@ namespace VTCManager_1._0._0
             // label7
             // 
             this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(168, 69);
+            this.label7.Location = new System.Drawing.Point(395, 70);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(44, 13);
             this.label7.TabIndex = 3;
@@ -370,7 +393,7 @@ namespace VTCManager_1._0._0
             // reload_antiafk
             // 
             this.reload_antiafk.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.reload_antiafk.Location = new System.Drawing.Point(214, 65);
+            this.reload_antiafk.Location = new System.Drawing.Point(441, 66);
             this.reload_antiafk.Maximum = new decimal(new int[] {
             30,
             0,
@@ -395,7 +418,7 @@ namespace VTCManager_1._0._0
             // chk_antiafk_on_off
             // 
             this.chk_antiafk_on_off.AutoSize = true;
-            this.chk_antiafk_on_off.Location = new System.Drawing.Point(10, 66);
+            this.chk_antiafk_on_off.Location = new System.Drawing.Point(10, 63);
             this.chk_antiafk_on_off.Name = "chk_antiafk_on_off";
             this.chk_antiafk_on_off.Size = new System.Drawing.Size(106, 17);
             this.chk_antiafk_on_off.TabIndex = 1;
@@ -407,9 +430,10 @@ namespace VTCManager_1._0._0
             // 
             this.txt_Anti_AFK_Text.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.txt_Anti_AFK_Text.Enabled = false;
+            this.txt_Anti_AFK_Text.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txt_Anti_AFK_Text.Location = new System.Drawing.Point(10, 33);
             this.txt_Anti_AFK_Text.Name = "txt_Anti_AFK_Text";
-            this.txt_Anti_AFK_Text.Size = new System.Drawing.Size(301, 20);
+            this.txt_Anti_AFK_Text.Size = new System.Drawing.Size(523, 22);
             this.txt_Anti_AFK_Text.TabIndex = 0;
             // 
             // pictureBox1
@@ -454,7 +478,7 @@ namespace VTCManager_1._0._0
             this.GroupBox_Diagnostic.Cursor = System.Windows.Forms.Cursors.Help;
             this.GroupBox_Diagnostic.Location = new System.Drawing.Point(12, 482);
             this.GroupBox_Diagnostic.Name = "GroupBox_Diagnostic";
-            this.GroupBox_Diagnostic.Size = new System.Drawing.Size(606, 58);
+            this.GroupBox_Diagnostic.Size = new System.Drawing.Size(823, 58);
             this.GroupBox_Diagnostic.TabIndex = 13;
             this.GroupBox_Diagnostic.TabStop = false;
             this.GroupBox_Diagnostic.Text = "Diagnose-Daten";
@@ -567,9 +591,116 @@ namespace VTCManager_1._0._0
             this.team_image.TabIndex = 17;
             this.team_image.TabStop = false;
             // 
+            // groupBox3
+            // 
+            this.groupBox3.Controls.Add(this.label14);
+            this.groupBox3.Controls.Add(this.label13);
+            this.groupBox3.Controls.Add(this.label12);
+            this.groupBox3.Controls.Add(this.Num3_Text);
+            this.groupBox3.Controls.Add(this.label11);
+            this.groupBox3.Controls.Add(this.Num2_Text);
+            this.groupBox3.Controls.Add(this.label10);
+            this.groupBox3.Controls.Add(this.Num1_Text);
+            this.groupBox3.Location = new System.Drawing.Point(288, 322);
+            this.groupBox3.Name = "groupBox3";
+            this.groupBox3.Size = new System.Drawing.Size(547, 156);
+            this.groupBox3.TabIndex = 18;
+            this.groupBox3.TabStop = false;
+            this.groupBox3.Text = "Spender Individual Text";
+            // 
+            // label13
+            // 
+            this.label13.AutoSize = true;
+            this.label13.Font = new System.Drawing.Font("Verdana", 14.25F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label13.Location = new System.Drawing.Point(368, 107);
+            this.label13.Name = "label13";
+            this.label13.Size = new System.Drawing.Size(173, 23);
+            this.label13.TabIndex = 12;
+            this.label13.Text = "Coming Soon...";
+            // 
+            // label12
+            // 
+            this.label12.AutoSize = true;
+            this.label12.BackColor = System.Drawing.Color.White;
+            this.label12.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.label12.Location = new System.Drawing.Point(2, 75);
+            this.label12.Name = "label12";
+            this.label12.Padding = new System.Windows.Forms.Padding(5);
+            this.label12.Size = new System.Drawing.Size(50, 25);
+            this.label12.TabIndex = 11;
+            this.label12.Text = "NUM3";
+            this.label12.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // Num3_Text
+            // 
+            this.Num3_Text.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.Num3_Text.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.Num3_Text.Location = new System.Drawing.Point(62, 76);
+            this.Num3_Text.MaxLength = 100;
+            this.Num3_Text.Name = "Num3_Text";
+            this.Num3_Text.Size = new System.Drawing.Size(478, 22);
+            this.Num3_Text.TabIndex = 10;
+            // 
+            // label11
+            // 
+            this.label11.AutoSize = true;
+            this.label11.BackColor = System.Drawing.Color.White;
+            this.label11.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.label11.Location = new System.Drawing.Point(2, 47);
+            this.label11.Name = "label11";
+            this.label11.Padding = new System.Windows.Forms.Padding(5);
+            this.label11.Size = new System.Drawing.Size(50, 25);
+            this.label11.TabIndex = 9;
+            this.label11.Text = "NUM2";
+            this.label11.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // Num2_Text
+            // 
+            this.Num2_Text.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.Num2_Text.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.Num2_Text.Location = new System.Drawing.Point(62, 48);
+            this.Num2_Text.MaxLength = 100;
+            this.Num2_Text.Name = "Num2_Text";
+            this.Num2_Text.Size = new System.Drawing.Size(478, 22);
+            this.Num2_Text.TabIndex = 8;
+            // 
+            // label10
+            // 
+            this.label10.AutoSize = true;
+            this.label10.BackColor = System.Drawing.Color.White;
+            this.label10.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.label10.Location = new System.Drawing.Point(2, 19);
+            this.label10.Name = "label10";
+            this.label10.Padding = new System.Windows.Forms.Padding(5);
+            this.label10.Size = new System.Drawing.Size(50, 25);
+            this.label10.TabIndex = 7;
+            this.label10.Text = "NUM1";
+            this.label10.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // Num1_Text
+            // 
+            this.Num1_Text.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.Num1_Text.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.Num1_Text.Location = new System.Drawing.Point(62, 20);
+            this.Num1_Text.MaxLength = 100;
+            this.Num1_Text.Name = "Num1_Text";
+            this.Num1_Text.Size = new System.Drawing.Size(478, 22);
+            this.Num1_Text.TabIndex = 6;
+            // 
+            // label14
+            // 
+            this.label14.AutoSize = true;
+            this.label14.Font = new System.Drawing.Font("Microsoft Sans Serif", 6.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label14.Location = new System.Drawing.Point(63, 101);
+            this.label14.Name = "label14";
+            this.label14.Size = new System.Drawing.Size(109, 12);
+            this.label14.TabIndex = 13;
+            this.label14.Text = "jeweils max. 100 Zeichen";
+            // 
             // SettingsWindow
             // 
-            this.ClientSize = new System.Drawing.Size(630, 599);
+            this.ClientSize = new System.Drawing.Size(847, 599);
+            this.Controls.Add(this.groupBox3);
             this.Controls.Add(this.team_image);
             this.Controls.Add(this.patreon_image);
             this.Controls.Add(this.groupBox2);
@@ -604,6 +735,8 @@ namespace VTCManager_1._0._0
             this.groupBox2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.patreon_image)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.team_image)).EndInit();
+            this.groupBox3.ResumeLayout(false);
+            this.groupBox3.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -612,6 +745,16 @@ namespace VTCManager_1._0._0
 
         private void save_button_Click(object sender, EventArgs e)
         {
+            // #######   HOTKEYS   ################
+
+
+            utils.Reg_Schreiben("NUM1", Num1_Text.Text, "TruckersMP_Autorun");
+            utils.Reg_Schreiben("NUM2", Num2_Text.Text, "TruckersMP_Autorun");
+            utils.Reg_Schreiben("NUM3", Num3_Text.Text, "TruckersMP_Autorun");
+
+
+
+            // #######   HOTKEYS ENDE  ################
 
             if (this.comboBox1.Text == "Simulation 1")
             {
@@ -674,6 +817,10 @@ namespace VTCManager_1._0._0
             GroupBox_Diagnostic.Visible = (utils.Reg_Lesen("TruckersMP_Autorun", "Diagnostic") == "1") ? true : false;
             Chk_Dashboard.CheckState = (utils.Reg_Lesen("TruckersMP_Autorun", "Dashboard") == "1") ? CheckState.Checked : CheckState.Unchecked;
 
+            // ##################   HOTKEYS   ######################
+            Num1_Text.Text = utils.Reg_Lesen("TruckersMP_Autorun", "NUM1");
+            Num2_Text.Text = utils.Reg_Lesen("TruckersMP_Autorun", "NUM2");
+            Num3_Text.Text = utils.Reg_Lesen("TruckersMP_Autorun", "NUM3");
             // ##################  AUTOSTART   #####################
             if (File.Exists(System.IO.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Startup), "VTCManager.appref-ms")))
             {
