@@ -1515,7 +1515,7 @@ namespace VTCManager_1._0._0
             groupVerkehr.Visible = false;
 
             this.discord = new Discord();
-            lbl_Revision.Text = "2.1.4";
+            lbl_Revision.Text = "2.1.5 BETA";
             labelRevision = lbl_Revision.Text;
 
             /// ######################   GEHT NOCH NICHT, DESHALB AUSBLENDEN    ###################

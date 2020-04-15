@@ -35,21 +35,9 @@ namespace VTCManager_1._0._0
             Lade_Von_Staedte();
             Lade_Nach_Staedte();
             Lade_ETS_Profile();
-            KopiereDecrypterinFolder();
+    
         }
 
-
-        private void KopiereDecrypterinFolder()
-        {
-            
-            string ordner = dp.FromStringToHex(comboBoxProfiles.Text).ToUpper();
-            string dateiname = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + @"\Euro Truck Simulator 2\profiles\" + ordner + @"\save\autosave\SII_Decrypt.exe";
-            string destination = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + @"\Euro Truck Simulator 2\profiles\" + ordner + @"\save\autosave";
-            if (!File.Exists(dateiname))
-                File.Copy(Application.StartupPath + @"\Resources\SII_Decrypt.exe", destination + @"\SII_Decrypt.exe"); utils.Log("<INFO> SII_DECRYPTER in Profilordner: " + destination + " kopiert -> [Frachtmarkt.cs@48]");
-
-   
-        }
 
 
         public void Lade_Von_Staedte()
@@ -97,8 +85,7 @@ namespace VTCManager_1._0._0
                 if (i == 0) { comboBoxProfiles.Text = trans.Frachtmarkt_no_profiles; comboBoxProfiles.Enabled = false; } else { comboBoxProfiles.Enabled = true; }
                 comboBoxProfiles.SelectedIndex = 0;
 
-                Decrypt_SII(dp.FromStringToHex(comboBoxProfiles.Text).ToUpper());
-                   // MessageBox.Show("Send");
+             
 
                 
             }
@@ -199,21 +186,7 @@ namespace VTCManager_1._0._0
             MessageBox.Show("Schreibe *.sii Datei...");
         }
 
-        private void Decrypt_SII(string ordnername)
-        {
-            string destination = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + @"\Euro Truck Simulator 2\profiles\" + ordnername + @"\save\autosave\";
-           try
-            {
-                //Process.Start(destination + "SII_Decrypt.exe -i game.sii -o game_neu.sii");
 
-            }catch (Exception ex)
-            {
-                MessageBox.Show("Fehler: " + ex.Message + " - " + ex.StackTrace);
-            }
-
-
-
-        }
 
         private void comboBoxProfiles_SelectedIndexChanged(object sender, EventArgs e)
         {
