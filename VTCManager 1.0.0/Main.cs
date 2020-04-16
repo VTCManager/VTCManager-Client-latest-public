@@ -185,9 +185,9 @@ namespace VTCManager_1._0._0
             this.Telemetry.Tollgate += this.TelemetryTollgate;
             this.Telemetry.Ferry += this.TelemetryFerry;
             this.Telemetry.Train += this.TelemetryTrain;
-            this.Telemetry.Refuel += this.TelemetryRefuel;
-            //this.Telemetry.RefuelEnd += TelemetryRefuelEnd;
-            //this.Telemetry.RefuelPayed += TelemetryRefuelPayed;
+            this.Telemetry.RefuelStart += this.TelemetryRefuel;
+            this.Telemetry.RefuelEnd += TelemetryRefuelEnd;
+            this.Telemetry.RefuelPayed += TelemetryRefuelPayed;
             if (this.Telemetry.Error == null)
                 return;
             int num = (int)MessageBox.Show("Fehler beim Ausführen von:" + this.Telemetry.Map + "\r\n" + this.Telemetry.Error.Message + "\r\n\r\nStacktrace:\r\n" + this.Telemetry.Error.StackTrace);
@@ -291,6 +291,7 @@ namespace VTCManager_1._0._0
                 }
                 else
                 {
+                    
                     //Läuft das Spiel?
                     if (Utilities.IsGameRunning && data.SdkActive)
                     {
@@ -1518,9 +1519,10 @@ namespace VTCManager_1._0._0
             lbl_Revision.Text = "2.1.5 BETA";
             labelRevision = lbl_Revision.Text;
 
+           
             /// ######################   GEHT NOCH NICHT, DESHALB AUSBLENDEN    ###################
             Motorbremse_ICON.Visible = false;
-
+            
             User_Patreon_State.Text = user.patreon_state.ToString();
             Frachtmarkt fm = new Frachtmarkt();
             fm.FM_Patreon_State = user.patreon_state;
@@ -2045,6 +2047,12 @@ namespace VTCManager_1._0._0
                 th3.Sende_Refuel(user.authcode, job.Tollgate_Payment, job.ID.ToString());
 
         }
+
+        private void TelemetryRefuelStart(object sender, EventArgs e) { }
+
+        private void TelemetryRefuelEnd(object sender, EventArgs e) { }
+           
+        private void TelemetryRefuelPayed(object sender, EventArgs e) { }
 
         private void frachtmarktToolStripMenuItem_Click(object sender, EventArgs e)
         {
