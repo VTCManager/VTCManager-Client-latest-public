@@ -59,7 +59,7 @@ namespace VTCManager_1._0._0
         private System.Windows.Forms.OpenFileDialog openFileDialog1;
         private PictureBox patreon_image;
         private PictureBox team_image;
-        private GroupBox groupBox3;
+        private GroupBox Group_Box_Indiv_Texte;
         private Label label13;
         private Label label12;
         private TextBox Num3_Text;
@@ -129,7 +129,8 @@ namespace VTCManager_1._0._0
             this.ATS_folderBrowserDialog = new System.Windows.Forms.FolderBrowserDialog();
             this.patreon_image = new System.Windows.Forms.PictureBox();
             this.team_image = new System.Windows.Forms.PictureBox();
-            this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.Group_Box_Indiv_Texte = new System.Windows.Forms.GroupBox();
+            this.label14 = new System.Windows.Forms.Label();
             this.label13 = new System.Windows.Forms.Label();
             this.label12 = new System.Windows.Forms.Label();
             this.Num3_Text = new System.Windows.Forms.TextBox();
@@ -137,7 +138,6 @@ namespace VTCManager_1._0._0
             this.Num2_Text = new System.Windows.Forms.TextBox();
             this.label10 = new System.Windows.Forms.Label();
             this.Num1_Text = new System.Windows.Forms.TextBox();
-            this.label14 = new System.Windows.Forms.Label();
             this.groupBox1.SuspendLayout();
             this.btn_TruckersMP_suchen.SuspendLayout();
             this.group_Overlay.SuspendLayout();
@@ -149,7 +149,7 @@ namespace VTCManager_1._0._0
             this.groupBox2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.patreon_image)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.team_image)).BeginInit();
-            this.groupBox3.SuspendLayout();
+            this.Group_Box_Indiv_Texte.SuspendLayout();
             this.SuspendLayout();
             // 
             // comboBox1
@@ -591,22 +591,32 @@ namespace VTCManager_1._0._0
             this.team_image.TabIndex = 17;
             this.team_image.TabStop = false;
             // 
-            // groupBox3
+            // Group_Box_Indiv_Texte
             // 
-            this.groupBox3.Controls.Add(this.label14);
-            this.groupBox3.Controls.Add(this.label13);
-            this.groupBox3.Controls.Add(this.label12);
-            this.groupBox3.Controls.Add(this.Num3_Text);
-            this.groupBox3.Controls.Add(this.label11);
-            this.groupBox3.Controls.Add(this.Num2_Text);
-            this.groupBox3.Controls.Add(this.label10);
-            this.groupBox3.Controls.Add(this.Num1_Text);
-            this.groupBox3.Location = new System.Drawing.Point(288, 322);
-            this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(547, 156);
-            this.groupBox3.TabIndex = 18;
-            this.groupBox3.TabStop = false;
-            this.groupBox3.Text = "Spender Individual Text";
+            this.Group_Box_Indiv_Texte.Controls.Add(this.label14);
+            this.Group_Box_Indiv_Texte.Controls.Add(this.label13);
+            this.Group_Box_Indiv_Texte.Controls.Add(this.label12);
+            this.Group_Box_Indiv_Texte.Controls.Add(this.Num3_Text);
+            this.Group_Box_Indiv_Texte.Controls.Add(this.label11);
+            this.Group_Box_Indiv_Texte.Controls.Add(this.Num2_Text);
+            this.Group_Box_Indiv_Texte.Controls.Add(this.label10);
+            this.Group_Box_Indiv_Texte.Controls.Add(this.Num1_Text);
+            this.Group_Box_Indiv_Texte.Location = new System.Drawing.Point(288, 322);
+            this.Group_Box_Indiv_Texte.Name = "Group_Box_Indiv_Texte";
+            this.Group_Box_Indiv_Texte.Size = new System.Drawing.Size(547, 156);
+            this.Group_Box_Indiv_Texte.TabIndex = 18;
+            this.Group_Box_Indiv_Texte.TabStop = false;
+            this.Group_Box_Indiv_Texte.Text = "Spender Individual Text";
+            // 
+            // label14
+            // 
+            this.label14.AutoSize = true;
+            this.label14.Font = new System.Drawing.Font("Microsoft Sans Serif", 6.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label14.Location = new System.Drawing.Point(63, 101);
+            this.label14.Name = "label14";
+            this.label14.Size = new System.Drawing.Size(109, 12);
+            this.label14.TabIndex = 13;
+            this.label14.Text = "jeweils max. 100 Zeichen";
             // 
             // label13
             // 
@@ -687,20 +697,10 @@ namespace VTCManager_1._0._0
             this.Num1_Text.Size = new System.Drawing.Size(478, 22);
             this.Num1_Text.TabIndex = 6;
             // 
-            // label14
-            // 
-            this.label14.AutoSize = true;
-            this.label14.Font = new System.Drawing.Font("Microsoft Sans Serif", 6.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label14.Location = new System.Drawing.Point(63, 101);
-            this.label14.Name = "label14";
-            this.label14.Size = new System.Drawing.Size(109, 12);
-            this.label14.TabIndex = 13;
-            this.label14.Text = "jeweils max. 100 Zeichen";
-            // 
             // SettingsWindow
             // 
             this.ClientSize = new System.Drawing.Size(847, 599);
-            this.Controls.Add(this.groupBox3);
+            this.Controls.Add(this.Group_Box_Indiv_Texte);
             this.Controls.Add(this.team_image);
             this.Controls.Add(this.patreon_image);
             this.Controls.Add(this.groupBox2);
@@ -735,8 +735,8 @@ namespace VTCManager_1._0._0
             this.groupBox2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.patreon_image)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.team_image)).EndInit();
-            this.groupBox3.ResumeLayout(false);
-            this.groupBox3.PerformLayout();
+            this.Group_Box_Indiv_Texte.ResumeLayout(false);
+            this.Group_Box_Indiv_Texte.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -816,6 +816,8 @@ namespace VTCManager_1._0._0
         {
             GroupBox_Diagnostic.Visible = (utils.Reg_Lesen("TruckersMP_Autorun", "Diagnostic") == "1") ? true : false;
             Chk_Dashboard.CheckState = (utils.Reg_Lesen("TruckersMP_Autorun", "Dashboard") == "1") ? CheckState.Checked : CheckState.Unchecked;
+            Group_Box_Indiv_Texte.Visible = (Patreon >= 2) ? true : false;
+
 
             // ##################   HOTKEYS   ######################
             Num1_Text.Text = utils.Reg_Lesen("TruckersMP_Autorun", "NUM1");
