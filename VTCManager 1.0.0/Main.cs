@@ -18,6 +18,10 @@ namespace VTCManager_1._0._0
 {
     public class Main : Form
     {
+        // Settings
+        public string Revision = "2.1.7";
+        public string Telemetry_Version = "1.11";
+
         private API api = new API();
         private Utilities utils = new Utilities();
         private SettingsManager settings;
@@ -81,7 +85,7 @@ namespace VTCManager_1._0._0
         public Timer updateTraffic;
         private Label lbl_Reload_Time;
         public int Is_DarkMode_On;
-        public Label lbl_Revision;
+        
         private ToolStripMenuItem serverstatusToolStripMenuItem;
         private StatusStrip statusStrip1;
         private ToolStripStatusLabel WebServer_Status_label;
@@ -95,7 +99,6 @@ namespace VTCManager_1._0._0
         private ToolStripMenuItem oldCar4ToolStripMenuItem;
         private ToolStripMenuItem keinsToolStripMenuItem;
         public int anti_afk_on_off;
-        private Label label3;
         private PictureBox ets2_button;
         private PictureBox ats_button;
         public static string labelRevision;
@@ -132,7 +135,7 @@ namespace VTCManager_1._0._0
         private Label NUM1_Label;
         private GroupBox GroupBox_Individ_Texte;
         private bool jobStarted;
-
+        public Label lbl_Revision;
 
         // Get a handle to an application window.
         [DllImport("USER32.DLL", CharSet = CharSet.Unicode)]
@@ -562,12 +565,13 @@ namespace VTCManager_1._0._0
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.panel2 = new System.Windows.Forms.Panel();
-            this.lbl_NUM3_Text = new System.Windows.Forms.Label();
-            this.NUM3_Label = new System.Windows.Forms.Label();
+            this.GroupBox_Individ_Texte = new System.Windows.Forms.GroupBox();
             this.lbl_NUM2_Text = new System.Windows.Forms.Label();
-            this.NUM2_Label = new System.Windows.Forms.Label();
-            this.lbl_NUM1_Text = new System.Windows.Forms.Label();
+            this.lbl_NUM3_Text = new System.Windows.Forms.Label();
             this.NUM1_Label = new System.Windows.Forms.Label();
+            this.NUM3_Label = new System.Windows.Forms.Label();
+            this.lbl_NUM1_Text = new System.Windows.Forms.Label();
+            this.NUM2_Label = new System.Windows.Forms.Label();
             this.status_jb_canc_lb = new System.Windows.Forms.Label();
             this.truck_lb = new System.Windows.Forms.Label();
             this.destination_lb = new System.Windows.Forms.Label();
@@ -614,11 +618,10 @@ namespace VTCManager_1._0._0
             this.Label_DB_Server = new System.Windows.Forms.ToolStripStatusLabel();
             this.User_Patreon_State = new System.Windows.Forms.ToolStripStatusLabel();
             this.anti_AFK_TIMER = new System.Windows.Forms.Timer(this.components);
-            this.label3 = new System.Windows.Forms.Label();
-            this.GroupBox_Individ_Texte = new System.Windows.Forms.GroupBox();
             ((System.ComponentModel.ISupportInitialize)(this.send_tour_status)).BeginInit();
             this.menuStrip1.SuspendLayout();
             this.panel2.SuspendLayout();
+            this.GroupBox_Individ_Texte.SuspendLayout();
             this.panel4.SuspendLayout();
             this.Dashboard_1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.Retarder_ICON)).BeginInit();
@@ -633,7 +636,6 @@ namespace VTCManager_1._0._0
             ((System.ComponentModel.ISupportInitialize)(this.ets2_button)).BeginInit();
             this.groupVerkehr.SuspendLayout();
             this.statusStrip1.SuspendLayout();
-            this.GroupBox_Individ_Texte.SuspendLayout();
             this.SuspendLayout();
             // 
             // send_tour_status
@@ -878,24 +880,20 @@ namespace VTCManager_1._0._0
             this.panel2.Size = new System.Drawing.Size(551, 582);
             this.panel2.TabIndex = 2;
             // 
-            // lbl_NUM3_Text
+            // GroupBox_Individ_Texte
             // 
-            this.lbl_NUM3_Text.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.lbl_NUM3_Text.Location = new System.Drawing.Point(6, 156);
-            this.lbl_NUM3_Text.Name = "lbl_NUM3_Text";
-            this.lbl_NUM3_Text.Size = new System.Drawing.Size(525, 25);
-            this.lbl_NUM3_Text.TabIndex = 12;
-            this.lbl_NUM3_Text.Text = "label8";
-            this.lbl_NUM3_Text.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // NUM3_Label
-            // 
-            this.NUM3_Label.AutoSize = true;
-            this.NUM3_Label.Location = new System.Drawing.Point(3, 139);
-            this.NUM3_Label.Name = "NUM3_Label";
-            this.NUM3_Label.Size = new System.Drawing.Size(65, 13);
-            this.NUM3_Label.TabIndex = 11;
-            this.NUM3_Label.Text = "NUM3-Text:";
+            this.GroupBox_Individ_Texte.Controls.Add(this.lbl_NUM2_Text);
+            this.GroupBox_Individ_Texte.Controls.Add(this.lbl_NUM3_Text);
+            this.GroupBox_Individ_Texte.Controls.Add(this.NUM1_Label);
+            this.GroupBox_Individ_Texte.Controls.Add(this.NUM3_Label);
+            this.GroupBox_Individ_Texte.Controls.Add(this.lbl_NUM1_Text);
+            this.GroupBox_Individ_Texte.Controls.Add(this.NUM2_Label);
+            this.GroupBox_Individ_Texte.Location = new System.Drawing.Point(4, 378);
+            this.GroupBox_Individ_Texte.Name = "GroupBox_Individ_Texte";
+            this.GroupBox_Individ_Texte.Size = new System.Drawing.Size(544, 195);
+            this.GroupBox_Individ_Texte.TabIndex = 13;
+            this.GroupBox_Individ_Texte.TabStop = false;
+            this.GroupBox_Individ_Texte.Text = "Individuelle Texte";
             // 
             // lbl_NUM2_Text
             // 
@@ -907,14 +905,33 @@ namespace VTCManager_1._0._0
             this.lbl_NUM2_Text.Text = "label8";
             this.lbl_NUM2_Text.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
-            // NUM2_Label
+            // lbl_NUM3_Text
             // 
-            this.NUM2_Label.AutoSize = true;
-            this.NUM2_Label.Location = new System.Drawing.Point(3, 82);
-            this.NUM2_Label.Name = "NUM2_Label";
-            this.NUM2_Label.Size = new System.Drawing.Size(65, 13);
-            this.NUM2_Label.TabIndex = 9;
-            this.NUM2_Label.Text = "NUM2-Text:";
+            this.lbl_NUM3_Text.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.lbl_NUM3_Text.Location = new System.Drawing.Point(6, 156);
+            this.lbl_NUM3_Text.Name = "lbl_NUM3_Text";
+            this.lbl_NUM3_Text.Size = new System.Drawing.Size(525, 25);
+            this.lbl_NUM3_Text.TabIndex = 12;
+            this.lbl_NUM3_Text.Text = "label8";
+            this.lbl_NUM3_Text.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // NUM1_Label
+            // 
+            this.NUM1_Label.AutoSize = true;
+            this.NUM1_Label.Location = new System.Drawing.Point(3, 26);
+            this.NUM1_Label.Name = "NUM1_Label";
+            this.NUM1_Label.Size = new System.Drawing.Size(65, 13);
+            this.NUM1_Label.TabIndex = 7;
+            this.NUM1_Label.Text = "NUM1-Text:";
+            // 
+            // NUM3_Label
+            // 
+            this.NUM3_Label.AutoSize = true;
+            this.NUM3_Label.Location = new System.Drawing.Point(3, 139);
+            this.NUM3_Label.Name = "NUM3_Label";
+            this.NUM3_Label.Size = new System.Drawing.Size(65, 13);
+            this.NUM3_Label.TabIndex = 11;
+            this.NUM3_Label.Text = "NUM3-Text:";
             // 
             // lbl_NUM1_Text
             // 
@@ -926,14 +943,14 @@ namespace VTCManager_1._0._0
             this.lbl_NUM1_Text.Text = "label8";
             this.lbl_NUM1_Text.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
-            // NUM1_Label
+            // NUM2_Label
             // 
-            this.NUM1_Label.AutoSize = true;
-            this.NUM1_Label.Location = new System.Drawing.Point(3, 26);
-            this.NUM1_Label.Name = "NUM1_Label";
-            this.NUM1_Label.Size = new System.Drawing.Size(65, 13);
-            this.NUM1_Label.TabIndex = 7;
-            this.NUM1_Label.Text = "NUM1-Text:";
+            this.NUM2_Label.AutoSize = true;
+            this.NUM2_Label.Location = new System.Drawing.Point(3, 82);
+            this.NUM2_Label.Name = "NUM2_Label";
+            this.NUM2_Label.Size = new System.Drawing.Size(65, 13);
+            this.NUM2_Label.TabIndex = 9;
+            this.NUM2_Label.Text = "NUM2-Text:";
             // 
             // status_jb_canc_lb
             // 
@@ -1357,14 +1374,13 @@ namespace VTCManager_1._0._0
             // 
             // lbl_Revision
             // 
-            this.lbl_Revision.AutoSize = true;
             this.lbl_Revision.BackColor = System.Drawing.Color.Transparent;
-            this.lbl_Revision.Location = new System.Drawing.Point(1312, 9);
+            this.lbl_Revision.Location = new System.Drawing.Point(1228, 7);
             this.lbl_Revision.Name = "lbl_Revision";
-            this.lbl_Revision.Size = new System.Drawing.Size(16, 13);
+            this.lbl_Revision.Size = new System.Drawing.Size(151, 18);
             this.lbl_Revision.TabIndex = 8;
             this.lbl_Revision.Text = "...";
-            this.lbl_Revision.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.lbl_Revision.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // statusStrip1
             // 
@@ -1403,37 +1419,10 @@ namespace VTCManager_1._0._0
             this.anti_AFK_TIMER.Interval = 240000;
             this.anti_AFK_TIMER.Tick += new System.EventHandler(this.anti_AFK_TIMER_Tick);
             // 
-            // label3
-            // 
-            this.label3.AutoSize = true;
-            this.label3.BackColor = System.Drawing.Color.Transparent;
-            this.label3.Location = new System.Drawing.Point(1261, 9);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(45, 13);
-            this.label3.TabIndex = 10;
-            this.label3.Text = "Version:";
-            this.label3.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            // 
-            // GroupBox_Individ_Texte
-            // 
-            this.GroupBox_Individ_Texte.Controls.Add(this.lbl_NUM2_Text);
-            this.GroupBox_Individ_Texte.Controls.Add(this.lbl_NUM3_Text);
-            this.GroupBox_Individ_Texte.Controls.Add(this.NUM1_Label);
-            this.GroupBox_Individ_Texte.Controls.Add(this.NUM3_Label);
-            this.GroupBox_Individ_Texte.Controls.Add(this.lbl_NUM1_Text);
-            this.GroupBox_Individ_Texte.Controls.Add(this.NUM2_Label);
-            this.GroupBox_Individ_Texte.Location = new System.Drawing.Point(4, 378);
-            this.GroupBox_Individ_Texte.Name = "GroupBox_Individ_Texte";
-            this.GroupBox_Individ_Texte.Size = new System.Drawing.Size(544, 195);
-            this.GroupBox_Individ_Texte.TabIndex = 13;
-            this.GroupBox_Individ_Texte.TabStop = false;
-            this.GroupBox_Individ_Texte.Text = "Individuelle Texte";
-            // 
             // Main
             // 
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             this.ClientSize = new System.Drawing.Size(1388, 642);
-            this.Controls.Add(this.label3);
             this.Controls.Add(this.statusStrip1);
             this.Controls.Add(this.lbl_Revision);
             this.Controls.Add(this.groupVerkehr);
@@ -1456,6 +1445,8 @@ namespace VTCManager_1._0._0
             this.menuStrip1.PerformLayout();
             this.panel2.ResumeLayout(false);
             this.panel2.PerformLayout();
+            this.GroupBox_Individ_Texte.ResumeLayout(false);
+            this.GroupBox_Individ_Texte.PerformLayout();
             this.panel4.ResumeLayout(false);
             this.Dashboard_1.ResumeLayout(false);
             this.Dashboard_1.PerformLayout();
@@ -1474,8 +1465,6 @@ namespace VTCManager_1._0._0
             this.groupVerkehr.PerformLayout();
             this.statusStrip1.ResumeLayout(false);
             this.statusStrip1.PerformLayout();
-            this.GroupBox_Individ_Texte.ResumeLayout(false);
-            this.GroupBox_Individ_Texte.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -1527,17 +1516,14 @@ namespace VTCManager_1._0._0
         // Edit by Thommy
         private void Main_Load(object sender, EventArgs e)
         {
+            /* REVISION NUMBER NOW ON TOP ! */
+            this.discord = new Discord();
+
+            /// ######################   GEHT NOCH NICHT, DESHALB AUSBLENDEN    ###################
+            Motorbremse_ICON.Visible = false;
             // Bis alles geklärt ist-> DISABLE
             groupVerkehr.Visible = false;
 
-            this.discord = new Discord();
-            lbl_Revision.Text = "2.1.6";
-            labelRevision = lbl_Revision.Text;
-
-           
-            /// ######################   GEHT NOCH NICHT, DESHALB AUSBLENDEN    ###################
-            Motorbremse_ICON.Visible = false;
-            
             User_Patreon_State.Text = user.patreon_state.ToString();
             Frachtmarkt fm = new Frachtmarkt();
             fm.FM_Patreon_State = user.patreon_state;
@@ -1602,7 +1588,12 @@ namespace VTCManager_1._0._0
             utils.Log("<INFO> ANTI_AFK_TEXT > " + anti_AFK_TIMER.Enabled + " [Main.cs->1469]");
 
             // ####################   VERSION IN REG SCHREIBEN   ###################################
-            utils.Reg_Schreiben("Version", labelRevision.ToString(), "TruckersMP_Autorun");
+            utils.Reg_Schreiben("Version", Revision, "TruckersMP_Autorun");
+            utils.Reg_Schreiben("Telemetry-Version", Telemetry_Version.ToString(), "TruckersMP_Autorun");
+
+            // Version Logging
+            utils.Log("<INFO> Client-Version: " + Revision);
+            utils.Log("<INFO> Telemetry-Version: " + Telemetry_Version);
 
 
             // ####################   ZEIGE PATH WINDOW WENN ETS2 PFAD NICHT VORHANDEN   ###########
@@ -1688,7 +1679,9 @@ namespace VTCManager_1._0._0
                         ats_button.Visible = false;
                     }
                 } catch { }
-            
+
+                lbl_Revision.Text = "Client: " + Revision + " | Telemetry:" + Telemetry_Version;
+                labelRevision = Revision;
             }
 
             // ###################################### TELEMETRY COPY END ###########################
