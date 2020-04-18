@@ -184,7 +184,7 @@ namespace VTCManager_1._0._0
             this.Telemetry.Data += this.Telemetry_Data;
             this.Telemetry.JobStarted += this.TelemetryOnJobStarted;
             this.Telemetry.JobCancelled += this.TelemetryJobCancelled;
-            this.Telemetry.JobDelivered += this.TelemetryJobDelivered;
+            this.Telemetry.JobDelivered += TelemetryJobDelivered;
             //this.Telemetry.Fined += this.TelemetryFined;
             this.Telemetry.Tollgate += this.TelemetryTollgate;
             this.Telemetry.Ferry += this.TelemetryFerry;
@@ -192,6 +192,7 @@ namespace VTCManager_1._0._0
             this.Telemetry.RefuelStart += this.TelemetryRefuel;
             this.Telemetry.RefuelEnd += TelemetryRefuelEnd;
             this.Telemetry.RefuelPayed += TelemetryRefuelPayed;
+
             if (this.Telemetry.Error == null)
                 return;
             int num = (int)MessageBox.Show("Fehler beim Ausführen von:" + this.Telemetry.Map + "\r\n" + this.Telemetry.Error.Message + "\r\n\r\nStacktrace:\r\n" + this.Telemetry.Error.StackTrace);
@@ -277,7 +278,8 @@ namespace VTCManager_1._0._0
         }
 
         //Telemetry Handler
-        private void TelemetryOnJobFinished(object sender, EventArgs args) => job.jobFinished = true;
+        private void TelemetryOnJobFinished(object sender, EventArgs args) => 
+            job.jobFinished = true;
 
         private void TelemetryOnJobStarted(object sender, EventArgs e) => 
             job.jobStarted = true;
@@ -448,7 +450,7 @@ namespace VTCManager_1._0._0
                         {
                             this.send_tour_status.Enabled = false;
                             this.sound.Play(sound.ton_tour_beendet);
-                            this.send_tour_status.Enabled = false;
+                           
                             job.jobFinished = false;
                             job.fuelatend = (float)data.TruckValues.ConstantsValues.CapacityValues.Fuel;
                             job.fuelconsumption = job.fuelatstart - job.fuelatend;
@@ -467,15 +469,13 @@ namespace VTCManager_1._0._0
                             }
                             postParameters.Add("fuelconsumption", job.fuelconsumption.ToString());
 
-                            Console.WriteLine(this.api.HTTPSRequestPost(this.api.api_server + this.api.finishjob_path, postParameters, true).ToString());
+                            Console.WriteLine(this.api.HTTPSRequestPost(api.api_server + api.finishjob_path, postParameters, true).ToString());
                             job.jobFinished = false;
                             utils.Log("Tour FINISH: " + user.authcode + ", " + job.ID + ", Einkommen: " + data.JobValues.Income.ToString() + " €" + ", Damage: " + str3 + " [Main.cs->464]");
                             job.clear();
                             this.destination_lb.Text = "";
                             this.depature_lb.Text = "";
                         //this.cargo_lb.Text = translation.no_cargo_lb;
-                    
-
 
                         }
                     }
@@ -1739,7 +1739,7 @@ namespace VTCManager_1._0._0
         void NUM_PAD_1_PRESSED(object sender, EventArgs e)
         {
             string text1 = (string.IsNullOrEmpty(utils.Reg_Lesen("TruckersMP_Autorun", "NUM1"))) ? "..." : utils.Reg_Lesen("TruckersMP_Autorun", "NUM1");
-            if (GetActiveWindowTitle().Contains("Euro Truck Simulator 2") || GetActiveWindowTitle().Contains("American Truck Simulator"))
+            if (GetActiveWindowTitle().Contains("Euro Truck Simulator 2"))
             {
                 SendKeys.Send("y");
                 SendKeys.Send(text1);
@@ -1753,7 +1753,7 @@ namespace VTCManager_1._0._0
         void NUM_PAD_2_PRESSED(object sender, EventArgs e)
         {
             string text2 = (string.IsNullOrEmpty(utils.Reg_Lesen("TruckersMP_Autorun", "NUM2"))) ? "..." : utils.Reg_Lesen("TruckersMP_Autorun", "NUM2");
-            if (GetActiveWindowTitle().Contains("Euro Truck Simulator 2") || GetActiveWindowTitle().Contains("American Truck Simulator"))
+            if (GetActiveWindowTitle().Contains("Euro Truck Simulator 2"))
             {
                 SendKeys.Send("y");
                 SendKeys.Send(text2);
@@ -1767,7 +1767,7 @@ namespace VTCManager_1._0._0
         void NUM_PAD_3_PRESSED(object sender, EventArgs e)
         {
             string text3 = (string.IsNullOrEmpty(utils.Reg_Lesen("TruckersMP_Autorun", "NUM3"))) ? "..." : utils.Reg_Lesen("TruckersMP_Autorun", "NUM3");
-            if (GetActiveWindowTitle().Contains("Euro Truck Simulator 2") || GetActiveWindowTitle().Contains("American Truck Simulator"))
+            if (GetActiveWindowTitle().Contains("Euro Truck Simulator 2"))
             {
                 SendKeys.Send("y");
                 SendKeys.Send(text3);
@@ -2036,8 +2036,11 @@ namespace VTCManager_1._0._0
 
         
 
-        private void TelemetryJobDelivered(object sender, EventArgs e) =>
+        private void TelemetryJobDelivered(object sender, EventArgs e)
+        {
             job.jobFinished = true;
+        }
+            
 
         private void TelemetryFined(object sender, EventArgs e) =>
             MessageBox.Show("Fined");
@@ -2073,6 +2076,7 @@ namespace VTCManager_1._0._0
             Frachtmarkt fm = new Frachtmarkt();
             fm.Show();
         }
+
 
     }
 
