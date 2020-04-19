@@ -19,7 +19,7 @@ namespace VTCManager_1._0._0
     public class Main : Form
     {
         // Settings
-        public string Revision = "2.1.7";
+        public string Revision = "2.1.8";
         public string Telemetry_Version = "1.11";
 
         private API api = new API();
@@ -189,9 +189,10 @@ namespace VTCManager_1._0._0
             this.Telemetry.Tollgate += this.TelemetryTollgate;
             this.Telemetry.Ferry += this.TelemetryFerry;
             this.Telemetry.Train += this.TelemetryTrain;
-            this.Telemetry.RefuelStart += this.TelemetryRefuel;
-            this.Telemetry.RefuelEnd += TelemetryRefuelEnd;
-            this.Telemetry.RefuelPayed += TelemetryRefuelPayed;
+            this.Telemetry.Refuel += this.TelemetryRefuel;
+            //this.Telemetry.RefuelStart += this.TelemetryRefuel;
+            //this.Telemetry.RefuelEnd += TelemetryRefuelEnd;
+            //this.Telemetry.RefuelPayed += TelemetryRefuelPayed;
 
             if (this.Telemetry.Error == null)
                 return;
@@ -493,7 +494,7 @@ namespace VTCManager_1._0._0
         private void locationupdate()
         {
             utils.Log("<INFO> FOREGROUND: " + GetActiveWindowTitle() + " [Main.cs->489]");
-
+            Console.WriteLine("LKW SPEED: " + user.Geschwindigkeit);
             // ######   LADE HOTKEY TEXTE NEU    ######################
             lade_NUMx_TEXTE();
 
@@ -1736,9 +1737,9 @@ namespace VTCManager_1._0._0
                 NUM3_Label.Visible = true; lbl_NUM3_Text.Text = utils.Reg_Lesen("TruckersMP_Autorun", "NUM3");
         }
 
-        void NUM_PAD_1_PRESSED(object sender, EventArgs e)
+        private void NUM_PAD_1_PRESSED(object sender, EventArgs e)
         {
-            string text1 = (string.IsNullOrEmpty(utils.Reg_Lesen("TruckersMP_Autorun", "NUM1"))) ? "..." : utils.Reg_Lesen("TruckersMP_Autorun", "NUM1");
+            string text1 = string.IsNullOrEmpty(utils.Reg_Lesen("TruckersMP_Autorun", "NUM1")) ? "..." : utils.Reg_Lesen("TruckersMP_Autorun", "NUM1");
             if (GetActiveWindowTitle().Contains("Euro Truck Simulator 2"))
             {
                 SendKeys.Send("y");
@@ -1752,7 +1753,7 @@ namespace VTCManager_1._0._0
 
         void NUM_PAD_2_PRESSED(object sender, EventArgs e)
         {
-            string text2 = (string.IsNullOrEmpty(utils.Reg_Lesen("TruckersMP_Autorun", "NUM2"))) ? "..." : utils.Reg_Lesen("TruckersMP_Autorun", "NUM2");
+            string text2 = string.IsNullOrEmpty(utils.Reg_Lesen("TruckersMP_Autorun", "NUM2")) ? "..." : utils.Reg_Lesen("TruckersMP_Autorun", "NUM2");
             if (GetActiveWindowTitle().Contains("Euro Truck Simulator 2"))
             {
                 SendKeys.Send("y");
@@ -1766,7 +1767,7 @@ namespace VTCManager_1._0._0
         }
         void NUM_PAD_3_PRESSED(object sender, EventArgs e)
         {
-            string text3 = (string.IsNullOrEmpty(utils.Reg_Lesen("TruckersMP_Autorun", "NUM3"))) ? "..." : utils.Reg_Lesen("TruckersMP_Autorun", "NUM3");
+            string text3 = string.IsNullOrEmpty(utils.Reg_Lesen("TruckersMP_Autorun", "NUM3")) ? "..." : utils.Reg_Lesen("TruckersMP_Autorun", "NUM3");
             if (GetActiveWindowTitle().Contains("Euro Truck Simulator 2"))
             {
                 SendKeys.Send("y");
@@ -1965,7 +1966,7 @@ namespace VTCManager_1._0._0
                     utils.Log("<INFO> Game ist Running - Anti_AFK_Online [Main.cs->1781]");
                     if (user.Geschwindigkeit < 1)
                     {
-                        utils.Log("<INFO> ANTI_AFK FIRED [Main.cs->1786]");
+                        utils.Log("<INFO> ANTI_AFK FIRED - SPEED: " + user.Geschwindigkeit + " @[Main.cs->1786]");
                         SendKeys.Send("y");
                         SendKeys.Send(utils.Reg_Lesen("TruckersMP_Autorun", "ANTI_AFK"));
                         SendKeys.Send("{Enter}");
@@ -2065,17 +2066,12 @@ namespace VTCManager_1._0._0
 
         }
 
-        private void TelemetryRefuelStart(object sender, EventArgs e) { }
-
-        private void TelemetryRefuelEnd(object sender, EventArgs e) { }
-           
-        private void TelemetryRefuelPayed(object sender, EventArgs e) { }
-
         private void frachtmarktToolStripMenuItem_Click(object sender, EventArgs e)
         {
             Frachtmarkt fm = new Frachtmarkt();
             fm.Show();
         }
+
 
 
     }
