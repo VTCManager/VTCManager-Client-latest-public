@@ -194,7 +194,10 @@ namespace VTCManager_1._0._0
                 {
                     Application.Exit();
                 }
-                
+                //Check für Beta
+                //Bei normalen Benutzern ist der String leer
+                if (String.IsNullOrEmpty(strArray[7]))
+                    Application.Exit();
                 User user = new User(Convert.ToInt32(strArray[0]), strArray[1], strArray[2], strArray[3], Convert.ToInt32(strArray[4]), Convert.ToInt32(strArray[5]), Convert.ToInt32(strArray[6]),this.authCode);
                 this.Hide();
 

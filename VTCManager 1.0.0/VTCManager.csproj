@@ -318,6 +318,7 @@
     <None Include="Resources\icons8-motor-128.png" />
     <None Include="Resources\retarder1.png" />
     <None Include="Resources\admin.jpg" />
+    <Content Include="ManagedWinapi.dll" />
     <Content Include="Resources\gabelstapler-64.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
