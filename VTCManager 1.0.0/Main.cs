@@ -19,7 +19,7 @@ namespace VTCManager_1._0._0
     public class Main : Form
     {
         // Settings
-        public string Revision = "2.1.8";
+        public string Revision = "2.1.8D";
         public string Telemetry_Version = "1.11";
 
         private API api = new API();
@@ -1768,11 +1768,11 @@ namespace VTCManager_1._0._0
         {
             Clipboard.Clear();
             string text1 = (string.IsNullOrEmpty(utils.Reg_Lesen("TruckersMP_Autorun", "NUM1"))) ? "..." : utils.Reg_Lesen("TruckersMP_Autorun", "NUM1");
-            if (GetActiveWindowTitle().Contains("Euro Truck Simulator 2"))
+            if (GetActiveWindowTitle().Contains("Euro Truck Simulator 2") || GetActiveWindowTitle().Contains("American Truck Simulator"))
             {
                 try
                 {
-                    SendKeys.Send("y");
+                    //SendKeys.Send("y");
                     SendKeys.Send(text1);
                     SendKeys.Send("{Enter}");
                 }
@@ -1787,11 +1787,11 @@ namespace VTCManager_1._0._0
         {
             Clipboard.Clear();
             string text2 = (string.IsNullOrEmpty(utils.Reg_Lesen("TruckersMP_Autorun", "NUM2"))) ? "..." : utils.Reg_Lesen("TruckersMP_Autorun", "NUM2");
-            if (GetActiveWindowTitle().Contains("Euro Truck Simulator 2"))
+            if (GetActiveWindowTitle().Contains("Euro Truck Simulator 2") || GetActiveWindowTitle().Contains("American Truck Simulator"))
             {
                 try
                 {
-                    SendKeys.Send("y");
+                    //SendKeys.Send("-> ");
                     SendKeys.Send(text2);
                     SendKeys.Send("{Enter}");
                 } catch { }
@@ -1805,11 +1805,11 @@ namespace VTCManager_1._0._0
         {
             Clipboard.Clear();
             var text3 = (string.IsNullOrEmpty(utils.Reg_Lesen("TruckersMP_Autorun", "NUM3"))) ? "..." : utils.Reg_Lesen("TruckersMP_Autorun", "NUM3");
-            if (GetActiveWindowTitle().Contains("Euro Truck Simulator 2"))
+            if (GetActiveWindowTitle().Contains("Euro Truck Simulator 2") || GetActiveWindowTitle().Contains("American Truck Simulator"))
             {
                 try
                 {
-                    SendKeys.Send("y");
+                    //SendKeys.Send("y");
                     SendKeys.Send(text3);
                     SendKeys.Send("{Enter}");
                 }
