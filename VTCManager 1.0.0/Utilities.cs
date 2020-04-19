@@ -191,17 +191,21 @@ namespace VTCManager_1._0._0
         public void Log(string text)
         {
             Translation trans = new Translation(ci.DisplayName);
-            if(File.Exists(logDirectory + logFile))
+            try
             {
-                try
+                if (File.Exists(logDirectory + logFile))
                 {
-                    File.AppendAllText(logDirectory + logFile, "<" + DateTime.Now + "> " + text + Environment.NewLine);
-                } catch (Exception ex)
-                {
-                    Log("<ERROR> Methode LOG in Utilities.cs -> " + ex.Message + ex.StackTrace + "Given String: "+ text + " [Utilities.cs->201]");
-                }
+                    try
+                    {
+                        File.AppendAllText(logDirectory + logFile, "<" + DateTime.Now + "> " + text + Environment.NewLine);
+                    }
+                    catch (Exception ex)
+                    {
+                        Log("<ERROR> Methode LOG in Utilities.cs -> " + ex.Message + ex.StackTrace + "Given String: " + text + " [Utilities.cs->201]");
+                    }
 
-            }
+                }
+            } catch { }
 
         }
 

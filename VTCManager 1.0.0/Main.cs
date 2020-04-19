@@ -19,7 +19,7 @@ namespace VTCManager_1._0._0
     public class Main : Form
     {
         // Settings
-        public string Revision = "2.2.1A";
+        public string Revision = "2.2.1B";
         public string Telemetry_Version = "1.11";
 
         private API api = new API();
@@ -1663,8 +1663,11 @@ namespace VTCManager_1._0._0
                     // logDirectory = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + @"\VTC_Manager");
                     if (!File.Exists(logDirectory + logFile))
                     {
-                        Directory.CreateDirectory(logDirectory);
-                        File.Create(logDirectory + logFile);
+                        try
+                        {
+                            Directory.CreateDirectory(logDirectory);
+                            File.Create(logDirectory + logFile);
+                        } catch { }
                     }
                     // ################    LEERE LOG DATEI BEIM START   ###################
                     if (File.Exists(logDirectory + logFile))
