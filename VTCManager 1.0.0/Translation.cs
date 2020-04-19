@@ -76,7 +76,7 @@ namespace VTCManager_1._0._0
             version = "Version: 1.1.0";
             if (language == "Deutsch (Deutschland)") {
                 speeding = " KM/H";
-                waiting_for_ets = "Warte auf ETS2" + Environment.NewLine + "oder ATS...";
+                waiting_for_ets = "Warte auf das Spiel...";
                 logout = "Abmelden";
                 login = "Anmelden";
                 ready = "Bereit";
@@ -141,7 +141,7 @@ namespace VTCManager_1._0._0
             else
             {
                 speeding = " mp/h";
-                waiting_for_ets = "Waiting for ETS2" + Environment.NewLine + "or ATS...";
+                waiting_for_ets = "Waiting for the Game...";
                 logout = "Logout";
                 login = "Login";
                 ready = "Ready";

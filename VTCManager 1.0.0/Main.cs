@@ -305,6 +305,9 @@ namespace VTCManager_1._0._0
 
                         //falls Daten erhalten werden
 
+                        anti_AFK_TIMER.Enabled = (Convert.ToInt32(utils.Reg_Lesen("TruckersMP_Autorun", "ANTI_AFK_AN")) == 1) ? true : false;
+                        utils.Log("<INFO> ANTI_AFK_TEXT > " + anti_AFK_TIMER.Enabled + " [Main.cs->1469]");
+
                         user.CoordinateX = data.TruckValues.CurrentValues.PositionValue.Position.X;
                         user.CoordinateZ = data.TruckValues.CurrentValues.PositionValue.Position.Y;
                         //user.Geschwindigkeit = (float)data.TruckValues.CurrentValues.DashboardValues.Speed.Kph;
@@ -326,12 +329,9 @@ namespace VTCManager_1._0._0
                         {
                             GameRuns = 1;
 
-                            job.currentPercentage = (((((double)data.NavigationValues.NavigationDistance / 1000) / (double)data.JobValues.PlannedDistanceKm) * 100) - 100) * -1;
-
                             // ###################   FUEL PROGRESS    ##############################################
                             progressBar_F.Maximum = Convert.ToInt32(data.TruckValues.ConstantsValues.CapacityValues.Fuel);
                             progressBar_F.Value = Convert.ToInt32(data.TruckValues.CurrentValues.DashboardValues.FuelValue.Amount);
-
 
                             // #########################   REST KM    ##############################################
                             Rest_KM_Label.Text = (int)data.TruckValues.CurrentValues.DashboardValues.FuelValue.Range + " KM (" + Convert.ToInt32(data.TruckValues.CurrentValues.DashboardValues.FuelValue.Amount) + " L)";
@@ -347,12 +347,16 @@ namespace VTCManager_1._0._0
                             {
                                 speed_lb.Text = (int)data.TruckValues.CurrentValues.DashboardValues.Speed.Kph + labelkmh;
                                 user.Geschwindigkeit = (float)data.TruckValues.CurrentValues.DashboardValues.Speed.Kph;
+                                anti_AFK_TIMER.Enabled = ((float)data.TruckValues.CurrentValues.DashboardValues.Speed.Kph <= 1) ? true : false;
                             }
                             else
                             {
                                 speed_lb.Text = (int)data.TruckValues.CurrentValues.DashboardValues.Speed.Mph + labelkmh;
                                 user.Geschwindigkeit = (float)data.TruckValues.CurrentValues.DashboardValues.Speed.Mph;
+                                anti_AFK_TIMER.Enabled = ((float)data.TruckValues.CurrentValues.DashboardValues.Speed.Mph <= 1) ? true : false;
                             }
+
+                            job.currentPercentage = (((((double)data.NavigationValues.NavigationDistance / 1000) / (double)data.JobValues.PlannedDistanceKm) * 100) - 100) * -1;
 
                             // ##########################  AUSGABE TRUCK MODEL etc.  #############################
                             truck_lb.Text = "Dein Truck: " + data.TruckValues.ConstantsValues.Brand + ", Modell: " + data.TruckValues.ConstantsValues.Name;
@@ -1003,12 +1007,11 @@ namespace VTCManager_1._0._0
             // 
             // speed_lb
             // 
-            this.speed_lb.AutoSize = true;
             this.speed_lb.BackColor = System.Drawing.Color.Transparent;
             this.speed_lb.Font = new System.Drawing.Font("Verdana", 26.25F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.speed_lb.Location = new System.Drawing.Point(186, 51);
+            this.speed_lb.Location = new System.Drawing.Point(10, 43);
             this.speed_lb.Name = "speed_lb";
-            this.speed_lb.Size = new System.Drawing.Size(0, 42);
+            this.speed_lb.Size = new System.Drawing.Size(538, 42);
             this.speed_lb.TabIndex = 0;
             this.speed_lb.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
@@ -1585,8 +1588,7 @@ namespace VTCManager_1._0._0
             if (string.IsNullOrEmpty(utils.Reg_Lesen("TruckersMP_Autorun", "GroupBox_Diagnostic")))
                 utils.Reg_Schreiben("Diagnostic", "0", "TruckersMP_Autorun");
 
-            anti_AFK_TIMER.Enabled = (Convert.ToInt32(utils.Reg_Lesen("TruckersMP_Autorun", "ANTI_AFK_AN")) == 1) ? true : false;
-            utils.Log("<INFO> ANTI_AFK_TEXT > " + anti_AFK_TIMER.Enabled + " [Main.cs->1469]");
+           
 
             // ####################   VERSION IN REG SCHREIBEN   ###################################
             utils.Reg_Schreiben("Version", Revision, "TruckersMP_Autorun");
@@ -1737,12 +1739,12 @@ namespace VTCManager_1._0._0
                 NUM3_Label.Visible = true; lbl_NUM3_Text.Text = utils.Reg_Lesen("TruckersMP_Autorun", "NUM3");
         }
 
-        private void NUM_PAD_1_PRESSED(object sender, EventArgs e)
+        void NUM_PAD_1_PRESSED(object sender, EventArgs e)
         {
-            string text1 = string.IsNullOrEmpty(utils.Reg_Lesen("TruckersMP_Autorun", "NUM1")) ? "..." : utils.Reg_Lesen("TruckersMP_Autorun", "NUM1");
+            string text1 = (string.IsNullOrEmpty(utils.Reg_Lesen("TruckersMP_Autorun", "NUM1"))) ? "..." : utils.Reg_Lesen("TruckersMP_Autorun", "NUM1");
             if (GetActiveWindowTitle().Contains("Euro Truck Simulator 2"))
             {
-                SendKeys.Send("y");
+                //SendKeys.Send("y");
                 SendKeys.Send(text1);
                 SendKeys.Send("{Enter}");
             } else
@@ -1753,10 +1755,10 @@ namespace VTCManager_1._0._0
 
         void NUM_PAD_2_PRESSED(object sender, EventArgs e)
         {
-            string text2 = string.IsNullOrEmpty(utils.Reg_Lesen("TruckersMP_Autorun", "NUM2")) ? "..." : utils.Reg_Lesen("TruckersMP_Autorun", "NUM2");
+            string text2 = (string.IsNullOrEmpty(utils.Reg_Lesen("TruckersMP_Autorun", "NUM2"))) ? "..." : utils.Reg_Lesen("TruckersMP_Autorun", "NUM2");
             if (GetActiveWindowTitle().Contains("Euro Truck Simulator 2"))
             {
-                SendKeys.Send("y");
+                //SendKeys.Send("y");
                 SendKeys.Send(text2);
                 SendKeys.Send("{Enter}");
             }
@@ -1767,10 +1769,10 @@ namespace VTCManager_1._0._0
         }
         void NUM_PAD_3_PRESSED(object sender, EventArgs e)
         {
-            string text3 = string.IsNullOrEmpty(utils.Reg_Lesen("TruckersMP_Autorun", "NUM3")) ? "..." : utils.Reg_Lesen("TruckersMP_Autorun", "NUM3");
+            var text3 = (string.IsNullOrEmpty(utils.Reg_Lesen("TruckersMP_Autorun", "NUM3"))) ? "..." : utils.Reg_Lesen("TruckersMP_Autorun", "NUM3");
             if (GetActiveWindowTitle().Contains("Euro Truck Simulator 2"))
             {
-                SendKeys.Send("y");
+                //SendKeys.Send("y");
                 SendKeys.Send(text3);
                 SendKeys.Send("{Enter}");
             }
