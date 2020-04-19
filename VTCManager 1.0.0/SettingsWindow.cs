@@ -68,6 +68,7 @@ namespace VTCManager_1._0._0
         private Label label10;
         private TextBox Num1_Text;
         private Label label14;
+        private CheckBox checkBox_NUM_LOCK;
         public int Patreon;
 
         public SettingsWindow(Translation translation, int patreon)
@@ -138,6 +139,7 @@ namespace VTCManager_1._0._0
             this.Num2_Text = new System.Windows.Forms.TextBox();
             this.label10 = new System.Windows.Forms.Label();
             this.Num1_Text = new System.Windows.Forms.TextBox();
+            this.checkBox_NUM_LOCK = new System.Windows.Forms.CheckBox();
             this.groupBox1.SuspendLayout();
             this.btn_TruckersMP_suchen.SuspendLayout();
             this.group_Overlay.SuspendLayout();
@@ -593,6 +595,7 @@ namespace VTCManager_1._0._0
             // 
             // Group_Box_Indiv_Texte
             // 
+            this.Group_Box_Indiv_Texte.Controls.Add(this.checkBox_NUM_LOCK);
             this.Group_Box_Indiv_Texte.Controls.Add(this.label14);
             this.Group_Box_Indiv_Texte.Controls.Add(this.label13);
             this.Group_Box_Indiv_Texte.Controls.Add(this.label12);
@@ -696,6 +699,17 @@ namespace VTCManager_1._0._0
             this.Num1_Text.Name = "Num1_Text";
             this.Num1_Text.Size = new System.Drawing.Size(478, 22);
             this.Num1_Text.TabIndex = 6;
+            // 
+            // checkBox_NUM_LOCK
+            // 
+            this.checkBox_NUM_LOCK.AutoSize = true;
+            this.checkBox_NUM_LOCK.Location = new System.Drawing.Point(2, 123);
+            this.checkBox_NUM_LOCK.Name = "checkBox_NUM_LOCK";
+            this.checkBox_NUM_LOCK.Size = new System.Drawing.Size(158, 17);
+            this.checkBox_NUM_LOCK.TabIndex = 14;
+            this.checkBox_NUM_LOCK.Text = "NUM Lock Button anzeigen";
+            this.checkBox_NUM_LOCK.UseVisualStyleBackColor = true;
+            this.checkBox_NUM_LOCK.CheckedChanged += new System.EventHandler(this.checkBox_NUM_LOCK_CheckedChanged);
             // 
             // SettingsWindow
             // 
@@ -815,6 +829,7 @@ namespace VTCManager_1._0._0
         private void SettingsWindow_Load(object sender, EventArgs e)
         {
             GroupBox_Diagnostic.Visible = (utils.Reg_Lesen("TruckersMP_Autorun", "Diagnostic") == "1") ? true : false;
+            checkBox_NUM_LOCK.CheckState = (utils.Reg_Lesen("TruckersMP_Autorun", "NUM_LOCK_SHOW") == "1") ? CheckState.Checked : CheckState.Unchecked;
             Chk_Dashboard.CheckState = (utils.Reg_Lesen("TruckersMP_Autorun", "Dashboard") == "1") ? CheckState.Checked : CheckState.Unchecked;
             Group_Box_Indiv_Texte.Visible = (Patreon >= 2) ? true : false;
 
@@ -1205,6 +1220,17 @@ namespace VTCManager_1._0._0
                 return true;
         }
 
+        private void checkBox_NUM_LOCK_CheckedChanged(object sender, EventArgs e)
+        {
+            if (Chk_Dashboard.CheckState == CheckState.Checked)
+            {
+                utils.Reg_Schreiben("NUM_LOCK_SHOW", "1", "TruckersMP_Autorun");
+            }
+            else
+            {
+                utils.Reg_Schreiben("NUM_LOCK_SHOW", "0", "TruckersMP_Autorun");
+            }
+        }
     }
 }
 

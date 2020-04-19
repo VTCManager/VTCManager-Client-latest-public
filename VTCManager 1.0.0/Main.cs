@@ -19,7 +19,7 @@ namespace VTCManager_1._0._0
     public class Main : Form
     {
         // Settings
-        public string Revision = "2.1.8D";
+        public string Revision = "2.2.1A";
         public string Telemetry_Version = "1.11";
 
         private API api = new API();
@@ -583,6 +583,7 @@ namespace VTCManager_1._0._0
             this.label2 = new System.Windows.Forms.Label();
             this.panel2 = new System.Windows.Forms.Panel();
             this.GroupBox_Individ_Texte = new System.Windows.Forms.GroupBox();
+            this.NUM_LOCK_PICTURE = new System.Windows.Forms.PictureBox();
             this.lbl_NUM2_Text = new System.Windows.Forms.Label();
             this.lbl_NUM3_Text = new System.Windows.Forms.Label();
             this.NUM1_Label = new System.Windows.Forms.Label();
@@ -635,11 +636,11 @@ namespace VTCManager_1._0._0
             this.Label_DB_Server = new System.Windows.Forms.ToolStripStatusLabel();
             this.User_Patreon_State = new System.Windows.Forms.ToolStripStatusLabel();
             this.anti_AFK_TIMER = new System.Windows.Forms.Timer(this.components);
-            this.NUM_LOCK_PICTURE = new System.Windows.Forms.PictureBox();
             ((System.ComponentModel.ISupportInitialize)(this.send_tour_status)).BeginInit();
             this.menuStrip1.SuspendLayout();
             this.panel2.SuspendLayout();
             this.GroupBox_Individ_Texte.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.NUM_LOCK_PICTURE)).BeginInit();
             this.panel4.SuspendLayout();
             this.Dashboard_1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.Retarder_ICON)).BeginInit();
@@ -654,7 +655,6 @@ namespace VTCManager_1._0._0
             ((System.ComponentModel.ISupportInitialize)(this.ets2_button)).BeginInit();
             this.groupVerkehr.SuspendLayout();
             this.statusStrip1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.NUM_LOCK_PICTURE)).BeginInit();
             this.SuspendLayout();
             // 
             // send_tour_status
@@ -915,6 +915,15 @@ namespace VTCManager_1._0._0
             this.GroupBox_Individ_Texte.TabStop = false;
             this.GroupBox_Individ_Texte.Text = "Individuelle Texte";
             // 
+            // NUM_LOCK_PICTURE
+            // 
+            this.NUM_LOCK_PICTURE.Location = new System.Drawing.Point(467, 19);
+            this.NUM_LOCK_PICTURE.Name = "NUM_LOCK_PICTURE";
+            this.NUM_LOCK_PICTURE.Size = new System.Drawing.Size(64, 18);
+            this.NUM_LOCK_PICTURE.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.NUM_LOCK_PICTURE.TabIndex = 10;
+            this.NUM_LOCK_PICTURE.TabStop = false;
+            // 
             // lbl_NUM2_Text
             // 
             this.lbl_NUM2_Text.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
@@ -1135,9 +1144,9 @@ namespace VTCManager_1._0._0
             this.Rest_KM_Label.Font = new System.Drawing.Font("Verdana", 12F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Rest_KM_Label.Location = new System.Drawing.Point(44, 102);
             this.Rest_KM_Label.Name = "Rest_KM_Label";
-            this.Rest_KM_Label.Size = new System.Drawing.Size(52, 18);
+            this.Rest_KM_Label.Size = new System.Drawing.Size(47, 18);
             this.Rest_KM_Label.TabIndex = 6;
-            this.Rest_KM_Label.Text = "0000";
+            this.Rest_KM_Label.Text = "0,00";
             // 
             // Motorbremse_ICON
             // 
@@ -1438,15 +1447,6 @@ namespace VTCManager_1._0._0
             this.anti_AFK_TIMER.Interval = 240000;
             this.anti_AFK_TIMER.Tick += new System.EventHandler(this.anti_AFK_TIMER_Tick);
             // 
-            // NUM_LOCK_PICTURE
-            // 
-            this.NUM_LOCK_PICTURE.Location = new System.Drawing.Point(467, 19);
-            this.NUM_LOCK_PICTURE.Name = "NUM_LOCK_PICTURE";
-            this.NUM_LOCK_PICTURE.Size = new System.Drawing.Size(64, 18);
-            this.NUM_LOCK_PICTURE.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.NUM_LOCK_PICTURE.TabIndex = 10;
-            this.NUM_LOCK_PICTURE.TabStop = false;
-            // 
             // Main
             // 
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
@@ -1475,6 +1475,7 @@ namespace VTCManager_1._0._0
             this.panel2.PerformLayout();
             this.GroupBox_Individ_Texte.ResumeLayout(false);
             this.GroupBox_Individ_Texte.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.NUM_LOCK_PICTURE)).EndInit();
             this.panel4.ResumeLayout(false);
             this.Dashboard_1.ResumeLayout(false);
             this.Dashboard_1.PerformLayout();
@@ -1493,7 +1494,6 @@ namespace VTCManager_1._0._0
             this.groupVerkehr.PerformLayout();
             this.statusStrip1.ResumeLayout(false);
             this.statusStrip1.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.NUM_LOCK_PICTURE)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -1567,8 +1567,13 @@ namespace VTCManager_1._0._0
                 utils.Reg_Schreiben("ANTI_AFK", "VTCManager wünscht Gute und Sichere Fahrt!", "TruckersMP_Autorun");
 
             // ##################   ANTI AFK ENDE ##################################################
+            if (string.IsNullOrEmpty(utils.Reg_Lesen("TruckersMP_Autorun", "NUM_LOCK_SHOW")))
+                utils.Reg_Schreiben("NUM_LOCK_SHOW", "0", "TruckersMP_Autorun");
+
+            NUM_LOCK_PICTURE.Visible = (utils.Reg_Lesen("TruckersMP_Autorun", "NUM_LOCK_SHOW") == "1") ? true : false;
 
             // ##################   HOTKEY   #######################################################
+            // Lade NUM_LOCK Status On/Off aus Registry
 
             // #############  !!! Text werden bei locationupdate() neu geladen !!!  ################
             lade_NUMx_TEXTE();   // FIRST LOAD -> dann über locationupdate()
