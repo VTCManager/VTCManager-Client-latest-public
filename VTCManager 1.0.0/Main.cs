@@ -135,7 +135,9 @@ namespace VTCManager_1._0._0
         private Label NUM1_Label;
         private GroupBox GroupBox_Individ_Texte;
         private bool jobStarted;
+        private PictureBox NUM_LOCK_PICTURE;
         public Label lbl_Revision;
+
 
         // Get a handle to an application window.
         [DllImport("USER32.DLL", CharSet = CharSet.Unicode)]
@@ -151,6 +153,8 @@ namespace VTCManager_1._0._0
         [DllImport("user32.dll")]
         static extern int GetWindowText(IntPtr hWnd, StringBuilder text, int count);
 
+        [DllImport("user32.dll", EntryPoint = "GetKeyState", SetLastError = true)]
+        public static extern int GetKeyState(int nVirtKey);
 
 
         public Main(User user)
@@ -177,6 +181,8 @@ namespace VTCManager_1._0._0
                 utils.Log("Fehler beim Abrufen der Verkehrsdaten [Main.cs->165]");
                 MessageBox.Show("Fehler: Fehler beim Abrufen der Verkehrsdaten" + e.Message);
             }*/
+
+      
             this.FormClosing += new FormClosingEventHandler(this.Main_FormClosing);
 
             //Telemetry Handler setzen
@@ -298,7 +304,7 @@ namespace VTCManager_1._0._0
                 }
                 else
                 {
-                    
+                    NUM_LOCK_PICTURE.Image = (NumLock() == true) ? Properties.Resources.num_on : Properties.Resources.num_off;
                     //Läuft das Spiel?
                     if (Utilities.IsGameRunning && data.SdkActive)
                     {
@@ -316,6 +322,11 @@ namespace VTCManager_1._0._0
                         Motorbremse_ICON.Visible = (data.TruckValues.CurrentValues.MotorValues.BrakeValues.MotorBrake) ? true : false;
                         Handbremse_ICON.Visible = (data.TruckValues.CurrentValues.MotorValues.BrakeValues.ParkingBrake) ? true : false;
                         Retarder_ICON.Visible = (((float)data.ControlValues.InputValues.Brake) >= 0.1) ? true : false;
+
+                        // ################## NUM LOCK ADDON  #####################
+                        
+
+                        // ########################################################
 
                         //Text sichtbar
                         this.truck_lb.Visible = true;
@@ -347,13 +358,14 @@ namespace VTCManager_1._0._0
                             {
                                 speed_lb.Text = (int)data.TruckValues.CurrentValues.DashboardValues.Speed.Kph + labelkmh;
                                 user.Geschwindigkeit = (float)data.TruckValues.CurrentValues.DashboardValues.Speed.Kph;
-                                anti_AFK_TIMER.Enabled = ((float)data.TruckValues.CurrentValues.DashboardValues.Speed.Kph <= 1) ? true : false;
+                                anti_AFK_TIMER.Enabled = ((float)data.TruckValues.CurrentValues.DashboardValues.Speed.Kph < 1) ? true : false;
                             }
                             else
                             {
                                 speed_lb.Text = (int)data.TruckValues.CurrentValues.DashboardValues.Speed.Mph + labelkmh;
                                 user.Geschwindigkeit = (float)data.TruckValues.CurrentValues.DashboardValues.Speed.Mph;
-                                anti_AFK_TIMER.Enabled = ((float)data.TruckValues.CurrentValues.DashboardValues.Speed.Mph <= 1) ? true : false;
+                                anti_AFK_TIMER.Enabled = ((float)data.TruckValues.CurrentValues.DashboardValues.Speed.Mph < 1) ? true : false;
+
                             }
 
                             job.currentPercentage = (((((double)data.NavigationValues.NavigationDistance / 1000) / (double)data.JobValues.PlannedDistanceKm) * 100) - 100) * -1;
@@ -623,6 +635,7 @@ namespace VTCManager_1._0._0
             this.Label_DB_Server = new System.Windows.Forms.ToolStripStatusLabel();
             this.User_Patreon_State = new System.Windows.Forms.ToolStripStatusLabel();
             this.anti_AFK_TIMER = new System.Windows.Forms.Timer(this.components);
+            this.NUM_LOCK_PICTURE = new System.Windows.Forms.PictureBox();
             ((System.ComponentModel.ISupportInitialize)(this.send_tour_status)).BeginInit();
             this.menuStrip1.SuspendLayout();
             this.panel2.SuspendLayout();
@@ -641,6 +654,7 @@ namespace VTCManager_1._0._0
             ((System.ComponentModel.ISupportInitialize)(this.ets2_button)).BeginInit();
             this.groupVerkehr.SuspendLayout();
             this.statusStrip1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.NUM_LOCK_PICTURE)).BeginInit();
             this.SuspendLayout();
             // 
             // send_tour_status
@@ -887,6 +901,7 @@ namespace VTCManager_1._0._0
             // 
             // GroupBox_Individ_Texte
             // 
+            this.GroupBox_Individ_Texte.Controls.Add(this.NUM_LOCK_PICTURE);
             this.GroupBox_Individ_Texte.Controls.Add(this.lbl_NUM2_Text);
             this.GroupBox_Individ_Texte.Controls.Add(this.lbl_NUM3_Text);
             this.GroupBox_Individ_Texte.Controls.Add(this.NUM1_Label);
@@ -1423,11 +1438,19 @@ namespace VTCManager_1._0._0
             this.anti_AFK_TIMER.Interval = 240000;
             this.anti_AFK_TIMER.Tick += new System.EventHandler(this.anti_AFK_TIMER_Tick);
             // 
+            // NUM_LOCK_PICTURE
+            // 
+            this.NUM_LOCK_PICTURE.Location = new System.Drawing.Point(467, 19);
+            this.NUM_LOCK_PICTURE.Name = "NUM_LOCK_PICTURE";
+            this.NUM_LOCK_PICTURE.Size = new System.Drawing.Size(64, 18);
+            this.NUM_LOCK_PICTURE.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.NUM_LOCK_PICTURE.TabIndex = 10;
+            this.NUM_LOCK_PICTURE.TabStop = false;
+            // 
             // Main
             // 
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             this.ClientSize = new System.Drawing.Size(1388, 642);
-            this.Controls.Add(this.statusStrip1);
             this.Controls.Add(this.lbl_Revision);
             this.Controls.Add(this.groupVerkehr);
             this.Controls.Add(this.groupStatistiken);
@@ -1435,6 +1458,7 @@ namespace VTCManager_1._0._0
             this.Controls.Add(this.panel4);
             this.Controls.Add(this.panel2);
             this.Controls.Add(this.menuStrip1);
+            this.Controls.Add(this.statusStrip1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MainMenuStrip = this.menuStrip1;
@@ -1469,6 +1493,7 @@ namespace VTCManager_1._0._0
             this.groupVerkehr.PerformLayout();
             this.statusStrip1.ResumeLayout(false);
             this.statusStrip1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.NUM_LOCK_PICTURE)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -1741,12 +1766,17 @@ namespace VTCManager_1._0._0
 
         void NUM_PAD_1_PRESSED(object sender, EventArgs e)
         {
+            Clipboard.Clear();
             string text1 = (string.IsNullOrEmpty(utils.Reg_Lesen("TruckersMP_Autorun", "NUM1"))) ? "..." : utils.Reg_Lesen("TruckersMP_Autorun", "NUM1");
             if (GetActiveWindowTitle().Contains("Euro Truck Simulator 2"))
             {
-                //SendKeys.Send("y");
-                SendKeys.Send(text1);
-                SendKeys.Send("{Enter}");
+                try
+                {
+                    SendKeys.Send("y");
+                    SendKeys.Send(text1);
+                    SendKeys.Send("{Enter}");
+                }
+                catch { }
             } else
             {
                 MessageBox.Show("Dafür muss ETS2 oder ATS laufen !", "Fehler", MessageBoxButtons.OK, MessageBoxIcon.Warning);
@@ -1755,12 +1785,16 @@ namespace VTCManager_1._0._0
 
         void NUM_PAD_2_PRESSED(object sender, EventArgs e)
         {
+            Clipboard.Clear();
             string text2 = (string.IsNullOrEmpty(utils.Reg_Lesen("TruckersMP_Autorun", "NUM2"))) ? "..." : utils.Reg_Lesen("TruckersMP_Autorun", "NUM2");
             if (GetActiveWindowTitle().Contains("Euro Truck Simulator 2"))
             {
-                //SendKeys.Send("y");
-                SendKeys.Send(text2);
-                SendKeys.Send("{Enter}");
+                try
+                {
+                    SendKeys.Send("y");
+                    SendKeys.Send(text2);
+                    SendKeys.Send("{Enter}");
+                } catch { }
             }
             else
             {
@@ -1769,12 +1803,17 @@ namespace VTCManager_1._0._0
         }
         void NUM_PAD_3_PRESSED(object sender, EventArgs e)
         {
+            Clipboard.Clear();
             var text3 = (string.IsNullOrEmpty(utils.Reg_Lesen("TruckersMP_Autorun", "NUM3"))) ? "..." : utils.Reg_Lesen("TruckersMP_Autorun", "NUM3");
             if (GetActiveWindowTitle().Contains("Euro Truck Simulator 2"))
             {
-                //SendKeys.Send("y");
-                SendKeys.Send(text3);
-                SendKeys.Send("{Enter}");
+                try
+                {
+                    SendKeys.Send("y");
+                    SendKeys.Send(text3);
+                    SendKeys.Send("{Enter}");
+                }
+                catch { }
             }
             else
             {
@@ -1943,11 +1982,13 @@ namespace VTCManager_1._0._0
             const int nChars = 256;
             StringBuilder Buff = new StringBuilder(nChars);
             IntPtr handle = GetForegroundWindow();
-
-            if (GetWindowText(handle, Buff, nChars) > 0)
+            try
             {
-                return Buff.ToString();
-            }
+                if (GetWindowText(handle, Buff, nChars) > 0)
+                {
+                    return Buff.ToString();
+                }
+            } catch { }
             return null;
         }
 
@@ -2074,7 +2115,12 @@ namespace VTCManager_1._0._0
             fm.Show();
         }
 
-
+        private bool NumLock()
+        {
+            if (GetKeyState((int)System.Windows.Forms.Keys.NumLock) != 0)
+                return true;
+            return false;
+        }
 
     }
 
