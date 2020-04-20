@@ -1,4 +1,6 @@
-﻿using SCSSdkClient.Object;
+﻿using ManagedWinapi;
+using SCSSdkClient;
+using SCSSdkClient.Object;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -7,12 +9,10 @@ using System.Drawing;
 using System.IO;
 using System.Net;
 using System.Runtime.InteropServices;
-using System.Windows.Forms;
-using Timer = System.Windows.Forms.Timer;
-using SCSSdkClient;
-using VTCManager_1._0._0.Objekte;
 using System.Text;
-using ManagedWinapi;
+using System.Windows.Forms;
+using VTCManager_1._0._0.Objekte;
+using Timer = System.Windows.Forms.Timer;
 
 namespace VTCManager_1._0._0
 {
@@ -305,6 +305,13 @@ namespace VTCManager_1._0._0
                 else
                 {
                     NUM_LOCK_PICTURE.Image = (NumLock() == true) ? Properties.Resources.num_on : Properties.Resources.num_off;
+
+                    // ##########################   NUM Anzeige An/Ausschalten   #####################################
+                    NUM_LOCK_PICTURE.Visible = (utils.Reg_Lesen("TruckersMP_Autorun", "NUM_LOCK_SHOW") == "1") ? true : false;
+
+                    // ##########################   Dashboaard An/Ausschalten   ######################################
+                    Dashboard_1.Visible = (utils.Reg_Lesen("TruckersMP_Autorun", "Dashboard") == "1") ? true : false;
+
                     //Läuft das Spiel?
                     if (Utilities.IsGameRunning && data.SdkActive)
                     {
@@ -514,8 +521,6 @@ namespace VTCManager_1._0._0
             // ######   LADE HOTKEY TEXTE NEU    ######################
             lade_NUMx_TEXTE();
 
-            // ##########################   Dashboaard An/Ausschalten   #####################################
-            Dashboard_1.Visible = (utils.Reg_Lesen("TruckersMP_Autorun", "Dashboard") == "1") ? true : false;
 
 
             double num3 = user.rotation;
@@ -1570,10 +1575,12 @@ namespace VTCManager_1._0._0
             if (string.IsNullOrEmpty(utils.Reg_Lesen("TruckersMP_Autorun", "NUM_LOCK_SHOW")))
                 utils.Reg_Schreiben("NUM_LOCK_SHOW", "0", "TruckersMP_Autorun");
 
-            NUM_LOCK_PICTURE.Visible = (utils.Reg_Lesen("TruckersMP_Autorun", "NUM_LOCK_SHOW") == "1") ? true : false;
+
 
             // ##################   HOTKEY   #######################################################
             // Lade NUM_LOCK Status On/Off aus Registry
+            NUM_LOCK_PICTURE.Visible = (utils.Reg_Lesen("TruckersMP_Autorun", "NUM_LOCK_SHOW") == "1") ? true : false;
+
 
             // #############  !!! Text werden bei locationupdate() neu geladen !!!  ################
             lade_NUMx_TEXTE();   // FIRST LOAD -> dann über locationupdate()
@@ -1780,7 +1787,6 @@ namespace VTCManager_1._0._0
             {
                 try
                 {
-                    //SendKeys.Send("y");
                     SendKeys.Send(text1);
                     SendKeys.Send("{Enter}");
                 }
@@ -1791,6 +1797,7 @@ namespace VTCManager_1._0._0
             }
         }
 
+
         void NUM_PAD_2_PRESSED(object sender, EventArgs e)
         {
             Clipboard.Clear();
@@ -1799,7 +1806,6 @@ namespace VTCManager_1._0._0
             {
                 try
                 {
-                    //SendKeys.Send("-> ");
                     SendKeys.Send(text2);
                     SendKeys.Send("{Enter}");
                 } catch { }
@@ -1817,7 +1823,6 @@ namespace VTCManager_1._0._0
             {
                 try
                 {
-                    //SendKeys.Send("y");
                     SendKeys.Send(text3);
                     SendKeys.Send("{Enter}");
                 }
