@@ -11,7 +11,7 @@ namespace VTCManager_1._0._0
     {
         public DiscordRpcClient client;
 
-        public Discord()
+        public Discord(String ClientVersion)
         {
             if (Utilities.IsDiscordRunning == true)
             {
@@ -25,7 +25,8 @@ namespace VTCManager_1._0._0
                     {
                         LargeImageKey = "truck-icon",
                         LargeImageText = "Beyond the limits",
-                        SmallImageKey = "vtcm-logo"
+                        SmallImageKey = "vtcm-logo",
+                        SmallImageText = "VTCManager Version "+ClientVersion
                     }
 
                 });

@@ -1551,7 +1551,7 @@ namespace VTCManager_1._0._0
         private void Main_Load(object sender, EventArgs e)
         {
             /* REVISION NUMBER NOW ON TOP ! */
-            this.discord = new Discord();
+            this.discord = new Discord(Revision);
 
             /// ######################   GEHT NOCH NICHT, DESHALB AUSBLENDEN    ###################
             Motorbremse_ICON.Visible = false;
