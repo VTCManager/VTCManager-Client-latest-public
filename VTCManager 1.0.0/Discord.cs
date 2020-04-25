@@ -26,7 +26,7 @@ namespace VTCManager_1._0._0
                         LargeImageKey = "truck-icon",
                         LargeImageText = "Beyond the limits",
                         SmallImageKey = "vtcm-logo",
-                        SmallImageText = "VTCManager Version "+ClientVersion
+                        SmallImageText = "VTCManager Version " + ClientVersion
                     }
 
                 });
