@@ -19,7 +19,7 @@ namespace VTCManager_1._0._0
     public class Main : Form
     {
         // Settings
-        public string Revision = "2.2.1B";
+        public string Revision = "2.2.1";
         public string Telemetry_Version = "1.11";
 
         private API api = new API();
