@@ -12,6 +12,7 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Windows.Forms;
 using VTCManager_1._0._0.Objekte;
+using WindowsInput;
 using Timer = System.Windows.Forms.Timer;
 
 namespace VTCManager_1._0._0
@@ -136,6 +137,10 @@ namespace VTCManager_1._0._0
         private GroupBox GroupBox_Individ_Texte;
         private bool jobStarted;
         private PictureBox NUM_LOCK_PICTURE;
+        private ToolStripMenuItem dockingToolStripMenuItem;
+        private ToolStripMenuItem dockTopToolStripMenuItem;
+        private ToolStripMenuItem dockBottomToolStripMenuItem;
+        private BackgroundWorker backgroundWorker1;
         public Label lbl_Revision;
 
 
@@ -584,6 +589,9 @@ namespace VTCManager_1._0._0
             this.oldCar4ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.keinsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.frachtmarktToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.dockingToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.dockTopToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.dockBottomToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.linkLabel1 = new System.Windows.Forms.LinkLabel();
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
@@ -642,6 +650,7 @@ namespace VTCManager_1._0._0
             this.Label_DB_Server = new System.Windows.Forms.ToolStripStatusLabel();
             this.User_Patreon_State = new System.Windows.Forms.ToolStripStatusLabel();
             this.anti_AFK_TIMER = new System.Windows.Forms.Timer(this.components);
+            this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
             ((System.ComponentModel.ISupportInitialize)(this.send_tour_status)).BeginInit();
             this.menuStrip1.SuspendLayout();
             this.panel2.SuspendLayout();
@@ -690,7 +699,8 @@ namespace VTCManager_1._0._0
             this.lbl_Overlay,
             this.darkToolStripMenuItem,
             this.toolStripMenuItem1,
-            this.frachtmarktToolStripMenuItem});
+            this.frachtmarktToolStripMenuItem,
+            this.dockingToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Size = new System.Drawing.Size(1388, 32);
@@ -854,6 +864,28 @@ namespace VTCManager_1._0._0
             this.frachtmarktToolStripMenuItem.Name = "frachtmarktToolStripMenuItem";
             this.frachtmarktToolStripMenuItem.Size = new System.Drawing.Size(36, 28);
             this.frachtmarktToolStripMenuItem.Click += new System.EventHandler(this.frachtmarktToolStripMenuItem_Click);
+            // 
+            // dockingToolStripMenuItem
+            // 
+            this.dockingToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.dockTopToolStripMenuItem,
+            this.dockBottomToolStripMenuItem});
+            this.dockingToolStripMenuItem.Name = "dockingToolStripMenuItem";
+            this.dockingToolStripMenuItem.Size = new System.Drawing.Size(79, 28);
+            this.dockingToolStripMenuItem.Text = "Docking";
+            // 
+            // dockTopToolStripMenuItem
+            // 
+            this.dockTopToolStripMenuItem.Name = "dockTopToolStripMenuItem";
+            this.dockTopToolStripMenuItem.Size = new System.Drawing.Size(170, 26);
+            this.dockTopToolStripMenuItem.Text = "Dock Top";
+            this.dockTopToolStripMenuItem.Click += new System.EventHandler(this.dockTopToolStripMenuItem_Click);
+            // 
+            // dockBottomToolStripMenuItem
+            // 
+            this.dockBottomToolStripMenuItem.Name = "dockBottomToolStripMenuItem";
+            this.dockBottomToolStripMenuItem.Size = new System.Drawing.Size(170, 26);
+            this.dockBottomToolStripMenuItem.Text = "Dock Bottom";
             // 
             // linkLabel1
             // 
@@ -1037,13 +1069,16 @@ namespace VTCManager_1._0._0
             // 
             // speed_lb
             // 
+            this.speed_lb.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.speed_lb.AutoSize = true;
             this.speed_lb.BackColor = System.Drawing.Color.Transparent;
             this.speed_lb.Font = new System.Drawing.Font("Verdana", 26.25F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.speed_lb.Location = new System.Drawing.Point(10, 43);
             this.speed_lb.Name = "speed_lb";
-            this.speed_lb.Size = new System.Drawing.Size(538, 42);
+            this.speed_lb.Size = new System.Drawing.Size(0, 42);
             this.speed_lb.TabIndex = 0;
-            this.speed_lb.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.speed_lb.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // tableLayoutPanel1
             // 
@@ -2137,6 +2172,62 @@ namespace VTCManager_1._0._0
             return false;
         }
 
+        private void dockTopToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            groupStatistiken.Visible = false;
+            groupVerkehr.Visible = false;
+            Dashboard_1.Visible = false;
+            utils.Reg_Schreiben("Dashboard", "0", "TruckersMP_Autorun");
+            GroupBox_Individ_Texte.Visible = false;
+            //speed_lb.Visible = false;
+            //truck_lb.Visible = false;
+            cargo_lb.Visible = false;
+            depature_lb.Visible = false;
+
+            frachtmarktToolStripMenuItem.Visible = false;
+            toolStripMenuItem1.Visible = false;
+            lbl_Overlay.Visible = false;
+            GUI_SIZE_BUTTON.Visible = false;
+            eventsToolStripMenuItem.Visible = false;
+            topmenuwebsite.Visible = false;
+            topMenuAccount.Visible = false;
+            dateiToolStripMenuItem.Visible = false;
+            darkToolStripMenuItem.Visible = false;
+
+            this.BackgroundImage = null;
+            if(Screen.AllScreens.Length > 1)
+            {
+
+                Rectangle area = Screen.AllScreens[0].WorkingArea;
+                Rectangle area2 = Screen.AllScreens[1].WorkingArea;
+                this.Width = area2.Width;
+                this.Height = 150;
+                this.Location = new Point(area2.Width-area2.Width - area.Width, 0);
+                this.TopMost = true;
+                this.BackColor = Color.Chocolate;
+
+                lbl_Revision.Dock = DockStyle.Right;
+                lbl_Revision.Dock = DockStyle.Top;
+
+                speed_lb.Location = new Point(300, 20);
+                speed_lb.Font = new Font("Arial", 14, FontStyle.Bold);
+
+                truck_lb.Location = new Point(20, 20);
+
+            } else
+            {
+                Rectangle area = Screen.AllScreens[0].WorkingArea;
+                this.Width = area.Width;
+                this.Height = 150;
+                this.Location = new Point(0, 0);
+                this.TopMost = true;
+            }
+
+
+
+
+
+        }
     }
 
 
