@@ -19,7 +19,7 @@ namespace VTCManager_1._0._0
     public class Main : Form
     {
         // Settings
-        public string Revision = "2.2.1B";
+        public string Revision = "2.2.1";
         public string Telemetry_Version = "1.11";
 
         private API api = new API();
@@ -1552,7 +1552,7 @@ namespace VTCManager_1._0._0
         private void Main_Load(object sender, EventArgs e)
         {
             /* REVISION NUMBER NOW ON TOP ! */
-            this.discord = new Discord();
+            this.discord = new Discord(Revision);
 
             /// ######################   GEHT NOCH NICHT, DESHALB AUSBLENDEN    ###################
             Motorbremse_ICON.Visible = false;

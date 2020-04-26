@@ -930,10 +930,13 @@ namespace VTCManager_1._0._0
                     ToolTip tip2 = new ToolTip();
                     tip2.SetToolTip(patreon_image, "Patreon Level 2");
                     break;
-                default:
+                case 3:
                     patreon_image.Image = Properties.Resources.pat3;
                     ToolTip tip3 = new ToolTip();
                     tip3.SetToolTip(patreon_image, "Patreon Level 3 -> Vielen Dank !");
+                    break;
+                case 0:
+                    patreon_image.Visible = false;
                     break;
             }
             
