@@ -141,8 +141,7 @@ namespace VTCManager_1._0._0
 
         // Get a handle to an application window.
         [DllImport("USER32.DLL", CharSet = CharSet.Unicode)]
-        public static extern IntPtr FindWindow(string lpClassName,
-            string lpWindowName);
+        public static extern IntPtr FindWindow(string lpClassName, string lpWindowName);
 
         // Activate an application window.
         [DllImport("USER32.DLL")]
@@ -156,6 +155,8 @@ namespace VTCManager_1._0._0
         [DllImport("user32.dll", EntryPoint = "GetKeyState", SetLastError = true)]
         public static extern int GetKeyState(int nVirtKey);
 
+        [DllImport("user32.dll")]
+        public static extern IntPtr PostMessage(IntPtr hWnd, uint Msg, IntPtr wParam, IntPtr lParam);
 
         public Main(User user)
         {
@@ -1778,6 +1779,7 @@ namespace VTCManager_1._0._0
             if (string.IsNullOrEmpty(utils.Reg_Lesen("TruckersMP_Autorun", "NUM3")))
                 NUM3_Label.Visible = true; lbl_NUM3_Text.Text = utils.Reg_Lesen("TruckersMP_Autorun", "NUM3");
         }
+
 
         void NUM_PAD_1_PRESSED(object sender, EventArgs e)
         {
