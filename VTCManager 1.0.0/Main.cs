@@ -863,6 +863,7 @@ namespace VTCManager_1._0._0
             this.dockingToolStripMenuItem.Name = "dockingToolStripMenuItem";
             this.dockingToolStripMenuItem.Size = new System.Drawing.Size(79, 28);
             this.dockingToolStripMenuItem.Text = "Docking";
+            this.dockingToolStripMenuItem.Visible = false;
             // 
             // dockTopToolStripMenuItem
             // 
