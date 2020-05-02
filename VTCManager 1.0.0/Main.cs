@@ -20,7 +20,7 @@ namespace VTCManager_1._0._0
     public class Main : Form
     {
         // Settings
-        public string Revision = "2.2.1";
+        public string Revision = "2.2.2";
         public string Telemetry_Version = "1.11";
 
         private API api = new API();
@@ -86,8 +86,6 @@ namespace VTCManager_1._0._0
         public Timer updateTraffic;
         private Label lbl_Reload_Time;
         public int Is_DarkMode_On;
-        
-        private ToolStripMenuItem serverstatusToolStripMenuItem;
         private StatusStrip statusStrip1;
         private ToolStripStatusLabel WebServer_Status_label;
         private ToolStripStatusLabel Label_DB_Server;
@@ -349,22 +347,11 @@ namespace VTCManager_1._0._0
 
                         truckersMP_Button.Visible = (string.IsNullOrEmpty(utils.Reg_Lesen("TruckersMP_Autorun", "TruckersMP_Pfad"))) ? false : true;
 
-                        if (data.Paused == false)
-                        {
+
+
+
+                      
                             GameRuns = 1;
-
-                            // ###################   FUEL PROGRESS    ##############################################
-                            progressBar_F.Maximum = Convert.ToInt32(data.TruckValues.ConstantsValues.CapacityValues.Fuel);
-                            progressBar_F.Value = Convert.ToInt32(data.TruckValues.CurrentValues.DashboardValues.FuelValue.Amount);
-
-                            // #########################   REST KM    ##############################################
-                            Rest_KM_Label.Text = (int)data.TruckValues.CurrentValues.DashboardValues.FuelValue.Range + " KM (" + Convert.ToInt32(data.TruckValues.CurrentValues.DashboardValues.FuelValue.Amount) + " L)";
-
-                            // #########################   LUFTDRUCK   #############################################
-                            Luft_Progress.Maximum = 150;
-                            Luft_Progress.Value = (int)data.TruckValues.CurrentValues.MotorValues.BrakeValues.AirPressure;
-
-                            // #########################   STRECKENVERLAUF   #######################################
                             labelkmh = (data.Game.ToString() == "Ets2") ? " KM/H" : " mp/h";
 
                             if (data.Game.ToString() == "Ets2")
@@ -380,6 +367,22 @@ namespace VTCManager_1._0._0
                                 anti_AFK_TIMER.Enabled = ((float)data.TruckValues.CurrentValues.DashboardValues.Speed.Mph < 1) ? true : false;
 
                             }
+
+
+                            // ###################   FUEL PROGRESS    ##############################################
+                            progressBar_F.Maximum = Convert.ToInt32(data.TruckValues.ConstantsValues.CapacityValues.Fuel);
+                            progressBar_F.Value = Convert.ToInt32(data.TruckValues.CurrentValues.DashboardValues.FuelValue.Amount);
+
+                            // #########################   REST KM    ##############################################
+                            Rest_KM_Label.Text = (int)data.TruckValues.CurrentValues.DashboardValues.FuelValue.Range + " KM (" + Convert.ToInt32(data.TruckValues.CurrentValues.DashboardValues.FuelValue.Amount) + " L)";
+
+                            // #########################   LUFTDRUCK   #############################################
+                            Luft_Progress.Maximum = 150;
+                            Luft_Progress.Value = (int)data.TruckValues.CurrentValues.MotorValues.BrakeValues.AirPressure;
+
+                            // #########################   STRECKENVERLAUF   #######################################
+                            
+
 
                             job.currentPercentage = (((((double)data.NavigationValues.NavigationDistance / 1000) / (double)data.JobValues.PlannedDistanceKm) * 100) - 100) * -1;
 
@@ -411,11 +414,7 @@ namespace VTCManager_1._0._0
                                 this.jobrunningcounter++;
                             }
 
-                        }
-                        else
-                        {
-                            speed_lb.Text = user.translation.waiting_for_ets;
-                        }
+                      
                         bool flag;
                         using (Dictionary<string, string>.Enumerator enumerator = this.lastJobDictionary.GetEnumerator())
                             flag = !enumerator.MoveNext();
@@ -574,7 +573,6 @@ namespace VTCManager_1._0._0
             this.einstellungenToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.creditsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.beendenToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.serverstatusToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.topMenuAccount = new System.Windows.Forms.ToolStripMenuItem();
             this.MenuAbmeldenButton = new System.Windows.Forms.ToolStripMenuItem();
             this.topmenuwebsite = new System.Windows.Forms.ToolStripMenuItem();
@@ -712,8 +710,7 @@ namespace VTCManager_1._0._0
             this.dateiToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.einstellungenToolStripMenuItem,
             this.creditsToolStripMenuItem,
-            this.beendenToolStripMenuItem,
-            this.serverstatusToolStripMenuItem});
+            this.beendenToolStripMenuItem});
             this.dateiToolStripMenuItem.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.dateiToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("dateiToolStripMenuItem.Image")));
             this.dateiToolStripMenuItem.Name = "dateiToolStripMenuItem";
@@ -723,30 +720,23 @@ namespace VTCManager_1._0._0
             // einstellungenToolStripMenuItem
             // 
             this.einstellungenToolStripMenuItem.Name = "einstellungenToolStripMenuItem";
-            this.einstellungenToolStripMenuItem.Size = new System.Drawing.Size(195, 22);
+            this.einstellungenToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.einstellungenToolStripMenuItem.Text = "Einstellungen";
             this.einstellungenToolStripMenuItem.Click += new System.EventHandler(this.einstellungenToolStripMenuItemClick);
             // 
             // creditsToolStripMenuItem
             // 
             this.creditsToolStripMenuItem.Name = "creditsToolStripMenuItem";
-            this.creditsToolStripMenuItem.Size = new System.Drawing.Size(195, 22);
+            this.creditsToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.creditsToolStripMenuItem.Text = "Über...";
             this.creditsToolStripMenuItem.Click += new System.EventHandler(this.CreditsToolStripMenuItem_Click);
             // 
             // beendenToolStripMenuItem
             // 
             this.beendenToolStripMenuItem.Name = "beendenToolStripMenuItem";
-            this.beendenToolStripMenuItem.Size = new System.Drawing.Size(195, 22);
+            this.beendenToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.beendenToolStripMenuItem.Text = "Beenden";
             this.beendenToolStripMenuItem.Click += new System.EventHandler(this.beendenToolStripMenuItemClick);
-            // 
-            // serverstatusToolStripMenuItem
-            // 
-            this.serverstatusToolStripMenuItem.Name = "serverstatusToolStripMenuItem";
-            this.serverstatusToolStripMenuItem.Size = new System.Drawing.Size(195, 22);
-            this.serverstatusToolStripMenuItem.Text = "Serverstatus (Inaktiv)";
-            this.serverstatusToolStripMenuItem.Click += new System.EventHandler(this.serverstatusToolStripMenuItem_Click);
             // 
             // topMenuAccount
             // 
@@ -1071,14 +1061,13 @@ namespace VTCManager_1._0._0
             // 
             this.speed_lb.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.speed_lb.AutoSize = true;
             this.speed_lb.BackColor = System.Drawing.Color.Transparent;
             this.speed_lb.Font = new System.Drawing.Font("Verdana", 26.25F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.speed_lb.Location = new System.Drawing.Point(10, 43);
             this.speed_lb.Name = "speed_lb";
-            this.speed_lb.Size = new System.Drawing.Size(0, 42);
+            this.speed_lb.Size = new System.Drawing.Size(525, 42);
             this.speed_lb.TabIndex = 0;
-            this.speed_lb.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.speed_lb.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // tableLayoutPanel1
             // 
