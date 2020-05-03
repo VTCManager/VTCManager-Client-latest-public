@@ -20,7 +20,7 @@ namespace VTCManager_1._0._0
     public class Main : Form
     {
         // Settings
-        public string Revision = "2.2.2";
+        public string Revision = "2.2.3";
         public string Telemetry_Version = "1.11";
 
         private API api = new API();
@@ -297,6 +297,7 @@ namespace VTCManager_1._0._0
 
 
 
+
         private void Telemetry_Data(SCSTelemetry data, bool updated)
         {
             try
@@ -429,7 +430,6 @@ namespace VTCManager_1._0._0
                         }
                     }
 
-                //label_25:
                         double num2;
                     if (job.jobStarted)
                     {
@@ -454,10 +454,7 @@ namespace VTCManager_1._0._0
                         postParameters.Add("truck_manufacturer", data.TruckValues.ConstantsValues.Brand);
                         postParameters.Add("truck_model", data.TruckValues.ConstantsValues.Name);
                         postParameters.Add("distance", data.JobValues.PlannedDistanceKm.ToString());
-                        job.ID = Convert.ToInt32(this.api.HTTPSRequestPost(this.api.api_server + this.api.new_job_path, postParameters, true).ToString());
-
-                        utils.Log("Tour START: " + user.authcode + ", Cargo: " + data.JobValues.CargoValues.Name + ", " + ((int)Math.Round((double)data.JobValues.CargoValues.Mass, 0) / 1000).ToString() + " Tonnen, Startort: " + data.JobValues.CitySource + ", Start-Firma: " + data.JobValues.CompanySource + ", Zielort: " + data.JobValues.CityDestination + ", Ziel-Firma: " + data.JobValues.CompanyDestination + ", LKW: " + data.TruckValues.ConstantsValues.Brand + " " + data.TruckValues.ConstantsValues.Name + ", Strecke: " + data.JobValues.PlannedDistanceKm.ToString() + " KM  [Main.cs->420]");
-                                    
+                        job.ID = Convert.ToInt32(this.api.HTTPSRequestPost(this.api.api_server + this.api.new_job_path, postParameters, true).ToString());       
 
                         Dictionary<string, string> lastJobDictionary = this.lastJobDictionary;
                         this.lastJobDictionary.Add("cargo", data.JobValues.CargoValues.Name);
@@ -471,6 +468,10 @@ namespace VTCManager_1._0._0
                         job.CityDestination = data.JobValues.CityDestination;
                         this.send_tour_status.Enabled = true;
                         this.send_tour_status.Start();
+
+                        utils.Log("Tour START: " + user.authcode + ", Cargo: " + data.JobValues.CargoValues.Name + ", " + ((int)Math.Round((double)data.JobValues.CargoValues.Mass, 0) / 1000).ToString() + " Tonnen, Startort: " + data.JobValues.CitySource + ", Start-Firma: " + data.JobValues.CompanySource + ", Zielort: " + data.JobValues.CityDestination + ", Ziel-Firma: " + data.JobValues.CompanyDestination + ", LKW: " + data.TruckValues.ConstantsValues.Brand + " " + data.TruckValues.ConstantsValues.Name + ", Strecke: " + data.JobValues.PlannedDistanceKm.ToString() + " KM  [Main.cs->420]");
+                             
+
                     }
 
                     if (job.jobFinished)
@@ -720,21 +721,21 @@ namespace VTCManager_1._0._0
             // einstellungenToolStripMenuItem
             // 
             this.einstellungenToolStripMenuItem.Name = "einstellungenToolStripMenuItem";
-            this.einstellungenToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.einstellungenToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.einstellungenToolStripMenuItem.Text = "Einstellungen";
             this.einstellungenToolStripMenuItem.Click += new System.EventHandler(this.einstellungenToolStripMenuItemClick);
             // 
             // creditsToolStripMenuItem
             // 
             this.creditsToolStripMenuItem.Name = "creditsToolStripMenuItem";
-            this.creditsToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.creditsToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.creditsToolStripMenuItem.Text = "Über...";
             this.creditsToolStripMenuItem.Click += new System.EventHandler(this.CreditsToolStripMenuItem_Click);
             // 
             // beendenToolStripMenuItem
             // 
             this.beendenToolStripMenuItem.Name = "beendenToolStripMenuItem";
-            this.beendenToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.beendenToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.beendenToolStripMenuItem.Text = "Beenden";
             this.beendenToolStripMenuItem.Click += new System.EventHandler(this.beendenToolStripMenuItemClick);
             // 
@@ -853,6 +854,7 @@ namespace VTCManager_1._0._0
             this.frachtmarktToolStripMenuItem.Image = global::VTCManager_1._0._0.Properties.Resources.gabelstapler_64;
             this.frachtmarktToolStripMenuItem.Name = "frachtmarktToolStripMenuItem";
             this.frachtmarktToolStripMenuItem.Size = new System.Drawing.Size(36, 28);
+            this.frachtmarktToolStripMenuItem.Visible = false;
             this.frachtmarktToolStripMenuItem.Click += new System.EventHandler(this.frachtmarktToolStripMenuItem_Click);
             // 
             // dockingToolStripMenuItem
