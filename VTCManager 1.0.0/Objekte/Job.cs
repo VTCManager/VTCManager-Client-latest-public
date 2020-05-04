@@ -8,6 +8,7 @@ namespace VTCManager_1._0._0.Objekte
 {
     class Job
     {
+        Logging Logging = new Logging();
         public int ID;
         public bool jobStarted = false;
         public bool jobRunning = false;
@@ -108,7 +109,7 @@ namespace VTCManager_1._0._0.Objekte
                 { "authcode", user.authcode },
                 { "job_id", ID.ToString() }
               }, true).ToString();
-            utils.Log("Tour Cancel: " + user.authcode + " - " + ID);
+            Logging.WriteLOG("Tour Cancel: " + user.authcode + " - " + ID);
             clear();
         }
     }

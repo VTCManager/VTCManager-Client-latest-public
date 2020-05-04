@@ -14,7 +14,8 @@ namespace VTCManager_1._0._0
     public partial class ETS2_Pfad_Window : Form
     {
 
-        private Utilities utils = new Utilities();
+        private readonly Utilities utils = new Utilities();
+        readonly Logging Logging = new Logging();
         private string initial_ETS;
         private string initial_ATS;
         public ETS2_Pfad_Window()
@@ -70,7 +71,7 @@ namespace VTCManager_1._0._0
                 }
                 catch (Exception ex)
                 {
-                    utils.Log("<ERROR> Methode btn_Suche_ETS_Click in ETS2_Pfad_Window.cs -> " + ex.Message);
+                    Logging.WriteLOG("<ERROR> Methode btn_Suche_ETS_Click in ETS2_Pfad_Window.cs -> " + ex.Message);
                 }
            
             }
@@ -100,7 +101,7 @@ namespace VTCManager_1._0._0
                     File.Copy(Application.StartupPath + @"\Resources\scs-telemetry.dll", dest_Path + @"\scs-telemetry.dll");
                 } catch (Exception ex) 
                 {
-                    utils.Log("<ERROR> Methode btn_Suche_ATS_Click in ETS2_Pfad_Window.cs -> " + ex.Message);
+                    Logging.WriteLOG("<ERROR> Methode btn_Suche_ATS_Click in ETS2_Pfad_Window.cs -> " + ex.Message);
                 }
 
 

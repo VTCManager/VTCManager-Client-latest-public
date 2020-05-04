@@ -11,6 +11,7 @@ namespace VTCManager_1._0._0
     {
         DispoMethoden dp = new DispoMethoden();
         Utilities utils = new Utilities();
+        Logging Logging = new Logging();
         API api = new API();
         Translation trans;
         
@@ -91,7 +92,7 @@ namespace VTCManager_1._0._0
             }
             catch
             {
-                utils.Log("<ERROR> Keine Profilordner in ETS gefunden  ! [Frachtmartkt.cs->85]");
+                Logging.WriteLOG("<ERROR> Keine Profilordner in ETS gefunden  ! [Frachtmartkt.cs->85]");
             }
         }
 
@@ -114,7 +115,7 @@ namespace VTCManager_1._0._0
             }
             catch
             {
-                utils.Log("<ERROR> Keine Profilordner in ATS gefunden ! [Frachtmarkt.cs->111]");
+                Logging.WriteLOG("<ERROR> Keine Profilordner in ATS gefunden ! [Frachtmarkt.cs->111]");
             }
         }
 
@@ -134,14 +135,14 @@ namespace VTCManager_1._0._0
         {
             Backup_Game_Sii_ETS();
             Lade_ETS_Profile();
-            this.utils.Log("<INFO> ETS2 Profile wurden im Frachtmarkt geladen! [Frachtmartkt.cs->147]");
+            this.Logging.WriteLOG("<INFO> ETS2 Profile wurden im Frachtmarkt geladen! [Frachtmartkt.cs->147]");
         }
 
         private void Radio_Button_ATS_CheckedChanged(object sender, EventArgs e)
         {
             Backup_Game_Sii_ATS();
             Lade_ATS_Profile();
-            this.utils.Log("<INFO> ATS Profile wurden im Frachtmarkt geladen! [Frachtmartkt.cs->157]");
+            this.Logging.WriteLOG("<INFO> ATS Profile wurden im Frachtmarkt geladen! [Frachtmartkt.cs->157]");
         }
         #endregion
 
@@ -159,7 +160,7 @@ namespace VTCManager_1._0._0
                     File.Copy(SiiSourcePath, SiiDestPath, true);
 
                 }
-                catch { utils.Log("<ERROR> Keine Profile für Backup in ETS gefunden! [Frachtmartkt.cs->164]"); }
+                catch { Logging.WriteLOG("<ERROR> Keine Profile für Backup in ETS gefunden! [Frachtmartkt.cs->164]"); }
             }
         }
 
@@ -175,7 +176,7 @@ namespace VTCManager_1._0._0
                 {
                     File.Copy(SiiSourcePath, SiiDestPath, true);
                 }
-                catch { utils.Log("<ERROR> Keine Profile für Backup in ATS gefunden! [Frachtmartkt.cs->181]"); }
+                catch { Logging.WriteLOG("<ERROR> Keine Profile für Backup in ATS gefunden! [Frachtmartkt.cs->181]"); }
 
             }
         }

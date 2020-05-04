@@ -17,6 +17,7 @@ namespace VTCManager_1._0._0
         private static string _chachedGame;
         private static bool _DiscordRunningFlag;
         CultureInfo ci = CultureInfo.InstalledUICulture;
+        Logging Logging = new Logging();
         private string logDirectory = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + @"\VTC_Manager");
         private string logFile = @"\log.txt";
 
@@ -182,12 +183,13 @@ namespace VTCManager_1._0._0
                 RegistryKey key = Registry.CurrentUser.OpenSubKey(@"SOFTWARE\VTCManager\" + ordner);
                 return key.GetValue(value).ToString();
             } catch (Exception ex) {
-                Log("<ERROR> Methode Reg_Lesen in Utilities.cs -> " + ex.Message + ex.StackTrace + "Given String->Folder:" + ordner + " + Value: " + value + " in [Utilities.cs->185]");
+                Logging.WriteLOG("<ERROR> Methode Reg_Lesen in Utilities.cs -> " + ex.Message + ex.StackTrace + "Given String->Folder:" + ordner + " + Value: " + value + " in [Utilities.cs->185]");
                 return null;
             }
         }
 
 
+        /*
         public void Log(string text)
         {
             Translation trans = new Translation(ci.DisplayName);
@@ -201,7 +203,7 @@ namespace VTCManager_1._0._0
                     }
                     catch (Exception ex)
                     {
-                        Log("<ERROR> Methode LOG in Utilities.cs -> " + ex.Message + ex.StackTrace + "Given String: " + text + " [Utilities.cs->201]");
+                        Log("<ERROR> Methode LOG in Utilities.cs -> " + ex.Message + ex.StackTrace + "Given String: " + text + " [Utilities.cs->204]");
                     }
 
                 }
@@ -209,7 +211,7 @@ namespace VTCManager_1._0._0
 
         }
 
-
+    */
 
     }
 }

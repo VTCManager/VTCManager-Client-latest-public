@@ -9,7 +9,7 @@ namespace VTCManager_1._0._0
     class SettingsWindow : Form
     {
         public Utilities utils = new Utilities();
-        
+        Logging Logging = new Logging();
 
         private ComboBox comboBox1;
         private Label label1;
@@ -1020,7 +1020,7 @@ namespace VTCManager_1._0._0
             }
             catch (Exception ex)
             {
-                utils.Log("<ERROR> Methode GameLog_suchen_Click in SettingsWindow.cs -> " + ex.Message + " [SettingsWindow.cs->807]");
+                Logging.WriteLOG("<ERROR> Methode GameLog_suchen_Click in SettingsWindow.cs -> " + ex.Message + " [SettingsWindow.cs->807]");
                 MessageBox.Show("Der Pfad zum GameLog Ordner wurde nicht gefunden!", "Fehler", MessageBoxButtons.OK, MessageBoxIcon.Error); 
             }
 
@@ -1049,7 +1049,7 @@ namespace VTCManager_1._0._0
             }
             catch (Exception ex) 
             {
-                utils.Log("<ERROR> Methode GameLog_oeffnen_Click in SettingsWindow.cs -> " + ex.Message + " [SettingsWindow.cs->836]");
+                Logging.WriteLOG("<ERROR> Methode GameLog_oeffnen_Click in SettingsWindow.cs -> " + ex.Message + " [SettingsWindow.cs->836]");
                 MessageBox.Show("Der Pfad zur GameLog wurde nicht gefunden!", "Fehler", MessageBoxButtons.OK, MessageBoxIcon.Error); 
             }
 
@@ -1094,7 +1094,7 @@ namespace VTCManager_1._0._0
                 catch (Exception e)
                 {
                     // AAAAAAAAAAARGH, an error!
-                    utils.Log("<ERROR> Methode Read in SettingsWindow.cs -> " + e.Message + " [SettingsWindow.cs->881]");
+                    Logging.WriteLOG("<ERROR> Methode Read in SettingsWindow.cs -> " + e.Message + " [SettingsWindow.cs->881]");
                     MessageBox.Show(e.Message, "Reading registry " + KeyName.ToUpper());
                     return null;
                 }
