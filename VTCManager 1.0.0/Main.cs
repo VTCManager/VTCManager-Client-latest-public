@@ -169,13 +169,20 @@ namespace VTCManager_1._0._0
             
             //Laden des Sound-Systems
             this.sound = new Sound(user.translation);
+            utils.Log("<INFO> Sound System geladen ! -> Main.cs[172]");
 
             //Benutzerkonfiguration laden
             this.settings = new SettingsManager();
             settings.LoadConfiguration();
+            utils.Log("<INFO> Settings Manager geladen -> Main.cs[177]");
+
             //UI init
             this.InitializeComponent();
+            utils.Log("<INFO> Initialisiere Component() -> Main.cs[181]");
+
             this.InitializeTranslation();
+            utils.Log("<INFO> Initialisiere Tranlation() -> Main.cs[184]");
+
             /*try
             {
                 this.load_traffic();
@@ -191,18 +198,43 @@ namespace VTCManager_1._0._0
 
             //Telemetry Handler setzen
             this.Telemetry = new SCSSdkTelemetry();
+            utils.Log("<INFO> Initialisiere SCSSdkTelemetry() -> Main.cs[201]");
+
             this.Telemetry.Data += this.Telemetry_Data;
+            utils.Log("<INFO> Intitialisiere Telemetry.Data -> Main.cs[204]");
+
             this.Telemetry.JobStarted += this.TelemetryOnJobStarted;
+            utils.Log("<INFO> Initialisiere Telemetry.JobStarted -> Main.cs[207]");
+
             this.Telemetry.JobCancelled += this.TelemetryJobCancelled;
+            utils.Log("<INFO> Initialisiere Telemetry.JobCancelled -> Main.cs[220]");
+
             this.Telemetry.JobDelivered += TelemetryJobDelivered;
+            utils.Log("<INFO> Initialisiere Telemetry.JobDelivered -> Main.cs[213]");
+
             //this.Telemetry.Fined += this.TelemetryFined;
+            utils.Log("<INFO> Telemetry.Fined übersprungen -> Main.cs[216]");
+
             this.Telemetry.Tollgate += this.TelemetryTollgate;
+            utils.Log("<INFO> Initialisiere Telemetry.Tollgate -> Main.cs[219]");
+
             this.Telemetry.Ferry += this.TelemetryFerry;
+            utils.Log("<INFO> Initialisiere Telemetry.Ferry -> Main.cs[222]");
+
             this.Telemetry.Train += this.TelemetryTrain;
+            utils.Log("<INFO> Initialisiere Telemetry.Train -> Main.cs[224]");
+
             this.Telemetry.Refuel += this.TelemetryRefuel;
+            utils.Log("<INFO> Initialisiere Telemetry.Refuel -> Main.cs[228]");
+
             //this.Telemetry.RefuelStart += this.TelemetryRefuel;
+            utils.Log("<INFO> Telemetry.RefuleStart übersprungen -> Main.cs[231]");
+
             //this.Telemetry.RefuelEnd += TelemetryRefuelEnd;
+            utils.Log("<INFO> Telemetry.RefuleEnd übersprungen -> Main.cs[234]");
+
             //this.Telemetry.RefuelPayed += TelemetryRefuelPayed;
+            utils.Log("<INFO>  Telemetry.RefulePayed übersprungen -> Main.cs[237]");
 
             if (this.Telemetry.Error == null)
                 return;
@@ -289,11 +321,19 @@ namespace VTCManager_1._0._0
         }
 
         //Telemetry Handler
-        private void TelemetryOnJobFinished(object sender, EventArgs args) => 
+        private void TelemetryOnJobFinished(object sender, EventArgs args)
+        {
             job.jobFinished = true;
+            utils.Log("<INFO> Event Firering <TelemetryOnJobFinished> -> Main.cs[295]");
+        } 
+            
 
-        private void TelemetryOnJobStarted(object sender, EventArgs e) => 
+        private void TelemetryOnJobStarted(object sender, EventArgs e)
+        {
             job.jobStarted = true;
+            utils.Log("<INFO> Event Firering <TelemetryOnJobStarted> -> Main.cs[302]");
+        } 
+            
 
 
 
@@ -352,13 +392,18 @@ namespace VTCManager_1._0._0
 
 
                       
-                            GameRuns = 1;
-                            labelkmh = (data.Game.ToString() == "Ets2") ? " KM/H" : " mp/h";
+                        GameRuns = 1;
+                        utils.Log("<INFO> GameRuns = 1 -> Main.cs[356]");
+
+                        labelkmh = (data.Game.ToString() == "Ets2") ? " KM/H" : " mp/h";
+                        utils.Log("<INFO> " + data.Game.ToString() + " is Running -> Main.cs[359]");
 
                             if (data.Game.ToString() == "Ets2")
                             {
                                 speed_lb.Text = (int)data.TruckValues.CurrentValues.DashboardValues.Speed.Kph + labelkmh;
+                           
                                 user.Geschwindigkeit = (float)data.TruckValues.CurrentValues.DashboardValues.Speed.Kph;
+                            
                                 anti_AFK_TIMER.Enabled = ((float)data.TruckValues.CurrentValues.DashboardValues.Speed.Kph < 1) ? true : false;
                             }
                             else
@@ -386,15 +431,18 @@ namespace VTCManager_1._0._0
 
 
                             job.currentPercentage = (((((double)data.NavigationValues.NavigationDistance / 1000) / (double)data.JobValues.PlannedDistanceKm) * 100) - 100) * -1;
+                        utils.Log("<INFO> Current Percence: " + job.currentPercentage.ToString() + " -> Main.cs[394]");
 
                             // ##########################  AUSGABE TRUCK MODEL etc.  #############################
                             truck_lb.Text = "Dein Truck: " + data.TruckValues.ConstantsValues.Brand + ", Modell: " + data.TruckValues.ConstantsValues.Name;
+                        utils.Log("<INFO> Truck Label: " + truck_lb.Text + " -> Main.cs[398]");
 
                             // ##############################   JOB DATA   ####################################
                             if (data.JobValues.CargoLoaded == false)
                             {
                                 this.discord.noTour();
-                                cargo_lb.Text = "Leerfahrt";
+                            utils.Log("<INFO> Cargo Loaded: " + data.JobValues.CargoLoaded.ToString() + " -> Main.cs[404]");
+                                cargo_lb.Text = "Keine Ladung";
                                 destination_lb.Visible = false;
                                 depature_lb.Text = "";
                             }
@@ -410,7 +458,7 @@ namespace VTCManager_1._0._0
                                         { "percentage", job.currentPercentage.ToString() }
                                     }, false).ToString();
                                     this.jobrunningcounter = 0;
-                                    utils.Log("<UPDATE> Tour Tick: " + user.authcode + " - " + job.ID + " - " + job.currentPercentage.ToString() + " [Main.cs->367]");
+                                    utils.Log("<UPDATE> Tour Tick: AUTH: " + user.authcode + ", JOB: " + job.ID + ", JOB PERCENT: " + job.currentPercentage.ToString() + " [Main.cs->367]");
                                 }
                                 this.jobrunningcounter++;
                             }
@@ -422,6 +470,7 @@ namespace VTCManager_1._0._0
                         }
                         else
                         {
+                        utils.Log("<INFO> Game is Not Running or SDK not Active ! -> Main.cs[433]");
                             this.truck_lb.Visible = false;
                             this.cargo_lb.Visible = false;
                             destination_lb.Visible = false;
@@ -434,15 +483,23 @@ namespace VTCManager_1._0._0
                     if (job.jobStarted)
                     {
                         job = new Job();
+                        DateTime dt = new DateTime();
+                        utils.Log("<INFO> New Job started @ " + dt.ToString() + " -> Main.cs[447]");
                         job.jobStarted = false;
+                    utils.Log("<INFO> job.jobStarted = false");
                         this.lastJobDictionary.Clear();
+                    utils.Log("<INFO> lastJobDictionary.Clear");
                         this.sound.Play(sound.ton_tour_gestartet);
+                    utils.Log("<INFO> sound.Play(sound.ton_tour_gestartet)");
                         job.totalDistance = (int)data.NavigationValues.NavigationDistance;
+                    utils.Log("<INFO> job.totlaDistance = " + job.totalDistance.ToString());
                         num2 = (double)data.JobValues.Income * 0.15;
+                    utils.Log("<INFO> job.income = " + num2.ToString());
                         this.cargo_lb.Text = "Deine Fracht: " + ((int)Math.Round((double)data.JobValues.CargoValues.Mass, 0) / 1000).ToString() + " Tonnen " + data.JobValues.CargoValues.Name;
+                    utils.Log("<INFO> Cargo Label: " + cargo_lb.Text);    
                         this.depature_lb.Text = "Von: " + data.JobValues.CitySource + " ( " + data.JobValues.CompanySource + " ) nach: " + data.JobValues.CityDestination + " ( " + data.JobValues.CompanyDestination + " )";
                         job.fuelatstart = data.TruckValues.ConstantsValues.CapacityValues.Fuel;
-
+                    utils.Log("<INFO> job.fuel@start = " + job.fuelatstart.ToString());
                         Dictionary<string, string> postParameters = new Dictionary<string, string>();
                         postParameters.Add("authcode", user.authcode);
                         postParameters.Add("cargo", data.JobValues.CargoValues.Name);
@@ -454,7 +511,8 @@ namespace VTCManager_1._0._0
                         postParameters.Add("truck_manufacturer", data.TruckValues.ConstantsValues.Brand);
                         postParameters.Add("truck_model", data.TruckValues.ConstantsValues.Name);
                         postParameters.Add("distance", data.JobValues.PlannedDistanceKm.ToString());
-                        job.ID = Convert.ToInt32(this.api.HTTPSRequestPost(this.api.api_server + this.api.new_job_path, postParameters, true).ToString());       
+                        job.ID = Convert.ToInt32(this.api.HTTPSRequestPost(this.api.api_server + this.api.new_job_path, postParameters, true).ToString());
+                    utils.Log("<INFO> PostParameters: " + postParameters.ToString());
 
                         Dictionary<string, string> lastJobDictionary = this.lastJobDictionary;
                         this.lastJobDictionary.Add("cargo", data.JobValues.CargoValues.Name);
@@ -462,14 +520,19 @@ namespace VTCManager_1._0._0
                         this.lastJobDictionary.Add("destination", data.JobValues.CityDestination);
                         this.lastJobDictionary.Add("income", data.JobValues.Income.ToString());
                         this.lastJobDictionary.Add("weight", data.JobValues.CargoValues.Mass.ToString());
+                    utils.Log("<INFO> lastJobDictionary = " + lastJobDictionary.ToString());
 
                         this.discord.onTour(data.JobValues.CityDestination, data.JobValues.CitySource, data.JobValues.CargoValues.Name, ((int)Math.Round((double)data.JobValues.CargoValues.Mass, 0) / 1000).ToString());
+                    utils.Log("<INFO> Discord Starts OnTour with Job Details -> Main.cs[486]");
                         job.CitySource = data.JobValues.CitySource;
+                    utils.Log("<INFO> job.CitySource = " + job.CitySource.ToString());
                         job.CityDestination = data.JobValues.CityDestination;
+                    utils.Log("<INFO> job.CityDestination = " + job.CityDestination.ToString() + " -> Main.cs[491]");
                         this.send_tour_status.Enabled = true;
+                    utils.Log("<INFO> Send_Tour_Status.Enabled = true -> Main.cs[493]");
                         this.send_tour_status.Start();
-
-                        utils.Log("Tour START: " + user.authcode + ", Cargo: " + data.JobValues.CargoValues.Name + ", " + ((int)Math.Round((double)data.JobValues.CargoValues.Mass, 0) / 1000).ToString() + " Tonnen, Startort: " + data.JobValues.CitySource + ", Start-Firma: " + data.JobValues.CompanySource + ", Zielort: " + data.JobValues.CityDestination + ", Ziel-Firma: " + data.JobValues.CompanyDestination + ", LKW: " + data.TruckValues.ConstantsValues.Brand + " " + data.TruckValues.ConstantsValues.Name + ", Strecke: " + data.JobValues.PlannedDistanceKm.ToString() + " KM  [Main.cs->420]");
+                    utils.Log("<INFO> Send_Tour_Status.Start() -> Main.cs[495]");
+                    utils.Log("Tour START LOG: " + user.authcode + ", Cargo: " + data.JobValues.CargoValues.Name + ", " + ((int)Math.Round((double)data.JobValues.CargoValues.Mass, 0) / 1000).ToString() + " Tonnen, Startort: " + data.JobValues.CitySource + ", Start-Firma: " + data.JobValues.CompanySource + ", Zielort: " + data.JobValues.CityDestination + ", Ziel-Firma: " + data.JobValues.CompanyDestination + ", LKW: " + data.TruckValues.ConstantsValues.Brand + " " + data.TruckValues.ConstantsValues.Name + ", Strecke: " + data.JobValues.PlannedDistanceKm.ToString() + " KM  [Main.cs->420]");
                              
 
                     }
@@ -1683,15 +1746,15 @@ namespace VTCManager_1._0._0
                
                 if (!File.Exists(dest_leer + @"\bin\win_x64\plugins\scs-telemetry.dll"))
                 {
-                    utils.Log("<ERROR> DLL NOT IN PLUGINS  [Main.cs->1494]");
+                    utils.Log("<ERROR> DLL NOT IN PLUGINS  [Main.cs->1717]");
                     if (!Directory.Exists(dest_leer + @"\bin\win_x64\plugins")) 
                     {
-                        utils.Log("<ERROR> FOLDER PLUGINS IN ETS2 NOT AVAIBLE [Main.cs->1497]");
+                        utils.Log("<ERROR> FOLDER PLUGINS IN ETS2 NOT AVAIBLE [Main.cs->1720]");
                         Directory.CreateDirectory(dest_leer + @"\bin\win_x64\plugins"); 
-                        utils.Log("<ERROR> FOLDER PLUGINS CREATED [Main.cs->1499]"); 
+                        utils.Log("<ERROR> FOLDER PLUGINS CREATED [Main.cs->1723]"); 
                     }
                     File.Copy(Application.StartupPath + @"\Resources\scs-telemetry.dll", dest_leer + @"\bin\win_x64\plugins\scs-telemetry.dll");
-                    utils.Log("<INFO> DLL IN PLUGINS FOLDER COPIED! [Main.cs->1502]");
+                    utils.Log("<INFO> scs-telemetry.dll IN PLUGINS FOLDER COPIED! [Main.cs->1725]");
                 } else
                 {
                     // ################  Für Diagnostikzwecke  ###########################
@@ -1714,7 +1777,7 @@ namespace VTCManager_1._0._0
                     foreach (var fi in di.GetFiles())
                     { Plugins_ETS += fi.Name + "  "; }
                     utils.Reg_Schreiben("Plugins ETS", Plugins_ETS, "TruckersMP_Autorun");
-                    utils.Log("<INFO> WRITE ALL PLUGINS IN REGISTRY [Main.cs->1522]");
+                    utils.Log("<INFO> WRITE ALL PLUGINS IN REGISTRY [Main.cs->1748]");
                     // ################  Diagnostikzwecke ENDE  ###########################
                 }
 
@@ -1723,7 +1786,7 @@ namespace VTCManager_1._0._0
                     string dest_leer2 = utils.Reg_Lesen("TruckersMP_Autorun", "ATS_Pfad");
                     if (!string.IsNullOrEmpty(dest_leer2))
                     {
-                        utils.Log("<INFO> ATS PATH IS NOT NULL OR EMPTY [Main.cs->1530]");
+                        utils.Log("<INFO> ATS PATH IS NOT NULL OR EMPTY [Main.cs->1757]");
                         ats_button.Visible = true;
                         ToolTip tt2 = new ToolTip();
                         tt2.SetToolTip(this.ats_button, "Starte ATS im Singleplayer !");
@@ -1742,7 +1805,7 @@ namespace VTCManager_1._0._0
                             foreach (var fi in di.GetFiles())
                             { Plugins_ATS += fi.Name + "  "; }
                             utils.Reg_Schreiben("Plugins ATS", Plugins_ATS, "TruckersMP_Autorun");
-                            utils.Log("<INFO> ALL ATS PLUGIN WRITE IN REGISTRY [Main.cs->1542]");
+                            utils.Log("<INFO> ALL ATS PLUGIN WRITE IN REGISTRY [Main.cs->1777]");
                             // ################  Diagnostikzwecke ENDE  ###########################
                         }
                     } else
@@ -1780,16 +1843,19 @@ namespace VTCManager_1._0._0
             if(Utilities.IsGameRunning == true)
             {
                 speed_lb.Text = user.translation.loading_text;
+                utils.Log("<INFO> Speed Label Text-> Translation loading.Text @Main.cs[1814]");
                 truck_lb.Visible = false;
                 destination_lb.Visible = false;
                 depature_lb.Visible = false;
                 cargo_lb.Visible = false;
+                utils.Log("<INFO> Truck.lbl, Destination.lbl, Departure.lbl, Cargo.lbl Visible to false @Main.cs[1814]");
             } else
             {
                 truck_lb.Visible = true;
                 destination_lb.Visible = true;
                 depature_lb.Visible = true;
                 cargo_lb.Visible = true;
+                utils.Log("<INFO> Truck.lbl, Destination.lbl, Depparture.lbl, Cargo.lbl Set to True @Main.cs[1826]");
             }
 
 
