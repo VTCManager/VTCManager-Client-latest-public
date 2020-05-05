@@ -20,8 +20,8 @@ namespace VTCManager_1._0._0
     public class Main : Form
     {
         // Settings
-        public string Revision = "2.2.3";
-        public string Telemetry_Version = "1.11";
+        public string Revision = "2.2.5";
+        public string Telemetry_Version = "1.11N";
 
         private API api = new API();
         private Utilities utils = new Utilities();
@@ -226,16 +226,16 @@ namespace VTCManager_1._0._0
             this.Telemetry.Train += this.TelemetryTrain;
             Logging.WriteLOG("<INFO> Initialisiere Telemetry.Train -> Main.cs[224]");
 
-            this.Telemetry.Refuel += this.TelemetryRefuel;
+            //this.Telemetry.Refuel += this.TelemetryRefuel;
             Logging.WriteLOG("<INFO> Initialisiere Telemetry.Refuel -> Main.cs[228]");
 
-            //this.Telemetry.RefuelStart += this.TelemetryRefuel;
+            this.Telemetry.RefuelStart += this.TelemetryRefuel;
             Logging.WriteLOG("<INFO> Telemetry.RefuleStart übersprungen -> Main.cs[231]");
 
-            //this.Telemetry.RefuelEnd += TelemetryRefuelEnd;
+            this.Telemetry.RefuelEnd += TelemetryRefuelEnd;
             Logging.WriteLOG("<INFO> Telemetry.RefuleEnd übersprungen -> Main.cs[234]");
 
-            //this.Telemetry.RefuelPayed += TelemetryRefuelPayed;
+            this.Telemetry.RefuelPayed += TelemetryRefuelPayed;
             Logging.WriteLOG("<INFO>  Telemetry.RefulePayed übersprungen -> Main.cs[237]");
 
             if (this.Telemetry.Error == null)
@@ -243,6 +243,16 @@ namespace VTCManager_1._0._0
             int num = (int)MessageBox.Show("Fehler beim Ausführen von:" + this.Telemetry.Map + "\r\n" + this.Telemetry.Error.Message + "\r\n\r\nStacktrace:\r\n" + this.Telemetry.Error.StackTrace);
         
             }
+
+        private void TelemetryRefuelPayed(object sender, EventArgs e)
+        {
+            
+        }
+
+        private void TelemetryRefuelEnd(object sender, EventArgs e)
+        {
+         
+        }
 
         private void InitializeTranslation()
         {
