@@ -22,6 +22,7 @@ namespace VTCManager_1._0._0
         // Settings
         public string Revision = "2.2.5";
         public string Telemetry_Version = "1.11N";
+        public string SCSSdk_Version = "4.0.30319";
 
         private API api = new API();
         private Utilities utils = new Utilities();
