@@ -104,11 +104,13 @@ namespace VTCManager_1._0._0
                 {
                     try
                     {
-                        MessageBox.Show("An error has occurred: \r\n" + ((HttpWebResponse)exception.Response).StatusCode);
+                        MessageBox.Show("The program will now close!\r\n An error has occurred: \r\n" + ((HttpWebResponse)exception.Response).StatusCode);
+                        Application.Exit();
                     }
                     catch
                     {
-                        MessageBox.Show("An error occurred while connecting to the server");
+                        MessageBox.Show("The program will now close!\r\nAn error occurred while connecting to the server");
+                        Application.Exit();
                     }
                 }
                 return null;
