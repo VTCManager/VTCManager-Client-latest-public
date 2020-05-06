@@ -1686,10 +1686,11 @@ namespace VTCManager_1._0._0
             // ################  Erstelle LOG File wenn nicht vorhanden  ###########################
             Logs.Make_Log_File();
 
-            // ################    LEERE LOG DATEI BEIM START   ###################
+            // ################    LEERE LOG DATEI BEIM START   ####################################
             Logs.Clear_Log_File();
 
-         
+            // ################   Systemdaten in Log schreiben   ###################################
+            Logs.SystemDaten_Laden();
 
 
             // ##################   HOTKEY   #######################################################

@@ -5,6 +5,7 @@ using System.IO;
 using System;
 using System.Runtime.CompilerServices;
 using System.Windows;
+using System.Management;
 
 namespace VTCManager_1._0._0
 {
@@ -58,6 +59,7 @@ namespace VTCManager_1._0._0
                 {
                     try
                     {
+                       
                         File.AppendAllText(logDirectory + logFile, "<" + DateTime.Now + "> " + text + " - File " + file + " :: " + lineNumber + "; Caller: " + caller + Environment.NewLine);
                     }
                     catch (Exception ex)
@@ -71,6 +73,17 @@ namespace VTCManager_1._0._0
                 MessageBox.Show("<ERROR> " + ex2.Message + ex2.StackTrace + " - Given String: " + text + " [Logging.cs->71]", "Fehler beim Schreiben in Log", MessageBoxButton.OK, MessageBoxImage.Error);
             }
 
+        }
+
+        public void SystemDaten_Laden()
+        {
+           
+            ManagementObjectSearcher cpu = new ManagementObjectSearcher("SELECT * FROM Win32_processor");
+            ManagementObjectCollection queryCollection1 = cpu.Get();
+            foreach (ManagementObject mo in queryCollection1)
+            {
+                this.WriteLOG("<SYSTEM> " + mo["name"].ToString() + " @ " + mo["DataWidth"] + " Bit");
+            }
         }
 
 
