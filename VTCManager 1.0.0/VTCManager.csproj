@@ -127,6 +127,7 @@
     <Compile Include="Main.cs">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="MemoryInfo.cs" />
     <Compile Include="Objekte\Job.cs" />
     <Compile Include="Objekte\User.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -135,6 +136,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <Compile Include="RamInfo.cs" />
     <Compile Include="Servercheck.cs" />
     <Compile Include="SettingsDataObject.cs" />
     <Compile Include="SettingsManager.cs" />
@@ -347,6 +349,7 @@
     <Content Include="Resources\scs-telemetry_Alt.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <None Include="Resources\test1.png" />
     <Content Include="Ressources\AutopilotEnd_fx.wav">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

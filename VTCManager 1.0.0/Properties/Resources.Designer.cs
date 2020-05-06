@@ -363,6 +363,16 @@ namespace VTCManager_1._0._0.Properties {
         /// <summary>
         ///   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
         /// </summary>
+        public static System.Drawing.Bitmap test1 {
+            get {
+                object obj = ResourceManager.GetObject("test1", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
+        /// </summary>
         public static System.Drawing.Bitmap upd1 {
             get {
                 object obj = ResourceManager.GetObject("upd1", resourceCulture);
