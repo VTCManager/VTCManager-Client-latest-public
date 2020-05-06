@@ -79,10 +79,20 @@ namespace VTCManager_1._0._0
         {
            
             ManagementObjectSearcher cpu = new ManagementObjectSearcher("SELECT * FROM Win32_processor");
+       
             ManagementObjectCollection queryCollection1 = cpu.Get();
+           
+
             foreach (ManagementObject mo in queryCollection1)
             {
-                this.WriteLOG("<SYSTEM> " + mo["name"].ToString() + " @ " + mo["DataWidth"] + " Bit");
+                this.WriteLOG("<SYSTEM CPU> " + mo["name"].ToString() + " @ " + mo["DataWidth"] + " Bit");
+            }
+
+            ManagementObjectSearcher BitVersion = new ManagementObjectSearcher("SELECT * FROM CIM_OperatingSystem");
+            ManagementObjectCollection queryCollection2 = BitVersion.Get();
+            foreach(ManagementObject m1 in queryCollection2)
+            {
+                this.WriteLOG("<SYSTEM OS> Name: " + m1["name"] + "; Architekture: " + m1["OSArchitecture"] + "; Users: " + m1["NumberOfUsers"] + "; Lang: " + m1["MUILanguages"]);
             }
         }
 
