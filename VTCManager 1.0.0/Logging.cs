@@ -1,6 +1,10 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Globalization;
 using System.IO;
+using System;
+using System.Runtime.CompilerServices;
+using System.Windows;
 
 namespace VTCManager_1._0._0
 {
@@ -45,7 +49,7 @@ namespace VTCManager_1._0._0
         }
 
 
-        public void WriteLOG(string text)
+        public void WriteLOG(string text, [CallerLineNumber] int lineNumber = 0, [CallerMemberName] string caller = null, [CallerFilePath] string file = null)
         {
             Translation trans = new Translation(ci.DisplayName);
             try
@@ -54,18 +58,21 @@ namespace VTCManager_1._0._0
                 {
                     try
                     {
-                        File.AppendAllText(logDirectory + logFile, "<" + DateTime.Now + "> " + text + Environment.NewLine);
+                        File.AppendAllText(logDirectory + logFile, "<" + DateTime.Now + "> " + text + " - File " + file + " :: " + lineNumber + "; Caller: " + caller + Environment.NewLine);
                     }
                     catch (Exception ex)
                     {
-                        WriteLOG("<ERROR> Methode LOG in Utilities.cs -> " + ex.Message + ex.StackTrace + "Given String: " + text + " [Utilities.cs->204]");
+                        MessageBox.Show("<ERROR> " + ex.Message + ex.StackTrace + " - Given String: " + text + " [Logging.cs->65]", "Fehler beim Schreiben in Log", MessageBoxButton.OK, MessageBoxImage.Error);
                     }
 
                 }
             }
-            catch { }
+            catch (Exception ex2) {
+                MessageBox.Show("<ERROR> " + ex2.Message + ex2.StackTrace + " - Given String: " + text + " [Logging.cs->71]", "Fehler beim Schreiben in Log", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
 
         }
+
 
     }
 
