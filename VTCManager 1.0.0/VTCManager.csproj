@@ -120,6 +120,7 @@
       <DependentUpon>Frachtmarkt.cs</DependentUpon>
     </Compile>
     <Compile Include="GameChecks.cs" />
+    <Compile Include="Klassen\SendMail.cs" />
     <Compile Include="Logging.cs" />
     <Compile Include="Login.cs">
       <SubType>Form</SubType>

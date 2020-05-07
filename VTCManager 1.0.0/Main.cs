@@ -598,8 +598,6 @@ namespace VTCManager_1._0._0
             // ######   LADE HOTKEY TEXTE NEU    ######################
             lade_NUMx_TEXTE();
 
-
-
             double num3 = user.rotation;
                 Dictionary<string, string> postParameters = new Dictionary<string, string>();
                 Dictionary<string, string> dictionary1 = postParameters;

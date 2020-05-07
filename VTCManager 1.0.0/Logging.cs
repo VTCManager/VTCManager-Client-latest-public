@@ -56,7 +56,7 @@ namespace VTCManager_1._0._0
                 {
                     try
                     {
-                        Thread.Sleep(100);
+                        Thread.Sleep(200);
                         File.AppendAllText(logDirectory + logFile, "<" + DateTime.Now + "> " + text + " - File " + file + " :: " + lineNumber + "; Caller: " + caller + Environment.NewLine);
                     }
                     catch (Exception ex) {
