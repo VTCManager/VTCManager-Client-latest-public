@@ -23,7 +23,7 @@ namespace VTCManager_1._0._0
     public class Main : Form
     {
         // Settings
-        public string Revision = "2.2.5";               // Eigene Revisionsnummer
+        public string Revision = "2.2.6";               // Eigene Revisionsnummer
         public string Telemetry_Version = "1.11N";      // Telemetry Version. 11 ist die letzte, die haben wir derzeit Testweise in Erprobung. 
         public string SCSSdk_Version = "4.0.30319";     // Neue Versionsnummer -> Steht nei der SCSSdkClient.dll in Eigenschaften. Wenn kleiner bitte Updaten
 
@@ -1748,6 +1748,11 @@ namespace VTCManager_1._0._0
             // Version Logging
             Logs.WriteLOG("<INFO> Client-Version: " + Revision);
             Logs.WriteLOG("<INFO> Telemetry-Version: " + Telemetry_Version);
+            Logs.WriteLOG("<INFO> SCSSDK-Version: " + SCSSdk_Version);
+
+
+
+            Logs.WriteLOG("<INFO> .NET: " + RuntimeInformation.FrameworkDescription);
 
 
             // ####################   ZEIGE PATH WINDOW WENN ETS2 PFAD NICHT VORHANDEN   ###########

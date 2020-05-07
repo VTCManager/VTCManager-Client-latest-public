@@ -17,28 +17,26 @@
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
     <TargetFrameworkProfile />
-    <IsWebBootstrapper>true</IsWebBootstrapper>
-    <PublishUrl>ftps://northwestvideo.de/</PublishUrl>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <PublishUrl>E:\VTC-Releases\</PublishUrl>
     <Install>true</Install>
-    <InstallFrom>Web</InstallFrom>
-    <UpdateEnabled>true</UpdateEnabled>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
     <UpdateMode>Foreground</UpdateMode>
     <UpdateInterval>7</UpdateInterval>
     <UpdateIntervalUnits>Days</UpdateIntervalUnits>
     <UpdatePeriodically>false</UpdatePeriodically>
     <UpdateRequired>false</UpdateRequired>
     <MapFileExtensions>true</MapFileExtensions>
-    <InstallUrl>https://cdn.northwestvideo.de/vtcm-beta/</InstallUrl>
     <UpdateUrl>https://cdn.northwestvideo.de/vtcm-beta/</UpdateUrl>
     <SupportUrl>https://vtc.northwestvideo.de/</SupportUrl>
     <TargetCulture>de</TargetCulture>
     <ProductName>VTCManager</ProductName>
     <PublisherName>TheNorthWestMediaGroup</PublisherName>
     <SuiteName>VTCManager</SuiteName>
-    <CreateWebPageOnPublish>true</CreateWebPageOnPublish>
     <WebPage>publish.htm</WebPage>
     <OpenBrowserOnPublish>false</OpenBrowserOnPublish>
-    <ApplicationRevision>14</ApplicationRevision>
+    <ApplicationRevision>15</ApplicationRevision>
     <ApplicationVersion>1.1.2.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <CreateDesktopShortcut>true</CreateDesktopShortcut>
@@ -120,6 +118,7 @@
       <DependentUpon>Frachtmarkt.cs</DependentUpon>
     </Compile>
     <Compile Include="GameChecks.cs" />
+    <Compile Include="Klassen\RuntimeInformation.cs" />
     <Compile Include="Klassen\SendMail.cs" />
     <Compile Include="Logging.cs" />
     <Compile Include="Login.cs">
