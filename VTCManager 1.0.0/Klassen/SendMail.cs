@@ -12,20 +12,18 @@ namespace VTCManager_1._0._0.Klassen
 
         public void SendeMail()
         {
-            if (File.Exists(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + @"\VTC_Manager\VTC_LOG_COPY.txt"))
-            {
-                File.Delete(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + @"\VTC_Manager\VTC_LOG_COPY.txt");
-                File.Delete(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + @"\VTC_Manager\VTC_SYSTEM_LOG_COPY.txt");
-            }
-
+     
+            File.Delete(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + @"\VTC_Manager\VTC_LOG_COPY.txt");
+            File.Delete(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + @"\VTC_Manager\VTC_SYSTEM_LOG_COPY.txt");
+            
             MailMessage mail = new MailMessage();
             mail.From = new MailAddress("vtc_diag@web.de"); 
             mail.To.Add("edv.blasius@gmail.com"); 
             mail.Subject = "Log Datei aus Client";
             mail.Body = "Hier die LOG Dateien";
         
-            File.Copy(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + @"\VTC_Manager\VTC_LOG.txt", Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + @"\VTC_Manager\VTC_LOG_COPY.txt");
-            File.Copy(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + @"\VTC_Manager\VTC_SYSTEM_LOG.txt", Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + @"\VTC_Manager\VTC_SYSTEM_LOG_COPY.txt");
+            File.Copy(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + @"\VTC_Manager\VTC_LOG.txt", Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + @"\VTC_Manager\VTC_LOG_COPY.txt", true);
+            File.Copy(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + @"\VTC_Manager\VTC_SYSTEM_LOG.txt", Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + @"\VTC_Manager\VTC_SYSTEM_LOG_COPY.txt", true);
 
 
             mail.Attachments.Add(new Attachment(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + @"\VTC_Manager\VTC_LOG_COPY.txt"));
@@ -43,21 +41,15 @@ namespace VTCManager_1._0._0.Klassen
                 client.Send(mail);
 
                 
-                MessageBox.Show("Mail wurde gesendet !" + Environment.NewLine + Environment.NewLine + "Der Client wird jetzt neu gestartet...", "Neustart erforderlich", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                Application.Restart();
+                MessageBox.Show("E-Mail wurde gesendet !" + Environment.NewLine + Environment.NewLine, "Daten gesendet !", MessageBoxButtons.OK, MessageBoxIcon.Information);
+               //Application.Restart();
             }
             catch (Exception ex)
             {
                 MessageBox.Show("Fehler beim Senden der E-Mail" + Environment.NewLine + ex.Message);
             }
 
-
-
-
-
-            
-
-
+            mail.Dispose();
         }
 
 
