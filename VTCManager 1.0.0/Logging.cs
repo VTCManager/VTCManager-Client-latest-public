@@ -18,9 +18,7 @@ namespace VTCManager_1._0._0
         public string systemlogFile = @"\VTC_SYSTEM_LOG.txt";
         int MemSize = 0;
         int mCap = 0;
-        CultureInfo ci = CultureInfo.InstalledUICulture;
         MemoryInfo memoryInfo = new MemoryInfo(true);
-
 
         public void Clear_Log_File()
         {
@@ -49,7 +47,6 @@ namespace VTCManager_1._0._0
 
         public void WriteLOG(string text, [CallerLineNumber] int lineNumber = 0, [CallerMemberName] string caller = null, [CallerFilePath] string file = null)
         {
-            Translation trans = new Translation(ci.DisplayName);
             try
             {
                 if (File.Exists(logDirectory + logFile))
@@ -70,7 +67,6 @@ namespace VTCManager_1._0._0
 
         public void WriteSystemLOG(string text, [CallerLineNumber] int lineNumber = 0, [CallerMemberName] string caller = null, [CallerFilePath] string file = null)
         {
-            Translation trans = new Translation(ci.DisplayName);
             try
             {
                 if (File.Exists(logDirectory + systemlogFile))
