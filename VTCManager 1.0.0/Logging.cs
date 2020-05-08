@@ -31,17 +31,15 @@ namespace VTCManager_1._0._0
 
         public void Make_Log_File()
         {
+            if (!Directory.Exists(logDirectory))
+                Directory.CreateDirectory(logDirectory);
+
             if (!File.Exists(logDirectory + logFile))
-            {
-               try
-                {
-                    Directory.CreateDirectory(logDirectory);
                     File.Create(logDirectory + logFile);
-                    File.Create(logDirectory + systemlogFile);
-                    
-                }
-                catch{}
-            }
+
+            if(!File.Exists(logDirectory + systemlogFile))
+                File.Create(logDirectory + systemlogFile);
+
         }
 
 
