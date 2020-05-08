@@ -1186,8 +1186,16 @@ namespace VTCManager_1._0._0
 
         private void button2_Click(object sender, EventArgs e)
         {
-            SendMail sm = new SendMail();
-            sm.SendeMail();
+            DialogResult result = MessageBox.Show("Ihnen ist Bewusst, dass einige Daten über ihren Account und auch einige Daten über das Spiel Euro Truck Simulator 2 sowie American Truck Simulator via E-Mail an unsere derzeit aktiven Developer gesendet werden und diese Einsicht in die Daten haben. Mit Klick auf 'JA' geben Sie ihr Einverständnis dazu.", this.Text, MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+            if (result == DialogResult.Yes)
+            {
+                SendMail sm = new SendMail();
+                sm.SendeMail();
+            } else
+            {
+                MessageBox.Show("Es wurden keine Daten an uns Gesendet !" + Environment.NewLine + "Leider können wir ohne diese Daten keinen Support gewähren.", "Daten", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+            }
+
         }
     }
 }

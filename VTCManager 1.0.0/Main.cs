@@ -30,6 +30,7 @@ namespace VTCManager_1._0._0
         private API api = new API();
         private Utilities utils = new Utilities();
         private Logging Logs = new Logging();
+        Thommy th = new Thommy();
 
         private SettingsManager settings;
         public Dictionary<string, string> lastJobDictionary = new Dictionary<string, string>();
@@ -1664,6 +1665,7 @@ namespace VTCManager_1._0._0
         private void Main_Load(object sender, EventArgs e)
         {
 
+            th.Loesche_Alte_DLL();
  
             // ################  Erstelle LOG File wenn nicht vorhanden  ###########################
             Logs.Make_Log_File();
@@ -2273,8 +2275,7 @@ namespace VTCManager_1._0._0
         }
         private void TelemetryTollgate(object sender, EventArgs e)
         {
-            Thommy th3 = new Thommy(); 
-            th3.Sende_TollGate(user.authcode, job.Tollgate_Payment, 1);
+            th.Sende_TollGate(user.authcode, job.Tollgate_Payment, 1);
             Logs.WriteLOG("<TOUR> Mautstation durchfahren !");
         }
             
@@ -2282,19 +2283,19 @@ namespace VTCManager_1._0._0
         private void TelemetryFerry(object sender, EventArgs e)
         {
             job.Ferry = true;
-            Logs.WriteLOG("<TOUR> Fähre benutzt !");
+            th.Sende_Faehre(user.authcode, job.Tollgate_Payment, 1);
         }
 
         private void TelemetryTrain(object sender, EventArgs e)
         {
-            Logs.WriteLOG("<TOUR> Strafe erhalten !");
+            Logs.WriteLOG("<TOUR> Train Used");
             job.Train = true;
         }
            
 
         private void TelemetryRefuel(object sender, EventArgs e) 
         {
-            Logs.WriteLOG("<TOUR> LKW wurde Getankt !" + job.Refuel_Amount.ToString());
+            Logs.WriteLOG("<TOUR> Truck Refueld !" + job.Refuel_Amount.ToString());
         }
 
         private void frachtmarktToolStripMenuItem_Click(object sender, EventArgs e)
