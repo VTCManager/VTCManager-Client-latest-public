@@ -23,7 +23,7 @@ namespace VTCManager_1._0._0.Klassen
 
             MailMessage mail = new MailMessage();
             mail.From = new MailAddress("vtc_diag@web.de"); 
-            mail.To.Add("edv.blasius@gmail.com"); 
+            mail.To.Add("devlogs@northwestvideo.de"); 
             mail.Subject = "Log Datei aus Client";
             mail.Body = "Hier die LOG Dateien";
         

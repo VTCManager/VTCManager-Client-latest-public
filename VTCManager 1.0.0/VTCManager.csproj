@@ -347,9 +347,7 @@
     <None Include="Resources\icons8-info-64.png" />
     <None Include="Resources\icons8-ausgang-64.png" />
     <None Include="Resources\icons8-logout-abgerundet-64.png" />
-    <Content Include="Resources\scs-telemetry.dll">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
+    <Content Include="Resources\scs-telemetry.dll" />
     <Content Include="Resources\scs-telemetry_Alt.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
