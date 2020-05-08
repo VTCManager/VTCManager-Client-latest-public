@@ -343,6 +343,10 @@
     <None Include="Resources\sup.jpg" />
     <None Include="Resources\num_on.jpg" />
     <None Include="Resources\num_off.jpg" />
+    <None Include="Resources\icons8-einstellungen-64.png" />
+    <None Include="Resources\icons8-info-64.png" />
+    <None Include="Resources\icons8-ausgang-64.png" />
+    <None Include="Resources\icons8-logout-abgerundet-64.png" />
     <Content Include="Resources\scs-telemetry.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

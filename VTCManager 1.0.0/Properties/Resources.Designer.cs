@@ -173,6 +173,16 @@ namespace VTCManager_1._0._0.Properties {
         /// <summary>
         ///   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
         /// </summary>
+        public static System.Drawing.Bitmap icons8_ausgang_64 {
+            get {
+                object obj = ResourceManager.GetObject("icons8-ausgang-64", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
+        /// </summary>
         public static System.Drawing.Bitmap icons8_autobatterie_80 {
             get {
                 object obj = ResourceManager.GetObject("icons8-autobatterie-80", resourceCulture);
@@ -193,9 +203,39 @@ namespace VTCManager_1._0._0.Properties {
         /// <summary>
         ///   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
         /// </summary>
+        public static System.Drawing.Bitmap icons8_einstellungen_64 {
+            get {
+                object obj = ResourceManager.GetObject("icons8-einstellungen-64", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
+        /// </summary>
         public static System.Drawing.Bitmap icons8_film_noir_50 {
             get {
                 object obj = ResourceManager.GetObject("icons8-film-noir-50", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
+        /// </summary>
+        public static System.Drawing.Bitmap icons8_info_64 {
+            get {
+                object obj = ResourceManager.GetObject("icons8-info-64", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
+        /// </summary>
+        public static System.Drawing.Bitmap icons8_logout_abgerundet_64 {
+            get {
+                object obj = ResourceManager.GetObject("icons8-logout-abgerundet-64", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

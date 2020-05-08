@@ -68,6 +68,8 @@ namespace VTCManager_1._0._0
         private Label label14;
         private CheckBox checkBox_NUM_LOCK;
         private Button button2;
+        private ImageList Image_List_1;
+        private System.ComponentModel.IContainer components;
         public int Patreon;
 
         public SettingsWindow(Translation translation, int patreon)
@@ -85,6 +87,7 @@ namespace VTCManager_1._0._0
         }
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(SettingsWindow));
             this.comboBox1 = new System.Windows.Forms.ComboBox();
             this.label1 = new System.Windows.Forms.Label();
@@ -137,6 +140,7 @@ namespace VTCManager_1._0._0
             this.Num2_Text = new System.Windows.Forms.TextBox();
             this.label10 = new System.Windows.Forms.Label();
             this.Num1_Text = new System.Windows.Forms.TextBox();
+            this.Image_List_1 = new System.Windows.Forms.ImageList(this.components);
             this.groupBox1.SuspendLayout();
             this.btn_TruckersMP_suchen.SuspendLayout();
             this.group_Overlay.SuspendLayout();
@@ -456,12 +460,17 @@ namespace VTCManager_1._0._0
             // 
             // GameLog_suchen
             // 
-            this.GameLog_suchen.Location = new System.Drawing.Point(6, 19);
+            this.GameLog_suchen.BackColor = System.Drawing.SystemColors.ActiveCaption;
+            this.GameLog_suchen.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.GameLog_suchen.ImageIndex = 2;
+            this.GameLog_suchen.ImageList = this.Image_List_1;
+            this.GameLog_suchen.Location = new System.Drawing.Point(6, 18);
             this.GameLog_suchen.Name = "GameLog_suchen";
-            this.GameLog_suchen.Size = new System.Drawing.Size(116, 33);
+            this.GameLog_suchen.Size = new System.Drawing.Size(116, 40);
             this.GameLog_suchen.TabIndex = 12;
             this.GameLog_suchen.Text = "GameLog suchen";
-            this.GameLog_suchen.UseVisualStyleBackColor = true;
+            this.GameLog_suchen.TextImageRelation = System.Windows.Forms.TextImageRelation.TextBeforeImage;
+            this.GameLog_suchen.UseVisualStyleBackColor = false;
             this.GameLog_suchen.Click += new System.EventHandler(this.GameLog_suchen_Click);
             // 
             // GroupBox_Diagnostic
@@ -474,21 +483,32 @@ namespace VTCManager_1._0._0
             this.GroupBox_Diagnostic.Controls.Add(this.GameLog_oeffnen);
             this.GroupBox_Diagnostic.Controls.Add(this.GameLog_suchen);
             this.GroupBox_Diagnostic.Cursor = System.Windows.Forms.Cursors.Help;
-            this.GroupBox_Diagnostic.Location = new System.Drawing.Point(12, 482);
+            this.GroupBox_Diagnostic.Location = new System.Drawing.Point(12, 476);
             this.GroupBox_Diagnostic.Name = "GroupBox_Diagnostic";
-            this.GroupBox_Diagnostic.Size = new System.Drawing.Size(823, 58);
+            this.GroupBox_Diagnostic.Size = new System.Drawing.Size(823, 67);
             this.GroupBox_Diagnostic.TabIndex = 13;
             this.GroupBox_Diagnostic.TabStop = false;
             this.GroupBox_Diagnostic.Text = "Diagnose-Daten";
             // 
             // button2
             // 
-            this.button2.Location = new System.Drawing.Point(241, 19);
+            this.button2.AutoEllipsis = true;
+            this.button2.AutoSize = true;
+            this.button2.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.button2.BackColor = System.Drawing.SystemColors.ActiveCaption;
+            this.button2.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
+            this.button2.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.button2.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.button2.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
+            this.button2.ImageIndex = 0;
+            this.button2.ImageList = this.Image_List_1;
+            this.button2.Location = new System.Drawing.Point(243, 18);
             this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(88, 33);
+            this.button2.Size = new System.Drawing.Size(117, 40);
             this.button2.TabIndex = 17;
-            this.button2.Text = "VTCLog Mail";
-            this.button2.UseVisualStyleBackColor = true;
+            this.button2.Text = "Log senden";
+            this.button2.TextImageRelation = System.Windows.Forms.TextImageRelation.TextBeforeImage;
+            this.button2.UseVisualStyleBackColor = false;
             this.button2.Click += new System.EventHandler(this.button2_Click);
             // 
             // Reg_Reset
@@ -507,12 +527,17 @@ namespace VTCManager_1._0._0
             // 
             // GameLog_oeffnen
             // 
-            this.GameLog_oeffnen.Location = new System.Drawing.Point(128, 19);
+            this.GameLog_oeffnen.BackColor = System.Drawing.SystemColors.ActiveCaption;
+            this.GameLog_oeffnen.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.GameLog_oeffnen.ImageIndex = 1;
+            this.GameLog_oeffnen.ImageList = this.Image_List_1;
+            this.GameLog_oeffnen.Location = new System.Drawing.Point(130, 18);
             this.GameLog_oeffnen.Name = "GameLog_oeffnen";
-            this.GameLog_oeffnen.Size = new System.Drawing.Size(107, 33);
+            this.GameLog_oeffnen.Size = new System.Drawing.Size(107, 40);
             this.GameLog_oeffnen.TabIndex = 13;
             this.GameLog_oeffnen.Text = "GameLog öffnen";
-            this.GameLog_oeffnen.UseVisualStyleBackColor = true;
+            this.GameLog_oeffnen.TextImageRelation = System.Windows.Forms.TextImageRelation.TextBeforeImage;
+            this.GameLog_oeffnen.UseVisualStyleBackColor = false;
             this.GameLog_oeffnen.Click += new System.EventHandler(this.GameLog_oeffnen_Click);
             // 
             // Diagnostic_Checkbox
@@ -566,7 +591,7 @@ namespace VTCManager_1._0._0
             // patreon_image
             // 
             this.patreon_image.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.patreon_image.Location = new System.Drawing.Point(12, 429);
+            this.patreon_image.Location = new System.Drawing.Point(12, 425);
             this.patreon_image.Name = "patreon_image";
             this.patreon_image.Padding = new System.Windows.Forms.Padding(10);
             this.patreon_image.Size = new System.Drawing.Size(52, 50);
@@ -576,7 +601,7 @@ namespace VTCManager_1._0._0
             // 
             // team_image
             // 
-            this.team_image.Location = new System.Drawing.Point(70, 429);
+            this.team_image.Location = new System.Drawing.Point(70, 425);
             this.team_image.Name = "team_image";
             this.team_image.Size = new System.Drawing.Size(52, 50);
             this.team_image.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
@@ -691,6 +716,14 @@ namespace VTCManager_1._0._0
             this.Num1_Text.Size = new System.Drawing.Size(478, 22);
             this.Num1_Text.TabIndex = 6;
             // 
+            // Image_List_1
+            // 
+            this.Image_List_1.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("Image_List_1.ImageStream")));
+            this.Image_List_1.TransparentColor = System.Drawing.Color.Transparent;
+            this.Image_List_1.Images.SetKeyName(0, "icons8-thunderbird-32.png");
+            this.Image_List_1.Images.SetKeyName(1, "icons8-log-64.png");
+            this.Image_List_1.Images.SetKeyName(2, "icons8-suche-64.png");
+            // 
             // SettingsWindow
             // 
             this.ClientSize = new System.Drawing.Size(847, 599);
@@ -725,6 +758,7 @@ namespace VTCManager_1._0._0
             ((System.ComponentModel.ISupportInitialize)(this.reload_antiafk)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.GroupBox_Diagnostic.ResumeLayout(false);
+            this.GroupBox_Diagnostic.PerformLayout();
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.patreon_image)).EndInit();
