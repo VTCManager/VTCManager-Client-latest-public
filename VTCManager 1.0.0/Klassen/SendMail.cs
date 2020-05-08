@@ -19,9 +19,7 @@ namespace VTCManager_1._0._0.Klassen
             File.Delete(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + @"\VTC_Manager\VTC_SYSTEM_LOG_COPY.txt");
             File.Delete(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + @"\VTC_Manager\DLC_Log.txt");
 
-
             Erstelle_DLC_LOG();
-
 
             MailMessage mail = new MailMessage();
             mail.From = new MailAddress("vtc_diag@web.de"); 

@@ -47,12 +47,10 @@ namespace VTCManager_1._0._0
         private Label Settings_Windows_Label_Settings;
         private Button GameLog_suchen;
         private GroupBox GroupBox_Diagnostic;
-        private Button Registry_anzeigen;
         private Button GameLog_oeffnen;
         private CheckBox Diagnostic_Checkbox;
         private GroupBox groupBox2;
         private CheckBox Chk_Dashboard;
-        private Button VTC_Button;
         private CheckBox Autostart_Checkbox;
         private FolderBrowserDialog ETS2_folderBrowserDialog;
         private FolderBrowserDialog ATS_folderBrowserDialog;
@@ -61,7 +59,6 @@ namespace VTCManager_1._0._0
         private PictureBox patreon_image;
         private PictureBox team_image;
         private GroupBox Group_Box_Indiv_Texte;
-        private Label label13;
         private Label label12;
         private TextBox Num3_Text;
         private Label label11;
@@ -120,9 +117,8 @@ namespace VTCManager_1._0._0
             this.Settings_Windows_Label_Settings = new System.Windows.Forms.Label();
             this.GameLog_suchen = new System.Windows.Forms.Button();
             this.GroupBox_Diagnostic = new System.Windows.Forms.GroupBox();
+            this.button2 = new System.Windows.Forms.Button();
             this.Reg_Reset = new System.Windows.Forms.Button();
-            this.VTC_Button = new System.Windows.Forms.Button();
-            this.Registry_anzeigen = new System.Windows.Forms.Button();
             this.GameLog_oeffnen = new System.Windows.Forms.Button();
             this.Diagnostic_Checkbox = new System.Windows.Forms.CheckBox();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
@@ -135,14 +131,12 @@ namespace VTCManager_1._0._0
             this.Group_Box_Indiv_Texte = new System.Windows.Forms.GroupBox();
             this.checkBox_NUM_LOCK = new System.Windows.Forms.CheckBox();
             this.label14 = new System.Windows.Forms.Label();
-            this.label13 = new System.Windows.Forms.Label();
             this.label12 = new System.Windows.Forms.Label();
             this.Num3_Text = new System.Windows.Forms.TextBox();
             this.label11 = new System.Windows.Forms.Label();
             this.Num2_Text = new System.Windows.Forms.TextBox();
             this.label10 = new System.Windows.Forms.Label();
             this.Num1_Text = new System.Windows.Forms.TextBox();
-            this.button2 = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
             this.btn_TruckersMP_suchen.SuspendLayout();
             this.group_Overlay.SuspendLayout();
@@ -477,8 +471,6 @@ namespace VTCManager_1._0._0
             this.GroupBox_Diagnostic.BackColor = System.Drawing.SystemColors.GradientActiveCaption;
             this.GroupBox_Diagnostic.Controls.Add(this.button2);
             this.GroupBox_Diagnostic.Controls.Add(this.Reg_Reset);
-            this.GroupBox_Diagnostic.Controls.Add(this.VTC_Button);
-            this.GroupBox_Diagnostic.Controls.Add(this.Registry_anzeigen);
             this.GroupBox_Diagnostic.Controls.Add(this.GameLog_oeffnen);
             this.GroupBox_Diagnostic.Controls.Add(this.GameLog_suchen);
             this.GroupBox_Diagnostic.Cursor = System.Windows.Forms.Cursors.Help;
@@ -489,35 +481,29 @@ namespace VTCManager_1._0._0
             this.GroupBox_Diagnostic.TabStop = false;
             this.GroupBox_Diagnostic.Text = "Diagnose-Daten";
             // 
+            // button2
+            // 
+            this.button2.Location = new System.Drawing.Point(241, 19);
+            this.button2.Name = "button2";
+            this.button2.Size = new System.Drawing.Size(88, 33);
+            this.button2.TabIndex = 17;
+            this.button2.Text = "VTCLog Mail";
+            this.button2.UseVisualStyleBackColor = true;
+            this.button2.Click += new System.EventHandler(this.button2_Click);
+            // 
             // Reg_Reset
             // 
-            this.Reg_Reset.Location = new System.Drawing.Point(243, 20);
+            this.Reg_Reset.BackColor = System.Drawing.Color.Red;
+            this.Reg_Reset.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.Reg_Reset.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.Reg_Reset.ForeColor = System.Drawing.SystemColors.ButtonFace;
+            this.Reg_Reset.Location = new System.Drawing.Point(731, 19);
             this.Reg_Reset.Name = "Reg_Reset";
             this.Reg_Reset.Size = new System.Drawing.Size(85, 31);
             this.Reg_Reset.TabIndex = 16;
             this.Reg_Reset.Text = "REG Reset";
-            this.Reg_Reset.UseVisualStyleBackColor = true;
+            this.Reg_Reset.UseVisualStyleBackColor = false;
             this.Reg_Reset.Click += new System.EventHandler(this.Reg_Reset_Click);
-            // 
-            // VTC_Button
-            // 
-            this.VTC_Button.Location = new System.Drawing.Point(338, 19);
-            this.VTC_Button.Name = "VTC_Button";
-            this.VTC_Button.Size = new System.Drawing.Size(117, 33);
-            this.VTC_Button.TabIndex = 15;
-            this.VTC_Button.Text = "DLC Log erstellen";
-            this.VTC_Button.UseVisualStyleBackColor = true;
-            this.VTC_Button.Click += new System.EventHandler(this.VTC_Button_Click);
-            // 
-            // Registry_anzeigen
-            // 
-            this.Registry_anzeigen.Location = new System.Drawing.Point(457, 19);
-            this.Registry_anzeigen.Name = "Registry_anzeigen";
-            this.Registry_anzeigen.Size = new System.Drawing.Size(140, 33);
-            this.Registry_anzeigen.TabIndex = 14;
-            this.Registry_anzeigen.Text = "Registry Werte anzeigen";
-            this.Registry_anzeigen.UseVisualStyleBackColor = true;
-            this.Registry_anzeigen.Click += new System.EventHandler(this.Registry_anzeigen_Click);
             // 
             // GameLog_oeffnen
             // 
@@ -601,7 +587,6 @@ namespace VTCManager_1._0._0
             // 
             this.Group_Box_Indiv_Texte.Controls.Add(this.checkBox_NUM_LOCK);
             this.Group_Box_Indiv_Texte.Controls.Add(this.label14);
-            this.Group_Box_Indiv_Texte.Controls.Add(this.label13);
             this.Group_Box_Indiv_Texte.Controls.Add(this.label12);
             this.Group_Box_Indiv_Texte.Controls.Add(this.Num3_Text);
             this.Group_Box_Indiv_Texte.Controls.Add(this.label11);
@@ -610,7 +595,7 @@ namespace VTCManager_1._0._0
             this.Group_Box_Indiv_Texte.Controls.Add(this.Num1_Text);
             this.Group_Box_Indiv_Texte.Location = new System.Drawing.Point(288, 322);
             this.Group_Box_Indiv_Texte.Name = "Group_Box_Indiv_Texte";
-            this.Group_Box_Indiv_Texte.Size = new System.Drawing.Size(547, 156);
+            this.Group_Box_Indiv_Texte.Size = new System.Drawing.Size(547, 125);
             this.Group_Box_Indiv_Texte.TabIndex = 18;
             this.Group_Box_Indiv_Texte.TabStop = false;
             this.Group_Box_Indiv_Texte.Text = "Spender Individual Text";
@@ -618,11 +603,12 @@ namespace VTCManager_1._0._0
             // checkBox_NUM_LOCK
             // 
             this.checkBox_NUM_LOCK.AutoSize = true;
-            this.checkBox_NUM_LOCK.Location = new System.Drawing.Point(179, 101);
+            this.checkBox_NUM_LOCK.Location = new System.Drawing.Point(388, 99);
             this.checkBox_NUM_LOCK.Name = "checkBox_NUM_LOCK";
             this.checkBox_NUM_LOCK.Size = new System.Drawing.Size(158, 17);
             this.checkBox_NUM_LOCK.TabIndex = 14;
             this.checkBox_NUM_LOCK.Text = "NUM Lock Button anzeigen";
+            this.checkBox_NUM_LOCK.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.checkBox_NUM_LOCK.UseVisualStyleBackColor = true;
             this.checkBox_NUM_LOCK.CheckedChanged += new System.EventHandler(this.checkBox_NUM_LOCK_CheckedChanged);
             // 
@@ -635,16 +621,6 @@ namespace VTCManager_1._0._0
             this.label14.Size = new System.Drawing.Size(109, 12);
             this.label14.TabIndex = 13;
             this.label14.Text = "jeweils max. 100 Zeichen";
-            // 
-            // label13
-            // 
-            this.label13.AutoSize = true;
-            this.label13.Font = new System.Drawing.Font("Verdana", 14.25F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label13.Location = new System.Drawing.Point(368, 107);
-            this.label13.Name = "label13";
-            this.label13.Size = new System.Drawing.Size(173, 23);
-            this.label13.TabIndex = 12;
-            this.label13.Text = "Coming Soon...";
             // 
             // label12
             // 
@@ -714,16 +690,6 @@ namespace VTCManager_1._0._0
             this.Num1_Text.Name = "Num1_Text";
             this.Num1_Text.Size = new System.Drawing.Size(478, 22);
             this.Num1_Text.TabIndex = 6;
-            // 
-            // button2
-            // 
-            this.button2.Location = new System.Drawing.Point(603, 20);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(88, 32);
-            this.button2.TabIndex = 17;
-            this.button2.Text = "VTCLog Mail";
-            this.button2.UseVisualStyleBackColor = true;
-            this.button2.Click += new System.EventHandler(this.button2_Click);
             // 
             // SettingsWindow
             // 
@@ -1069,20 +1035,6 @@ namespace VTCManager_1._0._0
 
         }
 
-        private void Registry_anzeigen_Click(object sender, EventArgs e)
-        {
-           MessageBox.Show( "ANTI-AFK: " + Read("ANTI_AFK") + Environment.NewLine +
-               "ANTI_AFK_AN: " + Read("ANTI_AFK_AN") + Environment.NewLine +
-               "Background: " + Read("Background") + Environment.NewLine +
-               "Diagnostic: " + Read("Diagnostic") + Environment.NewLine +
-               "ETS Pfad: " + Read("ETS2_Pfad") + Environment.NewLine +
-               "ATS Pfad: " + Read("ATS_Pfad") + Environment.NewLine +
-               "Plugins ETS: " + Read("Plugins ETS") + Environment.NewLine +
-               "Plugins ATS: " + Read("Plugins ATS") + Environment.NewLine +
-               "Reload Traffic Sek: " + Read("Reload_Traffic_Sekunden") + Environment.NewLine +
-               "Verkehr Server: " + Read("verkehr_SERVER") + Environment.NewLine +
-               "Version: " + Read("Version") + Environment.NewLine);
-        }
 
 
 
@@ -1127,58 +1079,7 @@ namespace VTCManager_1._0._0
             }
         }
 
-        private void VTC_Button_Click(object sender, EventArgs e)
-        {
-            string path = Path.Combine(Environment.GetFolderPath(System.Environment.SpecialFolder.MyDocuments) + @"\VTC_Manager\DLC_Log.txt");
 
-            DirectoryInfo d = new DirectoryInfo(utils.Reg_Lesen("TruckersMP_Autorun", "ETS2_Pfad")); 
-            FileInfo[] Files = d.GetFiles("dlc_*"); 
-            List<string> myCollection = new List<string>();
-            foreach (FileInfo file in Files)
-            {
-                myCollection.Add(file.Name + Environment.NewLine);
-            }
-            string a = String.Join("", myCollection);
-
-            File.WriteAllText(path, a);
-
-            DirectoryInfo d2 = new DirectoryInfo(utils.Reg_Lesen("TruckersMP_Autorun", "ETS2_Pfad") + @"\bin\win_x64");
-            FileInfo[] Files2 = d2.GetFiles("*.*");
-            List<string> myCollection2 = new List<string>();
-            foreach (FileInfo file2 in Files2)
-            {
-                myCollection2.Add(file2.Name + Environment.NewLine);
-            }
-            string a2 = String.Join("", myCollection2);
-            File.AppendAllText(path, " ------------------------------    GAME VERZEICHNIS   ------------------------------------" + Environment.NewLine);
-            File.AppendAllText(path, a2);
-
-
-            DirectoryInfo d3 = new DirectoryInfo(utils.Reg_Lesen("TruckersMP_Autorun", "ETS2_Pfad") + @"\bin\win_x64\plugins");
-            FileInfo[] Files3 = d3.GetFiles("*.*");
-            List<string> myCollection3 = new List<string>();
-            foreach (FileInfo file3 in Files3)
-            {
-                myCollection3.Add(file3.Name + Environment.NewLine);
-            }
-            string a3 = String.Join("", myCollection3);
-            File.AppendAllText(path, " ------------------------------    PLUGIN VERZEICHNIS   ------------------------------------" + Environment.NewLine);
-            File.AppendAllText(path, a3);
-
-            File.AppendAllText(path, " ------------------------------        REGISTRY         ------------------------------------" + Environment.NewLine);
-            File.AppendAllText(path, "ANTI-AFK: " + Read("ANTI_AFK") + Environment.NewLine +
-                "ANTI_AFK_AN: " + Read("ANTI_AFK_AN") + Environment.NewLine +
-                "Background: " + Read("Background") + Environment.NewLine +
-                "Diagnostic: " + Read("Diagnostic") + Environment.NewLine +
-                "ETS Pfad: " + Read("ETS2_Pfad") + Environment.NewLine +
-                "ATS Pfad: " + Read("ATS_Pfad") + Environment.NewLine +
-                "Plugins ETS: " + Read("Plugins ETS") + Environment.NewLine +
-                "Plugins ATS: " + Read("Plugins ATS") + Environment.NewLine +
-                "Reload Traffic Sek: " + Read("Reload_Traffic_Sekunden") + Environment.NewLine +
-                "Verkehr Server: " + Read("verkehr_SERVER") + Environment.NewLine +
-                "Version: " + Read("Version") + Environment.NewLine);
-
-        }
 
         private void Autostart_Checkbox_CheckedChanged(object sender, EventArgs e)
         {
