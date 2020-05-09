@@ -1186,6 +1186,9 @@ namespace VTCManager_1._0._0
 
         private void button2_Click(object sender, EventArgs e)
         {
+            Logging Logs = new Logging();
+            Logs.SystemDaten_Laden();
+
             DialogResult result = MessageBox.Show("Ihnen ist Bewusst, dass einige Daten über ihren Account und auch einige Daten über das Spiel Euro Truck Simulator 2 sowie American Truck Simulator via E-Mail an unsere derzeit aktiven Developer gesendet werden und diese Einsicht in die Daten haben. Mit Klick auf 'JA' geben Sie ihr Einverständnis dazu.", this.Text, MessageBoxButtons.YesNo, MessageBoxIcon.Question);
             if (result == DialogResult.Yes)
             {

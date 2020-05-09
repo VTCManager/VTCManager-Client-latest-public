@@ -220,7 +220,7 @@ namespace VTCManager_1._0._0
             this.Telemetry.JobDelivered += TelemetryJobDelivered;
             Logs.WriteLOG("<INFO> Telemetry.JobDelivered geladen");
 
-            //this.Telemetry.Fined += this.TelemetryFined;
+            this.Telemetry.Fined += this.TelemetryFined;
             Logs.WriteLOG("<INFO> Telemetry.Fined geladen");
 
             this.Telemetry.Tollgate += this.TelemetryTollgate;
@@ -232,14 +232,11 @@ namespace VTCManager_1._0._0
             this.Telemetry.Train += this.TelemetryTrain;
             Logs.WriteLOG("<INFO> Telemetry.Train geladen");
 
-            //this.Telemetry.Refuel += this.TelemetryRefuel;
-            Logs.WriteLOG("<INFO> Telemetry.Refuel geladen");
-
             this.Telemetry.RefuelStart += this.TelemetryRefuel;
             Logs.WriteLOG("<INFO> Telemetry.RefuleStart geladen");
 
             this.Telemetry.RefuelEnd += TelemetryRefuelEnd;
-            Logs.WriteLOG("<INFO> Telemetry.RefuleEnd übersprungen");
+            Logs.WriteLOG("<INFO> Telemetry.RefuleEnd geladen");
 
             this.Telemetry.RefuelPayed += TelemetryRefuelPayed;
             Logs.WriteLOG("<INFO>  Telemetry.RefulePayed geladen");
@@ -1669,7 +1666,8 @@ namespace VTCManager_1._0._0
  
             // ################  Erstelle LOG File wenn nicht vorhanden  ###########################
             Logs.Make_Log_File();
-            Thread.Sleep(200);
+
+            Thread.Sleep(100);
 
             /* REVISION NUMBER NOW ON TOP ! */
             this.discord = new Discord(Revision);
@@ -1699,14 +1697,6 @@ namespace VTCManager_1._0._0
             // ##########################   Dashboaard An/Ausschalten   ######################################
             if (string.IsNullOrEmpty(utils.Reg_Lesen("TruckersMP_Autorun", "Dashboard")))
                 utils.Reg_Schreiben("Dashboard", "0", "TruckersMP_Autorun");
-
-
-            // ################    LEERE LOG DATEI BEIM START   ####################################
-            Logs.Clear_Log_File();
-            
-            // ################   Systemdaten in Log schreiben   ###################################
-            Logs.SystemDaten_Laden();
-
 
             // ##################   HOTKEY   #######################################################
             // Lade NUM_LOCK Status On/Off aus Registry

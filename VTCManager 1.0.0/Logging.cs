@@ -22,23 +22,24 @@ namespace VTCManager_1._0._0
 
         public void Clear_Log_File()
         {
-            if (File.Exists(logDirectory + logFile))
-                File.WriteAllText(logDirectory + logFile, String.Empty);
 
-            if(File.Exists(logDirectory + systemlogFile))
-                File.WriteAllText(logDirectory + systemlogFile, String.Empty);
         }
 
         public void Make_Log_File()
         {
+            // #### ERSTELLE LOG VERZEICHNIS #######
             if (!Directory.Exists(logDirectory))
                 Directory.CreateDirectory(logDirectory);
 
+            // #### ERSTELLE NORMALES LOG FILE #####
             if (!File.Exists(logDirectory + logFile))
                     File.Create(logDirectory + logFile);
-
+            // #### ERSTELLE SYSTEM LOG FILE #######
             if(!File.Exists(logDirectory + systemlogFile))
                 File.Create(logDirectory + systemlogFile);
+
+            File.WriteAllText(logDirectory + logFile, String.Empty);
+            File.WriteAllText(logDirectory + systemlogFile, String.Empty);
 
         }
 
@@ -87,7 +88,9 @@ namespace VTCManager_1._0._0
 
         public void SystemDaten_Laden()
         {
-           
+            // ###################################################################################################
+            // #############################   CPU LADEN   #######################################################
+            // ###################################################################################################
             ManagementObjectSearcher cpu = new ManagementObjectSearcher("SELECT * FROM Win32_processor");
             ManagementObjectCollection queryCollection1 = cpu.Get();
             foreach (ManagementObject mo in queryCollection1)
@@ -95,6 +98,9 @@ namespace VTCManager_1._0._0
                 this.WriteSystemLOG("<SYSTEM CPU> " + mo["name"].ToString() + " @ " + mo["DataWidth"] + " Bit");
             }
 
+            // ###################################################################################################
+            // #############################   WINDOWS LADEN   ###################################################
+            // ###################################################################################################
             ManagementObjectSearcher BitVersion = new ManagementObjectSearcher("SELECT * FROM CIM_OperatingSystem");
             ManagementObjectCollection queryCollection2 = BitVersion.Get();
             foreach(ManagementObject m1 in queryCollection2)
@@ -102,19 +108,45 @@ namespace VTCManager_1._0._0
                 this.WriteSystemLOG ("<SYSTEM OS> Name: " + m1["name"] + "; Architekture: " + m1["OSArchitecture"] + "; Users: " + m1["NumberOfUsers"] + "; Lang: " + m1["MUILanguages"]);
             }
 
-
+            // ###################################################################################################
+            // #############################   RAM LADEN   #######################################################
+            // ###################################################################################################
             ManagementObjectSearcher searcher = new ManagementObjectSearcher("root\\CIMV2", "SELECT * FROM Win32_ComputerSystem");
             foreach (ManagementObject queryObj in searcher.Get())
             {
                 this.WriteSystemLOG("<RAM INFO> " + memoryInfo.MemoryLoad + "% RAM Belegt; " + ((ulong)queryObj["TotalPhysicalMemory"]/1024/1024/1000).ToString() + "GB " + RamInfo.RamType + " RAM Gesamt");
             }
 
-           
+            // ###################################################################################################
+            // #############################   MONITOR LADEN   ###################################################
+            // ###################################################################################################
+            ManagementObjectSearcher moni = new ManagementObjectSearcher("SELECT * FROM Win32_DesktopMonitor");
+            ManagementObjectCollection queryCollection3 = moni.Get();
+            foreach (ManagementObject m3 in queryCollection3)
+            {
+                this.WriteSystemLOG("<SYSTEM MONITOR> " + m3["Caption"].ToString() + "; ScreenHeight: " + m3["ScreenHeight"] + "; ScreenWidth: " + m3["ScreenWidth"]);
+            }
 
-
+            // ###################################################################################################
+            // #############################   HDD LADEN   #######################################################
+            // ###################################################################################################
+            string wmiQuery = "SELECT * FROM Win32_DiskDrive WHERE InterfaceType = 'IDE' OR InterfaceType = 'SCSI'";
+            using (ManagementObjectSearcher driveSearcher = new ManagementObjectSearcher(wmiQuery))
+            {
+                using (ManagementObjectCollection driveCollection = driveSearcher.Get())
+                {
+                    foreach (ManagementObject moItem in driveCollection)
+                    {
+                        this.WriteSystemLOG("<SYSTEM-DRIVES> Caption: " + moItem["Caption"] + "; Interface: " + moItem["InterfaceType"] + "; Modell: " + moItem["Model"] + "; Status: " + moItem["Status"]);
+                    }
+                }
+            }
 
 
         }
+
+
+
     }
 
 
