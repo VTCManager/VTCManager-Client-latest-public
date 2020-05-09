@@ -22,7 +22,8 @@ namespace VTCManager_1._0._0
 
         public void Clear_Log_File()
         {
-
+            File.WriteAllText(logDirectory + logFile, String.Empty);
+            File.WriteAllText(logDirectory + systemlogFile, String.Empty);
         }
 
         public void Make_Log_File()
@@ -38,9 +39,6 @@ namespace VTCManager_1._0._0
             if(!File.Exists(logDirectory + systemlogFile))
                 File.Create(logDirectory + systemlogFile);
 
-            File.WriteAllText(logDirectory + logFile, String.Empty);
-            File.WriteAllText(logDirectory + systemlogFile, String.Empty);
-
         }
 
 
@@ -52,7 +50,6 @@ namespace VTCManager_1._0._0
                 {
                     try
                     {
-                        Thread.Sleep(200);
                         File.AppendAllText(logDirectory + logFile, "<" + DateTime.Now + "> " + text + " - File " + file + " :: " + lineNumber + "; Caller: " + caller + Environment.NewLine);
                     }
                     catch (Exception ex) {

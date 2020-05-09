@@ -23,7 +23,7 @@ namespace VTCManager_1._0._0
     public class Main : Form
     {
         // Settings
-        public string Revision = "2.2.6";               // Eigene Revisionsnummer
+        public string Revision = "2.2.7";               // Eigene Revisionsnummer
         public string Telemetry_Version = "1.11N";      // Telemetry Version. 11 ist die letzte, die haben wir derzeit Testweise in Erprobung. 
         public string SCSSdk_Version = "4.0.30319";     // Neue Versionsnummer -> Steht nei der SCSSdkClient.dll in Eigenschaften. Wenn kleiner bitte Updaten
 
@@ -148,6 +148,9 @@ namespace VTCManager_1._0._0
         private BackgroundWorker backgroundWorker1;
         private ImageList imageList1;
         public Label lbl_Revision;
+        private readonly string logDirectory = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + @"\VTC_Manager");
+        public string logFile = @"\VTC_LOG.txt";
+        public string systemlogFile = @"\VTC_SYSTEM_LOG.txt";
 
 
         // Get a handle to an application window.
@@ -1661,13 +1664,27 @@ namespace VTCManager_1._0._0
         // Edit by Thommy
         private void Main_Load(object sender, EventArgs e)
         {
-
+            
             th.Loesche_Alte_DLL();
- 
-            // ################  Erstelle LOG File wenn nicht vorhanden  ###########################
-            Logs.Make_Log_File();
 
-            Thread.Sleep(100);
+            // ################  Erstelle LOG File wenn nicht vorhanden  ###########################
+            if (!File.Exists(logDirectory + logFile) || !File.Exists(logDirectory + systemlogFile))
+            {
+                Directory.CreateDirectory(logDirectory);
+                // #### ERSTELLE NORMALES LOG FILE #####
+                if (!File.Exists(logDirectory + logFile))
+                    File.Create(logDirectory + logFile);
+                // #### ERSTELLE SYSTEM LOG FILE #######
+                if (!File.Exists(logDirectory + systemlogFile))
+                    File.Create(logDirectory + systemlogFile);
+                MessageBox.Show("Die LOG Dateien müssen neu erstellt werden !" + Environment.NewLine + Environment.NewLine + "Dazu muss der Client einmalig Neu gestartet werden !", "Logs", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                Application.Restart();
+            }
+                
+
+
+
+            Logs.Clear_Log_File();
 
             /* REVISION NUMBER NOW ON TOP ! */
             this.discord = new Discord(Revision);
