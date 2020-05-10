@@ -191,7 +191,7 @@
     </Reference>
     <Reference Include="SCSSdkClient, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\Downloads\SCSSdkClient.dll</HintPath>
+      <HintPath>..\..\scs-sdk-plugin2\scs-client\C#\SCSSdkClient\bin\Debug\SCSSdkClient.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Collections.Specialized, Version=4.0.2.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
@@ -350,6 +350,9 @@
     <None Include="Resources\icons8-ausgang-64.png" />
     <None Include="Resources\icons8-logout-abgerundet-64.png" />
     <Content Include="Resources\scs-telemetry.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\scs-telemetry_geht.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Resources\scs-telemetry_Alt.dll">

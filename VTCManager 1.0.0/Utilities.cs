@@ -14,7 +14,7 @@ namespace VTCManager_1._0._0
         //Fields
         private static long _lastCheckTime;
         private static bool _cachedRunningFlag;
-        private static string _chachedGame;
+       // private static string _chachedGame;
         private static bool _DiscordRunningFlag;
         CultureInfo ci = CultureInfo.InstalledUICulture;
         Logging Logging = new Logging();
@@ -181,7 +181,7 @@ namespace VTCManager_1._0._0
                 RegistryKey key = Registry.CurrentUser.OpenSubKey(@"SOFTWARE\VTCManager\" + ordner);
                 return key.GetValue(value).ToString();
             } catch (Exception ex) {
-                Logging.WriteLOG("<ERROR> Methode Reg_Lesen in Utilities.cs");
+                Logging.WriteLOG("<ERROR> Methode Reg_Lesen in Utilities.cs" + ex.StackTrace);
                 return null;
             }
         }

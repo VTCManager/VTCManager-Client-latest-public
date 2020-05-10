@@ -70,6 +70,7 @@ namespace VTCManager_1._0._0
         private Button button2;
         private ImageList Image_List_1;
         private System.ComponentModel.IContainer components;
+        private CheckBox chk_Programm_Ontop;
         public int Patreon;
 
         public SettingsWindow(Translation translation, int patreon)
@@ -119,12 +120,14 @@ namespace VTCManager_1._0._0
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.Settings_Windows_Label_Settings = new System.Windows.Forms.Label();
             this.GameLog_suchen = new System.Windows.Forms.Button();
+            this.Image_List_1 = new System.Windows.Forms.ImageList(this.components);
             this.GroupBox_Diagnostic = new System.Windows.Forms.GroupBox();
             this.button2 = new System.Windows.Forms.Button();
             this.Reg_Reset = new System.Windows.Forms.Button();
             this.GameLog_oeffnen = new System.Windows.Forms.Button();
             this.Diagnostic_Checkbox = new System.Windows.Forms.CheckBox();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.chk_Programm_Ontop = new System.Windows.Forms.CheckBox();
             this.Autostart_Checkbox = new System.Windows.Forms.CheckBox();
             this.Chk_Dashboard = new System.Windows.Forms.CheckBox();
             this.ETS2_folderBrowserDialog = new System.Windows.Forms.FolderBrowserDialog();
@@ -140,7 +143,6 @@ namespace VTCManager_1._0._0
             this.Num2_Text = new System.Windows.Forms.TextBox();
             this.label10 = new System.Windows.Forms.Label();
             this.Num1_Text = new System.Windows.Forms.TextBox();
-            this.Image_List_1 = new System.Windows.Forms.ImageList(this.components);
             this.groupBox1.SuspendLayout();
             this.btn_TruckersMP_suchen.SuspendLayout();
             this.group_Overlay.SuspendLayout();
@@ -473,6 +475,14 @@ namespace VTCManager_1._0._0
             this.GameLog_suchen.UseVisualStyleBackColor = false;
             this.GameLog_suchen.Click += new System.EventHandler(this.GameLog_suchen_Click);
             // 
+            // Image_List_1
+            // 
+            this.Image_List_1.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("Image_List_1.ImageStream")));
+            this.Image_List_1.TransparentColor = System.Drawing.Color.Transparent;
+            this.Image_List_1.Images.SetKeyName(0, "icons8-thunderbird-32.png");
+            this.Image_List_1.Images.SetKeyName(1, "icons8-log-64.png");
+            this.Image_List_1.Images.SetKeyName(2, "icons8-suche-64.png");
+            // 
             // GroupBox_Diagnostic
             // 
             this.GroupBox_Diagnostic.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
@@ -492,7 +502,6 @@ namespace VTCManager_1._0._0
             // 
             // button2
             // 
-            this.button2.AutoEllipsis = true;
             this.button2.AutoSize = true;
             this.button2.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.button2.BackColor = System.Drawing.SystemColors.ActiveCaption;
@@ -553,6 +562,7 @@ namespace VTCManager_1._0._0
             // 
             // groupBox2
             // 
+            this.groupBox2.Controls.Add(this.chk_Programm_Ontop);
             this.groupBox2.Controls.Add(this.Autostart_Checkbox);
             this.groupBox2.Controls.Add(this.Chk_Dashboard);
             this.groupBox2.Location = new System.Drawing.Point(12, 322);
@@ -561,6 +571,17 @@ namespace VTCManager_1._0._0
             this.groupBox2.TabIndex = 15;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Sonstiges";
+            // 
+            // chk_Programm_Ontop
+            // 
+            this.chk_Programm_Ontop.AutoSize = true;
+            this.chk_Programm_Ontop.Location = new System.Drawing.Point(10, 68);
+            this.chk_Programm_Ontop.Name = "chk_Programm_Ontop";
+            this.chk_Programm_Ontop.Size = new System.Drawing.Size(177, 17);
+            this.chk_Programm_Ontop.TabIndex = 2;
+            this.chk_Programm_Ontop.Text = "Programm immer im Vordergrund";
+            this.chk_Programm_Ontop.UseVisualStyleBackColor = true;
+            this.chk_Programm_Ontop.CheckedChanged += new System.EventHandler(this.chk_Programm_Ontop_CheckedChanged);
             // 
             // Autostart_Checkbox
             // 
@@ -716,14 +737,6 @@ namespace VTCManager_1._0._0
             this.Num1_Text.Size = new System.Drawing.Size(478, 22);
             this.Num1_Text.TabIndex = 6;
             // 
-            // Image_List_1
-            // 
-            this.Image_List_1.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("Image_List_1.ImageStream")));
-            this.Image_List_1.TransparentColor = System.Drawing.Color.Transparent;
-            this.Image_List_1.Images.SetKeyName(0, "icons8-thunderbird-32.png");
-            this.Image_List_1.Images.SetKeyName(1, "icons8-log-64.png");
-            this.Image_List_1.Images.SetKeyName(2, "icons8-suche-64.png");
-            // 
             // SettingsWindow
             // 
             this.ClientSize = new System.Drawing.Size(847, 599);
@@ -842,13 +855,16 @@ namespace VTCManager_1._0._0
 
         private void SettingsWindow_Load(object sender, EventArgs e)
         {
+            if (string.IsNullOrEmpty(utils.Reg_Lesen("TruckersMP_Autorun", "OnTop")))
+                utils.Reg_Schreiben("OnTop", "0", "TruckersMP_Autorun");
+
             GroupBox_Diagnostic.Visible = (utils.Reg_Lesen("TruckersMP_Autorun", "Diagnostic") == "1") ? true : false;
             checkBox_NUM_LOCK.CheckState = (utils.Reg_Lesen("TruckersMP_Autorun", "NUM_LOCK_SHOW") == "1") ? CheckState.Checked : CheckState.Unchecked;
             Chk_Dashboard.CheckState = (utils.Reg_Lesen("TruckersMP_Autorun", "Dashboard") == "1") ? CheckState.Checked : CheckState.Unchecked;
             Group_Box_Indiv_Texte.Visible = (Patreon >= 2) ? true : false;
+            chk_Programm_Ontop.CheckState = (utils.Reg_Lesen("TruckersMP_Autorun", "OnTop") == "1") ? CheckState.Checked : CheckState.Unchecked;
 
-
-            // ##################   HOTKEYS   ######################
+                // ##################   HOTKEYS   ######################
             Num1_Text.Text = utils.Reg_Lesen("TruckersMP_Autorun", "NUM1");
             Num2_Text.Text = utils.Reg_Lesen("TruckersMP_Autorun", "NUM2");
             Num3_Text.Text = utils.Reg_Lesen("TruckersMP_Autorun", "NUM3");
@@ -1199,6 +1215,18 @@ namespace VTCManager_1._0._0
                 MessageBox.Show("Es wurden keine Daten an uns Gesendet !" + Environment.NewLine + "Leider können wir ohne diese Daten keinen Support gewähren.", "Daten", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
             }
 
+        }
+
+        private void chk_Programm_Ontop_CheckedChanged(object sender, EventArgs e)
+        {
+                        if (checkBox_NUM_LOCK.CheckState == CheckState.Checked)
+            {
+                utils.Reg_Schreiben("NUM_LOCK_SHOW", "1", "TruckersMP_Autorun");
+            }
+            else
+            {
+                utils.Reg_Schreiben("NUM_LOCK_SHOW", "0", "TruckersMP_Autorun");
+            }
         }
     }
 }

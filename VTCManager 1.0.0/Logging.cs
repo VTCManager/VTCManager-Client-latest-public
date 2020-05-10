@@ -1,12 +1,9 @@
 ﻿using System;
-using System.Threading;
-using System.Diagnostics;
-using System.Globalization;
 using System.IO;
-using System;
-using System.Runtime.CompilerServices;
-using System.Windows;
 using System.Management;
+using System.Runtime.CompilerServices;
+using System.Threading;
+using System.Windows;
 
 namespace VTCManager_1._0._0
 {
@@ -16,8 +13,7 @@ namespace VTCManager_1._0._0
         private readonly string logDirectory = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + @"\VTC_Manager");
         public string logFile = @"\VTC_LOG.txt";
         public string systemlogFile = @"\VTC_SYSTEM_LOG.txt";
-        int MemSize = 0;
-        int mCap = 0;
+
         MemoryInfo memoryInfo = new MemoryInfo(true);
 
         public void Clear_Log_File()
