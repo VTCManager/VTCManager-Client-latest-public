@@ -10,6 +10,7 @@ namespace VTCManager_1._0._0
     class Discord
     {
         public DiscordRpcClient client;
+        private String ClientVersion;
 
         public Discord(String ClientVersion)
         {
@@ -18,6 +19,7 @@ namespace VTCManager_1._0._0
 
                 client = new DiscordRpcClient("659036297561767948");
                 client.Initialize();
+                this.ClientVersion = ClientVersion;
                 client.SetPresence(new RichPresence()
                 {
                     Details = "Starte...",
@@ -43,7 +45,8 @@ namespace VTCManager_1._0._0
                 {
                     LargeImageKey = "truck-icon",
                     LargeImageText = "Beyond the limits",
-                    SmallImageKey = "vtcm-logo"
+                    SmallImageKey = "vtcm-logo",
+                    SmallImageText = "VTCManager Version " + ClientVersion
                 }
             };
             rpc = rpc.WithTimestamps(Timestamps.Now);
@@ -60,7 +63,8 @@ namespace VTCManager_1._0._0
                 {
                     LargeImageKey = "truck-icon",
                     LargeImageText = "Beyond the limits",
-                    SmallImageKey = "vtcm-logo"
+                    SmallImageKey = "vtcm-logo",
+                    SmallImageText = "VTCManager Version " + ClientVersion
                 }
             };
             client.SetPresence(rpc);
