@@ -1219,13 +1219,13 @@ namespace VTCManager_1._0._0
 
         private void chk_Programm_Ontop_CheckedChanged(object sender, EventArgs e)
         {
-                        if (checkBox_NUM_LOCK.CheckState == CheckState.Checked)
+            if (chk_Programm_Ontop.CheckState == CheckState.Checked)
             {
-                utils.Reg_Schreiben("NUM_LOCK_SHOW", "1", "TruckersMP_Autorun");
+                utils.Reg_Schreiben("OnTop", "1", "TruckersMP_Autorun");
             }
             else
             {
-                utils.Reg_Schreiben("NUM_LOCK_SHOW", "0", "TruckersMP_Autorun");
+                utils.Reg_Schreiben("OnTop", "0", "TruckersMP_Autorun");
             }
         }
     }

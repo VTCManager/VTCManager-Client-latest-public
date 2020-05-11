@@ -72,6 +72,7 @@ namespace VTCManager_1._0._0
         public string Frachtmarkt_to_Company;
         public string error_sound_play;
         public string Settings_CheckBox_NUMPAD_ONOFF;
+        public string rest_text;
         public string rest_time_days;
         public string rest_time_hours;
         public string rest_time_minutes;
@@ -140,6 +141,7 @@ namespace VTCManager_1._0._0
                 Frachtmarkt_to_Company = "Ziel-Firma: ";
                 error_sound_play = "Ein kritischer Fehler ist bei der Wiedergabe eines Tones aufgetreten.";
                 Settings_CheckBox_NUMPAD_ONOFF = "NUM-Pad Button anzeigen";
+                rest_text = "Liefertermin: ";
                 rest_time_days = " Tage, ";
                 rest_time_hours = " Stunden, ";
                 rest_time_minutes = " Minuten";
@@ -212,6 +214,7 @@ namespace VTCManager_1._0._0
                 Frachtmarkt_to_Company = "Destination-Company: ";
                 error_sound_play = "An error occured while playing a sound.";
                 Settings_CheckBox_NUMPAD_ONOFF = "Show NUM-Pad Button";
+                rest_text = "Resttime: ";
                 rest_time_days = " Days, ";
                 rest_time_hours = " Hours, ";
                 rest_time_minutes = " Minutes";

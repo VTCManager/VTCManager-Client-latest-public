@@ -26,8 +26,8 @@ namespace VTCManager_1._0._0
     public class Main : Form
     {
         // Settings
-        public string Revision = "2.2.8";               // Eigene Revisionsnummer
-        public string Telemetry_Version = "1.11N";      // Telemetry Version. 11 ist die letzte, die haben wir derzeit Testweise in Erprobung. 
+        public string Revision = "2.2.9";               // Eigene Revisionsnummer
+        public string Telemetry_Version = "1.10";      // Telemetry Version. 11 ist die letzte, die haben wir derzeit Testweise in Erprobung. 
         public string SCSSdk_Version = "4.0.30319";     // Neue Versionsnummer -> Steht nei der SCSSdkClient.dll in Eigenschaften. Wenn kleiner bitte Updaten
 
         private API api = new API();
@@ -67,7 +67,7 @@ namespace VTCManager_1._0._0
         private ToolStripMenuItem creditsToolStripMenuItem;
         public bool discordRPCalreadrunning;
         public bool stillTheSameJob;
-        private NotifyIcon TaskBar_Icon;
+        public NotifyIcon TaskBar_Icon;
         private ContextMenuStrip contextTaskbar;
         private ToolStripMenuItem öffnenToolStripMenuItem;
         private ToolStripMenuItem einstellungenToolStripMenuItem1;
@@ -380,9 +380,6 @@ namespace VTCManager_1._0._0
                 }
                 else
                 {
-                    lbl_Time_Remain.Visible = (data.JobValues.CargoLoaded == true) ? true : false;
-                    var Rest_Zeit = TimeSpan.FromSeconds(data.JobValues.RemainingDeliveryTime.Value);
-                    lbl_Time_Remain.Text = "Verbleibende Zeit: " + Rest_Zeit.Hours.ToString() + user.translation.rest_time_days + Rest_Zeit.Minutes.ToString() + user.translation.rest_time_hours + Rest_Zeit.Seconds.ToString() + user.translation.rest_time_minutes;
 
                     // ##########################   NUM Anzeige An/Ausschalten   #####################################
                     NUM_LOCK_PICTURE.Visible = (utils.Reg_Lesen("TruckersMP_Autorun", "NUM_LOCK_SHOW") == "1") ? true : false;
@@ -393,8 +390,8 @@ namespace VTCManager_1._0._0
                     if (Utilities.IsGameRunning && data.SdkActive)
                     {
 
-                     
-                        
+
+
 
                         //falls Daten erhalten werden
 
@@ -410,9 +407,12 @@ namespace VTCManager_1._0._0
                         Handbremse_ICON.Visible = (data.TruckValues.CurrentValues.MotorValues.BrakeValues.ParkingBrake) ? true : false;
                         Retarder_ICON.Visible = (((float)data.ControlValues.InputValues.Brake) >= 0.1) ? true : false;
 
-                        // ################## NUM LOCK ADDON  #####################
-                        
+                        // ################## REST TIME ADDON  #####################
+                        lbl_Time_Remain.Visible = (data.JobValues.CargoLoaded == true) ? true : false;
+                        var Rest_Zeit = TimeSpan.FromSeconds(data.JobValues.RemainingDeliveryTime.Value);
+                        lbl_Time_Remain.Text = user.translation.rest_text + Rest_Zeit.Hours.ToString() + user.translation.rest_time_days + Rest_Zeit.Minutes.ToString() + user.translation.rest_time_hours + Rest_Zeit.Seconds.ToString() + user.translation.rest_time_minutes;
 
+                       
                         // ########################################################
 
                         //Text sichtbar
@@ -420,7 +420,7 @@ namespace VTCManager_1._0._0
                         this.cargo_lb.Visible = true;
                         destination_lb.Visible = true;
                         depature_lb.Visible = true;
-
+                        lbl_Time_Remain.Visible = true;
 
                         truckersMP_Button.Visible = (string.IsNullOrEmpty(utils.Reg_Lesen("TruckersMP_Autorun", "TruckersMP_Pfad"))) ? false : true;
 
@@ -430,7 +430,8 @@ namespace VTCManager_1._0._0
 
                             if (data.Game.ToString() == "Ets2")
                             {
-                                speed_lb.Text = (int)data.TruckValues.CurrentValues.DashboardValues.Speed.Kph + labelkmh;
+
+                            speed_lb.Text = (int)data.TruckValues.CurrentValues.DashboardValues.Speed.Kph + labelkmh;
                            
                                 user.Geschwindigkeit = (float)data.TruckValues.CurrentValues.DashboardValues.Speed.Kph;
                             
@@ -470,10 +471,10 @@ namespace VTCManager_1._0._0
                             if (data.JobValues.CargoLoaded == false)
                             {
                                 this.discord.noTour();
-                            //Logs.WriteLOG("<INFO> Cargo Loaded: " + data.JobValues.CargoLoaded.ToString());
                                 cargo_lb.Text = "Keine Ladung";
                                 destination_lb.Visible = false;
                                 depature_lb.Text = "";
+                                lbl_Time_Remain.Visible = false;
                             }
                             else
                             {
@@ -500,7 +501,7 @@ namespace VTCManager_1._0._0
                         }
                         else
                         {
-                           
+                            lbl_Time_Remain.Visible = false;
                             this.truck_lb.Visible = false;
                             this.cargo_lb.Visible = false;
                             destination_lb.Visible = false;
@@ -604,6 +605,7 @@ namespace VTCManager_1._0._0
                             job.clear();
                             this.destination_lb.Text = "";
                             this.depature_lb.Text = "";
+                            lbl_Time_Remain.Visible = false;
                         //this.cargo_lb.Text = translation.no_cargo_lb;
 
                         }
@@ -695,6 +697,7 @@ namespace VTCManager_1._0._0
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.panel2 = new System.Windows.Forms.Panel();
+            this.lbl_Time_Remain = new System.Windows.Forms.Label();
             this.GroupBox_Individ_Texte = new System.Windows.Forms.GroupBox();
             this.NUM_LOCK_PICTURE = new System.Windows.Forms.PictureBox();
             this.lbl_NUM2_Text = new System.Windows.Forms.Label();
@@ -751,7 +754,6 @@ namespace VTCManager_1._0._0
             this.anti_AFK_TIMER = new System.Windows.Forms.Timer(this.components);
             this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
             this.imageList1 = new System.Windows.Forms.ImageList(this.components);
-            this.lbl_Time_Remain = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.send_tour_status)).BeginInit();
             this.menuStrip1.SuspendLayout();
             this.panel2.SuspendLayout();
@@ -1037,6 +1039,16 @@ namespace VTCManager_1._0._0
             this.panel2.Name = "panel2";
             this.panel2.Size = new System.Drawing.Size(551, 582);
             this.panel2.TabIndex = 2;
+            // 
+            // lbl_Time_Remain
+            // 
+            this.lbl_Time_Remain.AutoSize = true;
+            this.lbl_Time_Remain.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lbl_Time_Remain.Location = new System.Drawing.Point(48, 172);
+            this.lbl_Time_Remain.Name = "lbl_Time_Remain";
+            this.lbl_Time_Remain.Size = new System.Drawing.Size(132, 16);
+            this.lbl_Time_Remain.TabIndex = 14;
+            this.lbl_Time_Remain.Text = "Restliche Lieferzeit";
             // 
             // GroupBox_Individ_Texte
             // 
@@ -1593,16 +1605,6 @@ namespace VTCManager_1._0._0
             this.imageList1.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("imageList1.ImageStream")));
             this.imageList1.TransparentColor = System.Drawing.Color.Transparent;
             this.imageList1.Images.SetKeyName(0, "icons8-einstellungen-64.png");
-            // 
-            // lbl_Time_Remain
-            // 
-            this.lbl_Time_Remain.AutoSize = true;
-            this.lbl_Time_Remain.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lbl_Time_Remain.Location = new System.Drawing.Point(48, 172);
-            this.lbl_Time_Remain.Name = "lbl_Time_Remain";
-            this.lbl_Time_Remain.Size = new System.Drawing.Size(132, 16);
-            this.lbl_Time_Remain.TabIndex = 14;
-            this.lbl_Time_Remain.Text = "Restliche Lieferzeit";
             // 
             // Main
             // 
