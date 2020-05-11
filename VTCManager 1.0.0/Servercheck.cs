@@ -25,7 +25,7 @@ namespace VTCManager_1._0._0
         {
             PingReply pingReply;
             using (var ping = new Ping())
-                pingReply = ping.Send("46.38.240.185");
+                pingReply = ping.Send("194.13.81.113");
             return pingReply.Status == IPStatus.Success;
 
         }

@@ -8,6 +8,7 @@ using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Net;
+using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading;
@@ -20,10 +21,12 @@ using Timer = System.Windows.Forms.Timer;
 
 namespace VTCManager_1._0._0
 {
+
+
     public class Main : Form
     {
         // Settings
-        public string Revision = "2.2.7";               // Eigene Revisionsnummer
+        public string Revision = "2.2.8";               // Eigene Revisionsnummer
         public string Telemetry_Version = "1.11N";      // Telemetry Version. 11 ist die letzte, die haben wir derzeit Testweise in Erprobung. 
         public string SCSSdk_Version = "4.0.30319";     // Neue Versionsnummer -> Steht nei der SCSSdkClient.dll in Eigenschaften. Wenn kleiner bitte Updaten
 
@@ -190,6 +193,7 @@ namespace VTCManager_1._0._0
 
             //UI init
             this.InitializeComponent();
+
             Logs.WriteLOG("<INFO> Initialisiere Component()");
 
             this.InitializeTranslation();
@@ -205,7 +209,6 @@ namespace VTCManager_1._0._0
                 MessageBox.Show("Fehler: Fehler beim Abrufen der Verkehrsdaten" + e.Message);
             }*/
 
-      
             this.FormClosing += new FormClosingEventHandler(this.Main_FormClosing);
 
             //Telemetry Handler setzen
@@ -259,6 +262,13 @@ namespace VTCManager_1._0._0
         private void TelemetryRefuelEnd(object sender, EventArgs e)
         {
          
+        }
+
+        public string Versionsnummer()
+        {
+            System.Reflection.Assembly assembly = System.Reflection.Assembly.GetExecutingAssembly();
+            System.Diagnostics.FileVersionInfo fvi = System.Diagnostics.FileVersionInfo.GetVersionInfo(assembly.Location);
+            return fvi.ProductVersion;
         }
 
         private void InitializeTranslation()
