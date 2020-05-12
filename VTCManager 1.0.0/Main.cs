@@ -415,7 +415,7 @@ namespace VTCManager_1._0._0
                             lbl_Time_Remain.ForeColor = Color.Red;
                             int zeit2 = Convert.ToInt32(Rest_Zeit.Minutes);
                             zeit2 = zeit2 - zeit2 - zeit2;
-                            lbl_Time_Remain.Text = user.translation.verspaetet + zeit2 + + user.translation.verspaetet2;
+                            lbl_Time_Remain.Text = user.translation.verspaetet + zeit2 + user.translation.verspaetet2;
 
                         }
 
