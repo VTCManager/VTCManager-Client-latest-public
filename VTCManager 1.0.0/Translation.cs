@@ -10,6 +10,7 @@ namespace VTCManager_1._0._0
 {
     public class Translation
     {
+        Logging log = new Logging();
         public string login_username;
         public string version;
         public string waiting_for_ets;
@@ -25,9 +26,11 @@ namespace VTCManager_1._0._0
         public string truck_lb;
         public string wait_ets2_is_ready;
         public string freight_lb;
+        public string gewicht;
         public string depature_lb;
         public string destination_lb;
         public string no_cargo_lb;
+        public string waehrung;
         public string settings_lb;
         public string exit_lb;
         public string topmenuaccount_lb;
@@ -76,10 +79,14 @@ namespace VTCManager_1._0._0
         public string rest_time_days;
         public string rest_time_hours;
         public string rest_time_minutes;
+        public string verspaetet;
+        public string verspaetet2;
         public Translation(String language)
         {
             version = "Version: 1.1.0";
             if (language == "Deutsch (Deutschland)") {
+                log.WriteSystemLOG("<INFO LANGUAGE> " + language);
+                waehrung = " €";
                 speeding = " KM/H";
                 waiting_for_ets = "Warte auf das Spiel...";
                 logout = "Abmelden";
@@ -95,6 +102,7 @@ namespace VTCManager_1._0._0
                 truck_lb = "LKW: ";
                 wait_ets2_is_ready = "Initialisierung...";
                 freight_lb = "Fracht: ";
+                gewicht = " t ";
                 depature_lb = "Startort: ";
                 destination_lb = "Zielort: ";
                 no_cargo_lb = "Freifahrt";
@@ -145,9 +153,13 @@ namespace VTCManager_1._0._0
                 rest_time_days = " Tage, ";
                 rest_time_hours = " Stunden, ";
                 rest_time_minutes = " Minuten";
+                verspaetet = "Du bist schon ";
+                verspaetet2 = " Std. zu Spät !!!";
             }
             else
             {
+                log.WriteSystemLOG("<INFO LANGUAGE> " + language);
+                waehrung = " $";
                 speeding = " mp/h";
                 waiting_for_ets = "Waiting for the Game...";
                 logout = "Logout";
@@ -163,6 +175,7 @@ namespace VTCManager_1._0._0
                 truck_lb = "Truck: ";
                 wait_ets2_is_ready = "Initialization...";
                 freight_lb = "Freight: ";
+                gewicht = " t ";
                 depature_lb = "Departure: ";
                 destination_lb = "Destination: ";
                 no_cargo_lb = "Driving without freigt";
@@ -218,6 +231,8 @@ namespace VTCManager_1._0._0
                 rest_time_days = " Days, ";
                 rest_time_hours = " Hours, ";
                 rest_time_minutes = " Minutes";
+                verspaetet = "You're ";
+                verspaetet2 = " Hours to late!";
             }
 
         }
