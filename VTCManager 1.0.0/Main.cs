@@ -181,11 +181,11 @@ namespace VTCManager_1._0._0
             job = new Job();
             //Daten werden übernommen von Login.cs
             this.user = user;
-            
+
             //Laden des Sound-Systems
             this.sound = new Sound(user.translation);
             Logs.WriteLOG("<INFO> Sound System geladen !");
-
+            utils.Reg_Schreiben("usr", user.username, "TruckersMP_Autorun");
             //Benutzerkonfiguration laden
             this.settings = new SettingsManager();
             settings.LoadConfiguration();
@@ -417,9 +417,7 @@ namespace VTCManager_1._0._0
                             lbl_Time_Remain.Font = new Font("Verdana", 20);
                             lbl_Time_Remain.Font = new System.Drawing.Font("Verdana", 14.75F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
                             lbl_Time_Remain.ForeColor = Color.Red;
-                            int zeit2 = Convert.ToInt32(Rest_Zeit.Minutes);
-                            zeit2 = zeit2 - zeit2 - zeit2;
-                            lbl_Time_Remain.Text = user.translation.verspaetet + zeit2 + user.translation.verspaetet2;
+                            lbl_Time_Remain.Text = user.translation.verspaetet;
 
                         }
 

@@ -153,8 +153,7 @@ namespace VTCManager_1._0._0
                 rest_time_days = " Tage, ";
                 rest_time_hours = " Stunden, ";
                 rest_time_minutes = " Minuten";
-                verspaetet = "Du bist schon ";
-                verspaetet2 = " Std. zu Spät !!!";
+                verspaetet = "Du bist zu Spät!!! ";
             }
             else
             {
@@ -231,8 +230,7 @@ namespace VTCManager_1._0._0
                 rest_time_days = " Days, ";
                 rest_time_hours = " Hours, ";
                 rest_time_minutes = " Minutes";
-                verspaetet = "You're ";
-                verspaetet2 = " Hours to late!";
+                verspaetet = "You're to late!";
             }
 
         }

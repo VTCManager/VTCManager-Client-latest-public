@@ -46,6 +46,16 @@ namespace VTCManager_1._0._0
             return builder.ToString();
         }
 
+        public static string GetStringFromHash(byte[] hash)
+        {
+            StringBuilder result = new StringBuilder();
+            for (int i = 0; i < hash.Length; i++)
+            {
+                result.Append(hash[i].ToString("X2"));
+            }
+            return result.ToString();
+        }
+
         public static bool IsGameRunning
         {
             get

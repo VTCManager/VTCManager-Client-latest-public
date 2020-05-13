@@ -1,4 +1,5 @@
-﻿using Microsoft.Win32;
+﻿using DiscordRPC;
+using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -11,10 +12,8 @@ namespace VTCManager_1._0._0.Klassen
     class SendMail
     {
         Utilities utils = new Utilities();
-
         public void SendeMail()
         {
-     
             File.Delete(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + @"\VTC_Manager\VTC_LOG_COPY.txt");
             File.Delete(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + @"\VTC_Manager\VTC_SYSTEM_LOG_COPY.txt");
             File.Delete(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + @"\VTC_Manager\DLC_Log.txt");
@@ -23,8 +22,8 @@ namespace VTCManager_1._0._0.Klassen
 
             MailMessage mail = new MailMessage();
             mail.From = new MailAddress("vtc_diag@web.de"); 
-            mail.To.Add("devlogs@northwestvideo.de"); 
-            mail.Subject = "Log Datei aus Client";
+            mail.To.Add("devlogs@northwestvideo.de");
+            mail.Subject = "Log Datei aus Client von " + utils.Reg_Lesen("TruckersMP_Autorun", "usr");
             mail.Body = "Hier die LOG Dateien";
         
             File.Copy(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + @"\VTC_Manager\VTC_LOG.txt", Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + @"\VTC_Manager\VTC_LOG_COPY.txt", true);
