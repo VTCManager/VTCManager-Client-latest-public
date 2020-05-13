@@ -36,6 +36,7 @@ namespace VTCManager_1._0._0.Objekte
         public string Faehre;
         public string FaehreKosten;
         public float fuelatstart;
+        public int resttime;
 
         public Job()
         {
@@ -66,6 +67,7 @@ namespace VTCManager_1._0._0.Objekte
             this.Faehre = "";
             this.FaehreKosten = "";
             this.fuelatstart = 0;
+            this.resttime = 0;
         }
 
         public void clear()

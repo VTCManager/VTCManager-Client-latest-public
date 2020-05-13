@@ -405,8 +405,12 @@ namespace VTCManager_1._0._0
                         // ################## REST TIME ADDON  #####################
                         lbl_Time_Remain.Visible = (data.JobValues.CargoLoaded == true) ? true : false;
                         var Rest_Zeit = TimeSpan.FromSeconds(data.JobValues.RemainingDeliveryTime.Value);
-                        if(data.JobValues.RemainingDeliveryTime.Value > 0)
+                        job.resttime = data.JobValues.RemainingDeliveryTime.Value;
+
+                        if (data.JobValues.RemainingDeliveryTime.Value >= 1)
                         {
+                            lbl_Time_Remain.Font = new Font("Verdana", 10);
+                           lbl_Time_Remain.ForeColor = Color.Black;
                             lbl_Time_Remain.Text = user.translation.rest_text + Rest_Zeit.Hours.ToString() + user.translation.rest_time_days + Rest_Zeit.Minutes.ToString() + user.translation.rest_time_hours + Rest_Zeit.Seconds.ToString() + user.translation.rest_time_minutes + " ( " + data.JobValues.RemainingDeliveryTime.Value + " )";
                         } else
                         {
@@ -515,7 +519,7 @@ namespace VTCManager_1._0._0
                     if (job.jobStarted)
                     {
 
-         
+              
                         job = new Job();
                         DateTime dt = new DateTime();
                         Logs.WriteLOG("<INFO> New Job started @ " + dt.ToString());
@@ -534,6 +538,7 @@ namespace VTCManager_1._0._0
                         this.depature_lb.Text = "Von: " + data.JobValues.CitySource + " ( " + data.JobValues.CompanySource + " ) nach: " + data.JobValues.CityDestination + " ( " + data.JobValues.CompanyDestination + " )";
                         job.fuelatstart = data.TruckValues.ConstantsValues.CapacityValues.Fuel;
                     Logs.WriteLOG("<INFO> job.fuel@start = " + job.fuelatstart.ToString());
+                      
                         Dictionary<string, string> postParameters = new Dictionary<string, string>();
                         postParameters.Add("authcode", user.authcode);
                         postParameters.Add("cargo", data.JobValues.CargoValues.Name);
@@ -577,8 +582,6 @@ namespace VTCManager_1._0._0
                     {
                         if (this.lastJobDictionary["cargo"] == data.JobValues.CargoValues.Name && this.lastJobDictionary["source"] == data.JobValues.CitySource && this.lastJobDictionary["destination"] == data.JobValues.CityDestination)
                         {
-                      
-
                             this.send_tour_status.Enabled = false;
                             this.sound.Play(sound.ton_tour_beendet);
                            
@@ -628,6 +631,9 @@ namespace VTCManager_1._0._0
         {
             Logs.WriteLOG("<INFO> FOREGROUND: " + GetActiveWindowTitle());
             Console.WriteLine("LKW SPEED: " + user.Geschwindigkeit);
+
+            Logs.WriteLOG("<RESTTIME> " + job.resttime + " Minuten");
+
             // ######   LADE HOTKEY TEXTE NEU    ######################
             lade_NUMx_TEXTE();
 
@@ -2415,6 +2421,7 @@ namespace VTCManager_1._0._0
 
 
         }
+
     }
 
 
