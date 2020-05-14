@@ -1,6 +1,5 @@
-﻿using System;
-using Microsoft.Win32;
-using System.Linq;
+﻿using Microsoft.Win32;
+using System;
 
 namespace VTCManager_1._0._0.Klassen
 {

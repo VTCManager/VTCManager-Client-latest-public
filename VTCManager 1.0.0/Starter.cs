@@ -21,18 +21,18 @@ namespace VTCManager_1._0._0
                 {
                     if (args[0] == "DEBUG")
                     {
-                        Application.Run((Form)new Login(true));
+                        Application.Run(new Login(true));
                     }
                     else
                     {
-                        Application.Run((Form)new Login(false));
+                        Application.Run(new Login(false));
                     }
                 }
                 else
                 {
-                    Application.Run((Form)new Login(false));
+                    Application.Run(new Login(false));
                 }
-                
+
             }
             else
             {

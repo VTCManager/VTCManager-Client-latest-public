@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.Windows.Forms;
@@ -14,7 +13,7 @@ namespace VTCManager_1._0._0
         Logging Logging = new Logging();
         API api = new API();
         Translation trans;
-        
+
 
         public int FM_Patreon_State { get; set; }
         public string folderETS = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + @"\Euro Truck Simulator 2\profiles";
@@ -26,7 +25,7 @@ namespace VTCManager_1._0._0
             InitializeComponent();
 
             CultureInfo ci = CultureInfo.InstalledUICulture;
-            this.trans = new Translation(ci.DisplayName);
+            trans = new Translation(ci.DisplayName);
 
             Label_From_City.Text = trans.Frachtmarkt_from_City;
             Label_From_Company.Text = trans.Frachtmarkt_from_Company;
@@ -36,7 +35,7 @@ namespace VTCManager_1._0._0
             Lade_Von_Staedte();
             Lade_Nach_Staedte();
             Lade_ETS_Profile();
-    
+
         }
 
 
@@ -47,8 +46,9 @@ namespace VTCManager_1._0._0
             string[] values2 = values.Split(';');
 
             foreach (string word in values2)
+            {
                 Combo_From_City.Items.Add(word);
-
+            }
         }
 
         public void Lade_Nach_Staedte()
@@ -59,7 +59,7 @@ namespace VTCManager_1._0._0
         private void Combo_From_City_SelectedIndexChanged(object sender, EventArgs e)
         {
             string stadtname = Combo_From_City.Text;
-            string answer = this.api.HTTPSRequestPost(this.api.api_server + this.api.load_firmen_in_city, new Dictionary<string, string>()
+            string answer = api.HTTPSRequestPost(api.api_server + api.load_firmen_in_city, new Dictionary<string, string>()
                                     {
                                         { "stadtname", stadtname.ToString() }
                                     }, false).ToString();
@@ -86,9 +86,9 @@ namespace VTCManager_1._0._0
                 if (i == 0) { comboBoxProfiles.Text = trans.Frachtmarkt_no_profiles; comboBoxProfiles.Enabled = false; } else { comboBoxProfiles.Enabled = true; }
                 comboBoxProfiles.SelectedIndex = 0;
 
-             
 
-                
+
+
             }
             catch
             {
@@ -119,15 +119,19 @@ namespace VTCManager_1._0._0
             }
         }
 
-#endregion
+        #endregion
 
         private void Frachtmarkt_Load_1(object sender, EventArgs e)
         {
             // TODO -> Vorwauswahl anhand des Games aus der Main.cs
             Radio_Button_ETS2.Checked = true;
             if (FM_Patreon_State >= 2)
-                 textBox_Money.Visible = true; lbl_Guhaben.Visible = true;
-           
+            {
+                textBox_Money.Visible = true;
+            }
+
+            lbl_Guhaben.Visible = true;
+
         }
 
         #region RadioButton
@@ -135,14 +139,14 @@ namespace VTCManager_1._0._0
         {
             Backup_Game_Sii_ETS();
             Lade_ETS_Profile();
-            this.Logging.WriteLOG("<INFO> ETS2 Profile wurden im Frachtmarkt geladen! [Frachtmartkt.cs->147]");
+            Logging.WriteLOG("<INFO> ETS2 Profile wurden im Frachtmarkt geladen! [Frachtmartkt.cs->147]");
         }
 
         private void Radio_Button_ATS_CheckedChanged(object sender, EventArgs e)
         {
             Backup_Game_Sii_ATS();
             Lade_ATS_Profile();
-            this.Logging.WriteLOG("<INFO> ATS Profile wurden im Frachtmarkt geladen! [Frachtmartkt.cs->157]");
+            Logging.WriteLOG("<INFO> ATS Profile wurden im Frachtmarkt geladen! [Frachtmartkt.cs->157]");
         }
         #endregion
 

@@ -1,11 +1,10 @@
 ﻿using Microsoft.Win32;
 using System;
 using System.Diagnostics;
-using System.Globalization;
-using System.IO;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading;
+using System.Windows.Forms;
 
 namespace VTCManager_1._0._0
 {
@@ -14,9 +13,8 @@ namespace VTCManager_1._0._0
         //Fields
         private static long _lastCheckTime;
         private static bool _cachedRunningFlag;
-       // private static string _chachedGame;
+        // private static string _chachedGame;
         private static bool _DiscordRunningFlag;
-        CultureInfo ci = CultureInfo.InstalledUICulture;
         Logging Logging = new Logging();
 
         //Properties
@@ -44,6 +42,23 @@ namespace VTCManager_1._0._0
                 builder.Append(num2.ToString("x2"));
             }
             return builder.ToString();
+        }
+
+        public static void HardRestart()
+        {
+            //get current Process info and path
+            ProcessStartInfo startInfo = new ProcessStartInfo
+            {
+                FileName = Application.ExecutablePath
+            };
+            //start new process and close the current
+            Process.Start(startInfo);
+            Process.GetCurrentProcess().Kill();
+        }
+
+        public static void HardExit()
+        {
+            Process.GetCurrentProcess().Kill();
         }
 
         public static string GetStringFromHash(byte[] hash)
@@ -78,13 +93,14 @@ namespace VTCManager_1._0._0
                                     if (process.ProcessName == "eurotrucks2")
                                     {
                                         LastRunningGameName = "ETS2";
-                                    }else if (process.ProcessName == "amtrucks")
+                                    }
+                                    else if (process.ProcessName == "amtrucks")
                                     {
                                         LastRunningGameName = "ATS";
                                     }
                                     return _cachedRunningFlag;
                                 }
-                              
+
 
                             }
                             catch
@@ -123,18 +139,18 @@ namespace VTCManager_1._0._0
                                 if (process.ProcessName == "Discord")
                                 {
                                     _DiscordRunningFlag = true;
-      
+
                                     return _DiscordRunningFlag;
                                 }
 
                             }
-                            catch{}
+                            catch { }
                             index++;
                             continue;
                         }
                         else
                         {
-                     
+
                             _DiscordRunningFlag = false;
                         }
                         break;
@@ -184,14 +200,20 @@ namespace VTCManager_1._0._0
 
         }
 
-        public string Reg_Lesen(string ordner, string value)
+        public string Reg_Lesen(string ordner, string value, bool logging = true)
         {
             try
             {
                 RegistryKey key = Registry.CurrentUser.OpenSubKey(@"SOFTWARE\VTCManager\" + ordner);
                 return key.GetValue(value).ToString();
-            } catch (Exception ex) {
-                Logging.WriteLOG("<ERROR> Methode Reg_Lesen in Utilities.cs" + ex.StackTrace);
+            }
+            catch (Exception ex)
+            {
+                if (logging)
+                {
+                    Logging.WriteLOG("<ERROR> Methode Reg_Lesen in Utilities.cs" + ex.StackTrace);
+                }
+
                 return null;
             }
         }

@@ -1,12 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace VTCManager_1._0._0
@@ -20,7 +13,7 @@ namespace VTCManager_1._0._0
         private string initial_ATS;
         public ETS2_Pfad_Window()
         {
-            
+
 
             InitializeComponent();
         }
@@ -32,14 +25,14 @@ namespace VTCManager_1._0._0
 
         private void ETS2_Pfad_Window_Load(object sender, EventArgs e)
         {
-            
+
             ats_pfad.Text = utils.Reg_Lesen("TruckersMP_Autorun", "ATS_Pfad");
             ets_pfad.Text = utils.Reg_Lesen("TruckersMP_Autorun", "ETS2_Pfad");
 
             if (Directory.Exists(@"C:\Program Files (x86)\Steam\steamapps\common\Euro Truck Simulator 2")) { initial_ETS = @"C:\Program Files (x86)\Steam\steamapps\common\Euro Truck Simulator 2"; }
             else if (Directory.Exists(@"D:\Program Files (x86)\Steam\steamapps\common\Euro Truck Simulator 2")) { initial_ETS = @"D:\Program Files (x86)\Steam\steamapps\common\Euro Truck Simulator 2"; }
             else if (Directory.Exists(@"E:\Program Files (x86)\Steam\steamapps\common\Euro Truck Simulator 2")) { initial_ETS = @"E:\Program Files (x86)\Steam\steamapps\common\Euro Truck Simulator 2"; }
-            else { initial_ETS = @"C:\";  }
+            else { initial_ETS = @"C:\"; }
 
 
             if (Directory.Exists(@"C:\Program Files (x86)\Steam\steamapps\common\American Truck Simulator")) { initial_ATS = @"C:\Program Files (x86)\Steam\steamapps\common\American Truck Simulator"; }
@@ -52,7 +45,7 @@ namespace VTCManager_1._0._0
         {
             folderBrowserDialog_ETS.SelectedPath = initial_ETS;
             var pfad_suchen = folderBrowserDialog_ETS.ShowDialog();
-            
+
 
             if (pfad_suchen == DialogResult.OK)
             {
@@ -73,7 +66,7 @@ namespace VTCManager_1._0._0
                 {
                     Logging.WriteLOG("<ERROR> Methode btn_Suche_ETS_Click in ETS2_Pfad_Window.cs -> " + ex.Message);
                 }
-           
+
             }
         }
 
@@ -95,11 +88,12 @@ namespace VTCManager_1._0._0
                 if (!Directory.Exists(dest_leer + @"\bin\win_x64\plugins")) { Directory.CreateDirectory(dest_leer + @"\bin\win_x64\plugins"); }
 
                 string dest_Path = util2.Reg_Lesen("TruckersMP_Autorun", "ATS_Pfad") + @"\bin\win_x64\plugins";
-              
+
                 try
                 {
                     File.Copy(Application.StartupPath + @"\Resources\scs-telemetry.dll", dest_Path + @"\scs-telemetry.dll");
-                } catch (Exception ex) 
+                }
+                catch (Exception ex)
                 {
                     Logging.WriteLOG("<ERROR> Methode btn_Suche_ATS_Click in ETS2_Pfad_Window.cs -> " + ex.Message);
                 }
@@ -117,14 +111,14 @@ namespace VTCManager_1._0._0
 
             // ############# ETS2 Pfad check ###############
             if (!File.Exists(ets_pfad.Text + @"\bin\win_x64\eurotrucks2.exe")) { MessageBox.Show("Der Pfad von ETS ist falsch ! " + Environment.NewLine + "Bitte gib den richtigen Pfad an!", "Fehler", MessageBoxButtons.OK, MessageBoxIcon.Error); return; }
-            
+
             // ########## ATS Pfad Check ###################
             /*if(!string.IsNullOrEmpty(ats_pfad.Text))
             {
                 if (!File.Exists(ats_pfad.Text + @"\bin\win_x64\amtrucks.exe")) { MessageBox.Show("Der Pfad von ATS ist falsch ! " + Environment.NewLine + "Bitte gib den richtigen Pfad an!", "Fehler", MessageBoxButtons.OK, MessageBoxIcon.Error); return; }
            } */
 
-            this.WindowState = FormWindowState.Minimized;
+            WindowState = FormWindowState.Minimized;
             MessageBox.Show("Die Einstellungen wurden Gespeichert!" + Environment.NewLine + Environment.NewLine + "Der Client wird neu Gestartet...", "Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
             Application.Restart();
         }
