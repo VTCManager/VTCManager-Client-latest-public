@@ -12,7 +12,7 @@ namespace VTCManager_1._0._0
 
         private void button1_Click(object sender, EventArgs e)
         {
-            this.Close();
+            Close();
             Utilities util = new Utilities();
             util.Reg_Schreiben("Version", Main.labelRevision, "TruckersMP_Autorun");
         }

@@ -27,18 +27,18 @@ namespace VTCManager_1._0._0
 
         public API()
         {
-            this.login_path = "login.php";
+            login_path = "login.php";
             //this.api_server = "https://vtc.northwestvideo.de/api/app/";
-            this.api_server = "https://vtc.northwestvideo.de/api/app_beta/";
-            this.trucky_api_server = "https://api.truckyapp.com/v2/";
-            this.load_data_path = "load_data.php";
-            this.canceltourpath = "cancel_tour.php";
-            this.job_update_path = "job_update.php";
-            this.finishjob_path = "job_finish.php";
-            this.new_job_path = "start_tour.php";
-            this.tollgate_path = "tollgate.php";
-            this.loc_update_path = "loc_update.php";
-            this.get_traffic_path = "traffic/top";
+            api_server = "https://vtc.northwestvideo.de/api/app_beta/";
+            trucky_api_server = "https://api.truckyapp.com/v2/";
+            load_data_path = "load_data.php";
+            canceltourpath = "cancel_tour.php";
+            job_update_path = "job_update.php";
+            finishjob_path = "job_finish.php";
+            new_job_path = "start_tour.php";
+            tollgate_path = "tollgate.php";
+            loc_update_path = "loc_update.php";
+            get_traffic_path = "traffic/top";
 
         }
         public string HTTPSRequestGet(string url, Dictionary<string, string> getParameters = null)

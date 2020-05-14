@@ -14,25 +14,25 @@ namespace VTCManager_1._0._0
         public string SaveLoginData
         {
             get =>
-                this.m_oSaveLoginData;
+                m_oSaveLoginData;
             set =>
-                this.m_oSaveLoginData = value;
+                m_oSaveLoginData = value;
         }
 
         public string Account
         {
             get =>
-                this.m_oAccount;
+                m_oAccount;
             set =>
-                this.m_oAccount = value;
+                m_oAccount = value;
         }
 
         public string Password
         {
             get =>
-                this.m_oPassword;
+                m_oPassword;
             set =>
-                this.m_oPassword = value;
+                m_oPassword = value;
         }
     }
 

@@ -118,7 +118,7 @@ namespace VTCManager_1._0._0
                 if (!File.Exists(ats_pfad.Text + @"\bin\win_x64\amtrucks.exe")) { MessageBox.Show("Der Pfad von ATS ist falsch ! " + Environment.NewLine + "Bitte gib den richtigen Pfad an!", "Fehler", MessageBoxButtons.OK, MessageBoxIcon.Error); return; }
            } */
 
-            this.WindowState = FormWindowState.Minimized;
+            WindowState = FormWindowState.Minimized;
             MessageBox.Show("Die Einstellungen wurden Gespeichert!" + Environment.NewLine + Environment.NewLine + "Der Client wird neu Gestartet...", "Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
             Application.Restart();
         }

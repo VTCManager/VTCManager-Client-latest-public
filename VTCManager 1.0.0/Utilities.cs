@@ -210,7 +210,10 @@ namespace VTCManager_1._0._0
             catch (Exception ex)
             {
                 if (logging)
+                {
                     Logging.WriteLOG("<ERROR> Methode Reg_Lesen in Utilities.cs" + ex.StackTrace);
+                }
+
                 return null;
             }
         }

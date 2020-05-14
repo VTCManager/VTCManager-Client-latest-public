@@ -25,7 +25,7 @@ namespace VTCManager_1._0._0
             InitializeComponent();
 
             CultureInfo ci = CultureInfo.InstalledUICulture;
-            this.trans = new Translation(ci.DisplayName);
+            trans = new Translation(ci.DisplayName);
 
             Label_From_City.Text = trans.Frachtmarkt_from_City;
             Label_From_Company.Text = trans.Frachtmarkt_from_Company;
@@ -46,8 +46,9 @@ namespace VTCManager_1._0._0
             string[] values2 = values.Split(';');
 
             foreach (string word in values2)
+            {
                 Combo_From_City.Items.Add(word);
-
+            }
         }
 
         public void Lade_Nach_Staedte()
@@ -58,7 +59,7 @@ namespace VTCManager_1._0._0
         private void Combo_From_City_SelectedIndexChanged(object sender, EventArgs e)
         {
             string stadtname = Combo_From_City.Text;
-            string answer = this.api.HTTPSRequestPost(this.api.api_server + this.api.load_firmen_in_city, new Dictionary<string, string>()
+            string answer = api.HTTPSRequestPost(api.api_server + api.load_firmen_in_city, new Dictionary<string, string>()
                                     {
                                         { "stadtname", stadtname.ToString() }
                                     }, false).ToString();
@@ -125,7 +126,11 @@ namespace VTCManager_1._0._0
             // TODO -> Vorwauswahl anhand des Games aus der Main.cs
             Radio_Button_ETS2.Checked = true;
             if (FM_Patreon_State >= 2)
-                textBox_Money.Visible = true; lbl_Guhaben.Visible = true;
+            {
+                textBox_Money.Visible = true;
+            }
+
+            lbl_Guhaben.Visible = true;
 
         }
 
@@ -134,14 +139,14 @@ namespace VTCManager_1._0._0
         {
             Backup_Game_Sii_ETS();
             Lade_ETS_Profile();
-            this.Logging.WriteLOG("<INFO> ETS2 Profile wurden im Frachtmarkt geladen! [Frachtmartkt.cs->147]");
+            Logging.WriteLOG("<INFO> ETS2 Profile wurden im Frachtmarkt geladen! [Frachtmartkt.cs->147]");
         }
 
         private void Radio_Button_ATS_CheckedChanged(object sender, EventArgs e)
         {
             Backup_Game_Sii_ATS();
             Lade_ATS_Profile();
-            this.Logging.WriteLOG("<INFO> ATS Profile wurden im Frachtmarkt geladen! [Frachtmartkt.cs->157]");
+            Logging.WriteLOG("<INFO> ATS Profile wurden im Frachtmarkt geladen! [Frachtmartkt.cs->157]");
         }
         #endregion
 
