@@ -20,11 +20,11 @@ namespace VTCManager_1._0._0.Klassen
 
             MailMessage mail = new MailMessage
             {
-                From = new MailAddress("vtc_diag@web.de"),
+                From = new MailAddress(Information.Email_sender),
                 Subject = "Log Datei aus Client von " + utils.Reg_Lesen("TruckersMP_Autorun", "usr"),
                 Body = "Hier die LOG Dateien",
             };
-            mail.To.Add("devlogs@northwestvideo.de");
+            mail.To.Add(Information.Email_receiver);
 
             File.Copy(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + @"\VTC_Manager\VTC_LOG.txt", Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + @"\VTC_Manager\VTC_LOG_COPY.txt", true);
             File.Copy(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + @"\VTC_Manager\VTC_SYSTEM_LOG.txt", Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + @"\VTC_Manager\VTC_SYSTEM_LOG_COPY.txt", true);
@@ -36,11 +36,11 @@ namespace VTCManager_1._0._0.Klassen
             mail.Attachments.Add(new Attachment(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + @"\Euro Truck Simulator 2\game.log.txt"));
 
             mail.IsBodyHtml = true;
-            SmtpClient client = new SmtpClient("smtp.web.de", 587);
+            SmtpClient client = new SmtpClient(Information.Email_smtp_url, Information.Email_smtp_port);
 
             try
             {
-                client.Credentials = new System.Net.NetworkCredential("vtc_diag@web.de", "VtcDiagnostic");
+                client.Credentials = new System.Net.NetworkCredential(Information.Email_sender, "VtcDiagnostic");
                 client.EnableSsl = true;
                 client.Send(mail);
 
