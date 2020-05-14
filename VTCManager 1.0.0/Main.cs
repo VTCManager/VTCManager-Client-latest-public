@@ -189,15 +189,15 @@ namespace VTCManager_1._0._0
             InitializeTranslation();
             Logs.WriteLOG("<INFO> Initialisiere Tranlation()");
 
-            /*try
+            try
             {
                 this.load_traffic();
             }
             catch (Exception e)
             {
-                Logging.WriteLOG("Fehler beim Abrufen der Verkehrsdaten [Main.cs->165]");
+                Logs.WriteLOG("Fehler beim Abrufen der Verkehrsdaten [Main.cs->165]");
                 MessageBox.Show("Fehler: Fehler beim Abrufen der Verkehrsdaten" + e.Message);
-            }*/
+            }
 
             FormClosing += new FormClosingEventHandler(Main_FormClosing);
 
@@ -282,8 +282,9 @@ namespace VTCManager_1._0._0
 
         private void load_traffic()
         {
+            Logs.WriteLOG("TRAFFIC");
             //Tabelle zurücksetzen
-            /*this.tableLayoutPanel1.Visible = false;
+            this.tableLayoutPanel1.Visible = false;
             this.tableLayoutPanel1.Controls.Clear();
             this.tableLayoutPanel1.RowStyles.Clear();
             this.tableLayoutPanel1.ColumnCount = 2;
@@ -309,8 +310,8 @@ namespace VTCManager_1._0._0
             postParameters.Add("server", settings.tmp_server);
             postParameters.Add("game", "ets2");
             //Verkehsdaten konvertieren und in Tabelle einsetzen
-            this.traffic_response = this.api.HTTPSRequestGet(this.api.trucky_api_server + this.api.get_traffic_path, postParameters).ToString();
-            var truckyTopTraffic = TruckyTopTraffic.FromJson(this.traffic_response);
+            var traffic_response = this.api.HTTPSRequestGet(this.api.traffic_data, postParameters).ToString();
+            var truckyTopTraffic = TruckyTopTraffic.FromJson(traffic_response);
             this.AddItem(truckyTopTraffic.Response[0].Name, truckyTopTraffic.Response[0].Players.ToString());
             this.AddItem(truckyTopTraffic.Response[1].Name, truckyTopTraffic.Response[1].Players.ToString());
             this.AddItem(truckyTopTraffic.Response[2].Name, truckyTopTraffic.Response[2].Players.ToString());
@@ -327,10 +328,10 @@ namespace VTCManager_1._0._0
             if (settings.tmp_server == "eupromods1") { label2.Text = "Server: ProMods 1"; }
             if (settings.tmp_server == "eupromods2") { label2.Text = "Server: ProMods 2"; }
             //Tabelle sichtbar 
-            this.tableLayoutPanel1.Visible = true;*/
+            this.tableLayoutPanel1.Visible = true;
         }
 
-        /*
+        
         private void AddItem(string road, string traffic)
         {
             //Funktion für Verkehrstabelle
@@ -340,7 +341,7 @@ namespace VTCManager_1._0._0
             tableLayoutPanel1.Controls.Add(new Label() { Text = road }, 0, tableLayoutPanel1.RowCount - 1);
             tableLayoutPanel1.Controls.Add(new Label() { Text = traffic }, 1, tableLayoutPanel1.RowCount - 1);
         }
-        */
+        
 
         //Telemetry Handler
         private void TelemetryOnJobFinished(object sender, EventArgs args)
@@ -1215,6 +1216,7 @@ namespace VTCManager_1._0._0
             tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
             tableLayoutPanel1.Size = new System.Drawing.Size(470, 179);
             tableLayoutPanel1.TabIndex = 4;
+            tableLayoutPanel1.Visible = true;
             // 
             // panel4
             // 
@@ -1756,8 +1758,6 @@ namespace VTCManager_1._0._0
 
             /// ######################   GEHT NOCH NICHT, DESHALB AUSBLENDEN    ###################
             Motorbremse_ICON.Visible = false;
-            // Bis alles geklärt ist-> DISABLE
-            groupVerkehr.Visible = false;
 
             User_Patreon_State.Text = user.patreon_state.ToString();
             Frachtmarkt fm = new Frachtmarkt
@@ -2002,6 +2002,7 @@ namespace VTCManager_1._0._0
                 cargo_lb.Visible = true;
                 // Logs.WriteLOG("<INFO> Truck.lbl, Destination.lbl, Depparture.lbl, Cargo.lbl Set to True");
             }
+            updateTraffic_Tick(this, new EventArgs());
 
 
         }
