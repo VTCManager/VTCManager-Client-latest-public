@@ -26,9 +26,6 @@ namespace VTCManager_1._0._0
     public class Main : Form
     {
         // Settings
-        public string Revision = "2.2.9";               // Eigene Revisionsnummer
-        public string Telemetry_Version = "1.10";      // Telemetry Version. 11 ist die letzte, die haben wir derzeit Testweise in Erprobung. 
-        public string SCSSdk_Version = "4.0.30319";     // Neue Versionsnummer -> Steht nei der SCSSdkClient.dll in Eigenschaften. Wenn kleiner bitte Updaten
 
         private API api = new API();
         private Utilities utils = new Utilities();
@@ -404,10 +401,10 @@ namespace VTCManager_1._0._0
 
                         // ################## REST TIME ADDON  #####################
                         lbl_Time_Remain.Visible = (data.JobValues.CargoLoaded == true) ? true : false;
-                        var Rest_Zeit = TimeSpan.FromSeconds(data.JobValues.RemainingDeliveryTime.Value);
-                        job.resttime = data.JobValues.RemainingDeliveryTime.Value;
-
-                        if (data.JobValues.RemainingDeliveryTime.Value >= 1)
+                        DateTime ingameTime = data.CommonValues.GameTime.Date;
+                        job.resttime = data.JobValues.RemainingDeliveryTime.Date;
+                        var Rest_Zeit = job.resttime.Subtract(ingameTime);
+                        if (Rest_Zeit.TotalSeconds >= 1)
                         {
                             lbl_Time_Remain.Font = new Font("Verdana", 10);
                            lbl_Time_Remain.ForeColor = Color.Black;
@@ -1723,14 +1720,33 @@ namespace VTCManager_1._0._0
                 // #### ERSTELLE SYSTEM LOG FILE #######
                 if (!File.Exists(logDirectory + systemlogFile))
                     File.Create(logDirectory + systemlogFile);
-                MessageBox.Show("Die LOG Dateien müssen neu erstellt werden !" + Environment.NewLine + Environment.NewLine + "Dazu muss der Client einmalig Neu gestartet werden !", "Logs", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                Application.Restart();
+                if (!string.IsNullOrEmpty(utils.Reg_Lesen("Data", "Log_access_failed_restarts", false)))
+                {
+                    int restart_count = int.Parse(utils.Reg_Lesen("Data", "Log_access_failed_restarts", false));
+                    if(restart_count > 5)
+                    {
+                        MessageBox.Show("Sorry, but we couldn't create the log files. Please check the directory '" + logDirectory + "' and contact the VTCManager Support Team for assistance.", "Fatal Error",MessageBoxButtons.OK,MessageBoxIcon.Error);
+                        Utilities.HardExit();
+                    }
+                    restart_count++;
+                    utils.Reg_Schreiben("Log_access_failed_restarts", restart_count.ToString(), "Data");
+                }
+                else
+                {
+                    utils.Reg_Schreiben("Log_access_failed_restarts", "1", "Data");
+                }
+                Utilities.HardRestart();
+            }
+            Logs.Clear_Log_File();
+            if(!string.IsNullOrEmpty(utils.Reg_Lesen("Data", "Log_access_failed_restarts")))
+            {
+                int restart_count = int.Parse(utils.Reg_Lesen("Data", "Log_access_failed_restarts"));
+                Logs.WriteLOG("<WARNING>Log konnte mehr als 1mal aber weniger als 5mal nicht angelegt werden oder diese Installation ist neu. Neustarts: "+ restart_count);
+                utils.Reg_Schreiben("Log_access_failed_restarts", "0", "Data");
             }
 
-            Logs.Clear_Log_File();
-
             /* REVISION NUMBER NOW ON TOP ! */
-            this.discord = new Discord(Revision);
+            this.discord = new Discord();
 
             /// ######################   GEHT NOCH NICHT, DESHALB AUSBLENDEN    ###################
             Motorbremse_ICON.Visible = false;
@@ -1809,13 +1825,13 @@ namespace VTCManager_1._0._0
            
 
             // ####################   VERSION IN REG SCHREIBEN   ###################################
-            utils.Reg_Schreiben("Version", Revision, "TruckersMP_Autorun");
-            utils.Reg_Schreiben("Telemetry-Version", Telemetry_Version.ToString(), "TruckersMP_Autorun");
+            utils.Reg_Schreiben("Version", Information.ClientVersion, "TruckersMP_Autorun");
+            utils.Reg_Schreiben("Telemetry-Version", Information.TelemetryVersion, "TruckersMP_Autorun");
 
             // Version Logging
-            Logs.WriteLOG("<INFO> Client-Version: " + Revision);
-            Logs.WriteLOG("<INFO> Telemetry-Version: " + Telemetry_Version);
-            Logs.WriteLOG("<INFO> SCSSDK-Version: " + SCSSdk_Version);
+            Logs.WriteLOG("<INFO> Client-Version: " + Information.ClientVersion);
+            Logs.WriteLOG("<INFO> Telemetry-Version: " + Information.TelemetryVersion);
+            Logs.WriteLOG("<INFO> SCSSDK-Version: " + Information.SCSSdkVersion);
 
 
 
@@ -1910,8 +1926,8 @@ namespace VTCManager_1._0._0
                 } catch { }
 
 
-                lbl_Revision.Text = "Client: " + Revision + " | Telemetry:" + Telemetry_Version;
-                labelRevision = Revision;
+                lbl_Revision.Text = "Client: " + Information.ClientVersion + " | Telemetry:" + Information.TelemetryVersion;
+                labelRevision = Information.ClientVersion;
             }
 
             // ###################################### TELEMETRY COPY END ###########################

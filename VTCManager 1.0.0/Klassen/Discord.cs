@@ -1,34 +1,27 @@
 ﻿using DiscordRPC;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace VTCManager_1._0._0
 {
     class Discord
     {
-        public DiscordRpcClient client;
-        private String ClientVersion;
+        private DiscordRpcClient client;
 
-        public Discord(String ClientVersion)
+        public Discord()
         {
             if (Utilities.IsDiscordRunning == true)
             {
 
-                client = new DiscordRpcClient("659036297561767948");
+                client = new DiscordRpcClient(Information.DiscordAppID);
                 client.Initialize();
-                this.ClientVersion = ClientVersion;
                 client.SetPresence(new RichPresence()
                 {
                     Details = "Starte...",
                     Assets = new Assets()
                     {
-                        LargeImageKey = "truck-icon",
+                        LargeImageKey = Information.DiscordLargeImageKey,
                         LargeImageText = "Beyond the limits",
-                        SmallImageKey = "vtcm-logo",
-                        SmallImageText = "VTCManager Version " + ClientVersion
+                        SmallImageKey = Information.DiscordSmallImageKey,
+                        SmallImageText = "VTCManager Version " + Information.ClientVersion
                     }
 
                 });
@@ -43,10 +36,10 @@ namespace VTCManager_1._0._0
 
                 Assets = new Assets()
                 {
-                    LargeImageKey = "truck-icon",
+                    LargeImageKey = Information.DiscordLargeImageKey,
                     LargeImageText = "Beyond the limits",
-                    SmallImageKey = "vtcm-logo",
-                    SmallImageText = "VTCManager Version " + ClientVersion
+                    SmallImageKey = Information.DiscordSmallImageKey,
+                    SmallImageText = "VTCManager Version " + Information.ClientVersion
                 }
             };
             rpc = rpc.WithTimestamps(Timestamps.Now);
@@ -61,10 +54,10 @@ namespace VTCManager_1._0._0
 
                 Assets = new Assets()
                 {
-                    LargeImageKey = "truck-icon",
+                    LargeImageKey = Information.DiscordLargeImageKey,
                     LargeImageText = "Beyond the limits",
-                    SmallImageKey = "vtcm-logo",
-                    SmallImageText = "VTCManager Version " + ClientVersion
+                    SmallImageKey = Information.DiscordSmallImageKey,
+                    SmallImageText = "VTCManager Version " + Information.ClientVersion
                 }
             };
             client.SetPresence(rpc);

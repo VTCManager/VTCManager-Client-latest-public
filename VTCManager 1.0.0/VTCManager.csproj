@@ -38,7 +38,7 @@
     <CreateWebPageOnPublish>true</CreateWebPageOnPublish>
     <WebPage>publish.htm</WebPage>
     <OpenBrowserOnPublish>false</OpenBrowserOnPublish>
-    <ApplicationRevision>25</ApplicationRevision>
+    <ApplicationRevision>26</ApplicationRevision>
     <ApplicationVersion>1.1.2.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <CreateDesktopShortcut>true</CreateDesktopShortcut>
@@ -104,7 +104,7 @@
       <DependentUpon>About.cs</DependentUpon>
     </Compile>
     <Compile Include="API.cs" />
-    <Compile Include="Discord.cs" />
+    <Compile Include="Klassen\Discord.cs" />
     <Compile Include="DispoMethoden.cs" />
     <Compile Include="ETS2-Pfad_Window.cs">
       <SubType>Form</SubType>
@@ -120,6 +120,7 @@
       <DependentUpon>Frachtmarkt.cs</DependentUpon>
     </Compile>
     <Compile Include="GameChecks.cs" />
+    <Compile Include="Information.cs" />
     <Compile Include="Klassen\RuntimeInformation.cs" />
     <Compile Include="Klassen\SendMail.cs" />
     <Compile Include="Logging.cs" />

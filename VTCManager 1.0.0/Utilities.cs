@@ -6,6 +6,7 @@ using System.IO;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading;
+using System.Windows.Forms;
 
 namespace VTCManager_1._0._0
 {
@@ -44,6 +45,21 @@ namespace VTCManager_1._0._0
                 builder.Append(num2.ToString("x2"));
             }
             return builder.ToString();
+        }
+
+        public static void HardRestart()
+        {
+            //get current Process info and path
+            ProcessStartInfo startInfo = new ProcessStartInfo();
+            startInfo.FileName = Application.ExecutablePath;
+            //start new process and close the current
+            Process.Start(startInfo);
+            Process.GetCurrentProcess().Kill();
+        }
+
+        public static void HardExit()
+        {
+            Process.GetCurrentProcess().Kill();
         }
 
         public static string GetStringFromHash(byte[] hash)
@@ -184,14 +200,15 @@ namespace VTCManager_1._0._0
 
         }
 
-        public string Reg_Lesen(string ordner, string value)
+        public string Reg_Lesen(string ordner, string value ,bool logging = true)
         {
             try
             {
                 RegistryKey key = Registry.CurrentUser.OpenSubKey(@"SOFTWARE\VTCManager\" + ordner);
                 return key.GetValue(value).ToString();
             } catch (Exception ex) {
-                Logging.WriteLOG("<ERROR> Methode Reg_Lesen in Utilities.cs" + ex.StackTrace);
+                if(logging)
+                    Logging.WriteLOG("<ERROR> Methode Reg_Lesen in Utilities.cs" + ex.StackTrace);
                 return null;
             }
         }
