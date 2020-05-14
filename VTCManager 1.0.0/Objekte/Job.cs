@@ -34,7 +34,9 @@ namespace VTCManager_1._0._0.Objekte
         public string FaehreKosten;
         public float fuelatstart;
         public DateTime resttime;
-
+        public double truck_damage;
+        public double trailer_damage;
+        public float cargo_damage;
         public Job()
         {
             //init
@@ -64,6 +66,9 @@ namespace VTCManager_1._0._0.Objekte
             Faehre = "";
             FaehreKosten = "";
             fuelatstart = 0;
+            truck_damage = 0.0;
+            trailer_damage = 0.0;
+            cargo_damage = 0;
         }
 
         public void clear()

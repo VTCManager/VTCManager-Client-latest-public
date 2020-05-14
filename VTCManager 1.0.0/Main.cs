@@ -143,7 +143,6 @@ namespace VTCManager_1._0._0
         public Label lbl_Revision;
         private readonly string logDirectory = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + @"\VTC_Manager");
         public string logFile = @"\VTC_LOG.txt";
-        private Label lbl_Time_Remain;
         public string systemlogFile = @"\VTC_SYSTEM_LOG.txt";
 
 
@@ -257,12 +256,6 @@ namespace VTCManager_1._0._0
 
         }
 
-        public string Versionsnummer()
-        {
-            System.Reflection.Assembly assembly = System.Reflection.Assembly.GetExecutingAssembly();
-            System.Diagnostics.FileVersionInfo fvi = System.Diagnostics.FileVersionInfo.GetVersionInfo(assembly.Location);
-            return fvi.ProductVersion;
-        }
 
         private void InitializeTranslation()
         {
@@ -397,25 +390,18 @@ namespace VTCManager_1._0._0
                         Retarder_ICON.Visible = (data.ControlValues.InputValues.Brake >= 0.1) ? true : false;
 
                         // ################## REST TIME ADDON  #####################
+                        /*
                         lbl_Time_Remain.Visible = (data.JobValues.CargoLoaded == true) ? true : false;
+                        lbl_Time_Remain.Visible = false;
                         DateTime ingameTime = data.CommonValues.GameTime.Date;
                         job.resttime = data.JobValues.RemainingDeliveryTime.Date;
                         var Rest_Zeit = job.resttime.Subtract(ingameTime);
-                        if (Rest_Zeit.TotalSeconds >= 1)
-                        {
+
                             lbl_Time_Remain.Font = new Font("Verdana", 10);
                             lbl_Time_Remain.ForeColor = Color.Black;
-                            lbl_Time_Remain.Text = user.translation.rest_text + Rest_Zeit.Hours.ToString() + user.translation.rest_time_days + Rest_Zeit.Minutes.ToString() + user.translation.rest_time_hours + Rest_Zeit.Seconds.ToString() + user.translation.rest_time_minutes + " ( " + data.JobValues.RemainingDeliveryTime.Value + " )";
-                        }
-                        else
-                        {
-                            lbl_Time_Remain.Font = new Font("Verdana", 20);
-                            lbl_Time_Remain.Font = new System.Drawing.Font("Verdana", 14.75F, (System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic), System.Drawing.GraphicsUnit.Point, 0);
-                            lbl_Time_Remain.ForeColor = Color.Red;
-                            lbl_Time_Remain.Text = user.translation.verspaetet;
-
-                        }
-
+                        TimeSpan dt2 = new  TimeSpan(data.JobValues.RemainingDeliveryTime.Value);
+                        lbl_Time_Remain.Text = dt2.ToString();
+                        */
 
                         // ########################################################
 
@@ -424,7 +410,7 @@ namespace VTCManager_1._0._0
                         cargo_lb.Visible = true;
                         destination_lb.Visible = true;
                         depature_lb.Visible = true;
-                        lbl_Time_Remain.Visible = true;
+                 
 
                         truckersMP_Button.Visible = (string.IsNullOrEmpty(utils.Reg_Lesen("TruckersMP_Autorun", "TruckersMP_Pfad"))) ? false : true;
 
@@ -443,6 +429,7 @@ namespace VTCManager_1._0._0
                             anti_AFK_TIMER.Enabled = (data.TruckValues.CurrentValues.DashboardValues.Speed.Mph < 1) ? true : false;
                         }
 
+                        
 
                         // ###################   FUEL PROGRESS    ##############################################
                         progressBar_F.Maximum = Convert.ToInt32(data.TruckValues.ConstantsValues.CapacityValues.Fuel);
@@ -457,6 +444,9 @@ namespace VTCManager_1._0._0
 
                         // #########################   STRECKENVERLAUF   #######################################
 
+                        job.truck_damage = data.TruckValues.CurrentValues.DamageValues.Chassis;
+                        job.cargo_damage = data.JobValues.CargoValues.CargoDamage;
+                        job.trailer_damage = data.TrailerValues[0].DamageValues.Chassis;
 
 
                         job.currentPercentage = (((((double)data.NavigationValues.NavigationDistance / 1000) / data.JobValues.PlannedDistanceKm) * 100) - 100) * -1;
@@ -472,7 +462,7 @@ namespace VTCManager_1._0._0
                             cargo_lb.Text = user.translation.no_cargo_lb;
                             destination_lb.Visible = false;
                             depature_lb.Text = "";
-                            lbl_Time_Remain.Visible = false;
+              
                         }
                         else
                         {
@@ -486,7 +476,7 @@ namespace VTCManager_1._0._0
                                         { "percentage", job.currentPercentage.ToString() }
                                     }, false).ToString();
                                 jobrunningcounter = 0;
-                                Logs.WriteLOG("<UPDATE> Tour-Tick: AUTH: " + user.authcode + ", JOB: " + job.ID + ", JOB PERCENT: " + job.currentPercentage.ToString());
+                                Logs.WriteLOG("<UPDATE> Tour-Tick: AUTH: " + user.authcode + ", JOB: " + job.ID + ", JOB PERCENT: " + job.currentPercentage.ToString() + ", Truck-Damage: " + job.truck_damage + ", Cargo-Damage: " + job.cargo_damage);
                             }
                             jobrunningcounter++;
                         }
@@ -500,7 +490,7 @@ namespace VTCManager_1._0._0
                     }
                     else
                     {
-                        lbl_Time_Remain.Visible = false;
+            
                         truck_lb.Visible = false;
                         cargo_lb.Visible = false;
                         destination_lb.Visible = false;
@@ -533,8 +523,12 @@ namespace VTCManager_1._0._0
                     job.fuelatstart = data.TruckValues.ConstantsValues.CapacityValues.Fuel;
                     Logs.WriteLOG("<INFO> job.fuel@start = " + job.fuelatstart.ToString());
 
+                    Logs.WriteLOG("<DAMAGE> Truck: " + job.truck_damage.ToString());
+                    Logs.WriteLOG("<DAMAGE> Cargo: " + job.cargo_damage.ToString());
+                    Logs.WriteLOG("<DAMAGE> Truck: " + job.truck_damage.ToString());
+
                     Dictionary<string, string> postParameters = new Dictionary<string, string>
-                    { { "authcode", user.authcode },
+                    {   { "authcode", user.authcode },
                         { "cargo", data.JobValues.CargoValues.Name },
                         { "weight", ((int)Math.Round(data.JobValues.CargoValues.Mass, 0) / 1000).ToString() },
                         { "depature", data.JobValues.CitySource },
@@ -543,6 +537,8 @@ namespace VTCManager_1._0._0
                         { "destination", data.JobValues.CityDestination },
                         { "truck_manufacturer", data.TruckValues.ConstantsValues.Brand },
                         { "truck_model", data.TruckValues.ConstantsValues.Name },
+                        { "truck_damage", data.TruckValues.CurrentValues.DamageValues.Chassis.ToString() },
+                        { "cargo_damage", job.cargo_damage.ToString() },
                         { "distance", data.JobValues.PlannedDistanceKm.ToString() }
                     };
                     job.ID = Convert.ToInt32(api.HTTPSRequestPost(api.api_server + api.new_job_path, postParameters, true).ToString());
@@ -566,7 +562,7 @@ namespace VTCManager_1._0._0
                     Logs.WriteLOG("<INFO> Send_Tour_Status.Enabled = true");
                     send_tour_status.Start();
                     Logs.WriteLOG("<INFO> Send_Tour_Status.Start()");
-                    Logs.WriteLOG("Tour START LOG: " + user.authcode + ", Cargo: " + data.JobValues.CargoValues.Name + ", " + ((int)Math.Round(data.JobValues.CargoValues.Mass, 0) / 1000).ToString() + " Tonnen, Startort: " + data.JobValues.CitySource + ", Start-Firma: " + data.JobValues.CompanySource + ", Zielort: " + data.JobValues.CityDestination + ", Ziel-Firma: " + data.JobValues.CompanyDestination + ", LKW: " + data.TruckValues.ConstantsValues.Brand + " " + data.TruckValues.ConstantsValues.Name + ", Strecke: " + data.JobValues.PlannedDistanceKm.ToString() + " KM ");
+                    Logs.WriteLOG("Tour START LOG: " + user.authcode + ", Cargo: " + data.JobValues.CargoValues.Name + ", " + ((int)Math.Round(data.JobValues.CargoValues.Mass, 0) / 1000).ToString() + " Tonnen, Startort: " + data.JobValues.CitySource + ", Start-Firma: " + data.JobValues.CompanySource + ", Zielort: " + data.JobValues.CityDestination + ", Ziel-Firma: " + data.JobValues.CompanyDestination + ", LKW: " + data.TruckValues.ConstantsValues.Brand + " " + data.TruckValues.ConstantsValues.Name + ", Strecke: " + data.JobValues.PlannedDistanceKm.ToString() + " KM " + "; Truck-Damage: " + job.truck_damage + "; Cargo-Damage: " + job.cargo_damage);
 
 
 
@@ -605,7 +601,7 @@ namespace VTCManager_1._0._0
                         job.clear();
                         destination_lb.Text = "";
                         depature_lb.Text = "";
-                        lbl_Time_Remain.Visible = false;
+             
                         //this.cargo_lb.Text = translation.no_cargo_lb;
 
                     }
@@ -653,9 +649,11 @@ namespace VTCManager_1._0._0
             postParameters.Add("authcode", user.authcode);
             postParameters.Add("percentage", job.currentPercentage.ToString());
             postParameters.Add("game", user.Spiel);
+            postParameters.Add("truck_damage", job.truck_damage.ToString());
+            postParameters.Add("cargo_damage", job.cargo_damage.ToString());
 
             api.HTTPSRequestPost(api.api_server + api.loc_update_path, postParameters, false).ToString();
-            Logs.WriteLOG("Tour UPDATE: User: " + user.authcode + ", Job-ID: " + job.ID + ", Prozent: " + job.currentPercentage.ToString() + ", Game: " + user.Spiel);
+            Logs.WriteLOG("Tour UPDATE: User: " + user.authcode + ", Job-ID: " + job.ID + ", Prozent: " + job.currentPercentage.ToString() + ", Game: " + user.Spiel + ", Truck-Damage: " + job.truck_damage + ", Trailer-Damage: " + job.trailer_damage + ", Cargo-Damage: " + job.cargo_damage);
         }
         private void Main_FormClosing(object sender, FormClosingEventArgs e)
         {
@@ -671,996 +669,984 @@ namespace VTCManager_1._0._0
 
         private void InitializeComponent()
         {
-            components = new System.ComponentModel.Container();
+            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Main));
-            send_tour_status = new System.Timers.Timer();
-            send_location = new System.Windows.Forms.Timer(components);
-            menuStrip1 = new System.Windows.Forms.MenuStrip();
-            dateiToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            einstellungenToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            creditsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            beendenToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            topMenuAccount = new System.Windows.Forms.ToolStripMenuItem();
-            MenuAbmeldenButton = new System.Windows.Forms.ToolStripMenuItem();
-            topmenuwebsite = new System.Windows.Forms.ToolStripMenuItem();
-            eventsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            GUI_SIZE_BUTTON = new System.Windows.Forms.ToolStripMenuItem();
-            lbl_Overlay = new System.Windows.Forms.ToolStripMenuItem();
-            darkToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            toolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
-            oldCar1ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            oldCar2ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            oldCar3ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            oldCar4ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            keinsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            frachtmarktToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            dockingToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            dockTopToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            dockBottomToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            linkLabel1 = new System.Windows.Forms.LinkLabel();
-            label1 = new System.Windows.Forms.Label();
-            label2 = new System.Windows.Forms.Label();
-            panel2 = new System.Windows.Forms.Panel();
-            lbl_Time_Remain = new System.Windows.Forms.Label();
-            GroupBox_Individ_Texte = new System.Windows.Forms.GroupBox();
-            NUM_LOCK_PICTURE = new System.Windows.Forms.PictureBox();
-            lbl_NUM2_Text = new System.Windows.Forms.Label();
-            lbl_NUM3_Text = new System.Windows.Forms.Label();
-            NUM1_Label = new System.Windows.Forms.Label();
-            NUM3_Label = new System.Windows.Forms.Label();
-            lbl_NUM1_Text = new System.Windows.Forms.Label();
-            NUM2_Label = new System.Windows.Forms.Label();
-            status_jb_canc_lb = new System.Windows.Forms.Label();
-            truck_lb = new System.Windows.Forms.Label();
-            destination_lb = new System.Windows.Forms.Label();
-            depature_lb = new System.Windows.Forms.Label();
-            cargo_lb = new System.Windows.Forms.Label();
-            speed_lb = new System.Windows.Forms.Label();
-            tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
-            panel4 = new System.Windows.Forms.Panel();
-            Dashboard_1 = new System.Windows.Forms.GroupBox();
-            progressBar_F = new System.Windows.Forms.ProgressBar();
-            Retarder_ICON = new System.Windows.Forms.PictureBox();
-            label6 = new System.Windows.Forms.Label();
-            Batterie_ICON = new System.Windows.Forms.PictureBox();
-            Handbremse_ICON = new System.Windows.Forms.PictureBox();
-            Rest_KM_Label = new System.Windows.Forms.Label();
-            Motorbremse_ICON = new System.Windows.Forms.PictureBox();
-            label5 = new System.Windows.Forms.Label();
-            Luft_Progress = new System.Windows.Forms.ProgressBar();
-            pictureBox1 = new System.Windows.Forms.PictureBox();
-            pictureBox2 = new System.Windows.Forms.PictureBox();
-            label4 = new System.Windows.Forms.Label();
-            version_lb = new System.Windows.Forms.Label();
-            TaskBar_Icon = new System.Windows.Forms.NotifyIcon(components);
-            contextTaskbar = new System.Windows.Forms.ContextMenuStrip(components);
-            öffnenToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            einstellungenToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
-            webseiteToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            überToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            beendenToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
-            groupStatistiken = new System.Windows.Forms.GroupBox();
-            ats_button = new System.Windows.Forms.PictureBox();
-            ets2_button = new System.Windows.Forms.PictureBox();
-            truckersMP_Button = new System.Windows.Forms.Button();
-            user_company_lb = new System.Windows.Forms.Label();
-            statistic_panel_topic = new System.Windows.Forms.Label();
-            act_bank_balance_lb = new System.Windows.Forms.Label();
-            driven_tours_lb = new System.Windows.Forms.Label();
-            groupVerkehr = new System.Windows.Forms.GroupBox();
-            lbl_Reload_Time = new System.Windows.Forms.Label();
-            updateTraffic = new System.Windows.Forms.Timer(components);
-            lbl_Revision = new System.Windows.Forms.Label();
-            statusStrip1 = new System.Windows.Forms.StatusStrip();
-            WebServer_Status_label = new System.Windows.Forms.ToolStripStatusLabel();
-            Label_DB_Server = new System.Windows.Forms.ToolStripStatusLabel();
-            User_Patreon_State = new System.Windows.Forms.ToolStripStatusLabel();
-            anti_AFK_TIMER = new System.Windows.Forms.Timer(components);
-            backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
-            imageList1 = new System.Windows.Forms.ImageList(components);
-            ((System.ComponentModel.ISupportInitialize)(send_tour_status)).BeginInit();
-            menuStrip1.SuspendLayout();
-            panel2.SuspendLayout();
-            GroupBox_Individ_Texte.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(NUM_LOCK_PICTURE)).BeginInit();
-            panel4.SuspendLayout();
-            Dashboard_1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(Retarder_ICON)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(Batterie_ICON)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(Handbremse_ICON)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(Motorbremse_ICON)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(pictureBox1)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(pictureBox2)).BeginInit();
-            contextTaskbar.SuspendLayout();
-            groupStatistiken.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(ats_button)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(ets2_button)).BeginInit();
-            groupVerkehr.SuspendLayout();
-            statusStrip1.SuspendLayout();
-            SuspendLayout();
+            this.send_tour_status = new System.Timers.Timer();
+            this.send_location = new System.Windows.Forms.Timer(this.components);
+            this.menuStrip1 = new System.Windows.Forms.MenuStrip();
+            this.dateiToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.einstellungenToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.creditsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.beendenToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.topMenuAccount = new System.Windows.Forms.ToolStripMenuItem();
+            this.MenuAbmeldenButton = new System.Windows.Forms.ToolStripMenuItem();
+            this.topmenuwebsite = new System.Windows.Forms.ToolStripMenuItem();
+            this.eventsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.GUI_SIZE_BUTTON = new System.Windows.Forms.ToolStripMenuItem();
+            this.lbl_Overlay = new System.Windows.Forms.ToolStripMenuItem();
+            this.darkToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.oldCar1ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.oldCar2ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.oldCar3ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.oldCar4ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.keinsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.frachtmarktToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.dockingToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.dockTopToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.dockBottomToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.linkLabel1 = new System.Windows.Forms.LinkLabel();
+            this.label1 = new System.Windows.Forms.Label();
+            this.label2 = new System.Windows.Forms.Label();
+            this.panel2 = new System.Windows.Forms.Panel();
+            this.GroupBox_Individ_Texte = new System.Windows.Forms.GroupBox();
+            this.NUM_LOCK_PICTURE = new System.Windows.Forms.PictureBox();
+            this.lbl_NUM2_Text = new System.Windows.Forms.Label();
+            this.lbl_NUM3_Text = new System.Windows.Forms.Label();
+            this.NUM1_Label = new System.Windows.Forms.Label();
+            this.NUM3_Label = new System.Windows.Forms.Label();
+            this.lbl_NUM1_Text = new System.Windows.Forms.Label();
+            this.NUM2_Label = new System.Windows.Forms.Label();
+            this.status_jb_canc_lb = new System.Windows.Forms.Label();
+            this.truck_lb = new System.Windows.Forms.Label();
+            this.destination_lb = new System.Windows.Forms.Label();
+            this.depature_lb = new System.Windows.Forms.Label();
+            this.cargo_lb = new System.Windows.Forms.Label();
+            this.speed_lb = new System.Windows.Forms.Label();
+            this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
+            this.panel4 = new System.Windows.Forms.Panel();
+            this.Dashboard_1 = new System.Windows.Forms.GroupBox();
+            this.progressBar_F = new System.Windows.Forms.ProgressBar();
+            this.Retarder_ICON = new System.Windows.Forms.PictureBox();
+            this.label6 = new System.Windows.Forms.Label();
+            this.Batterie_ICON = new System.Windows.Forms.PictureBox();
+            this.Handbremse_ICON = new System.Windows.Forms.PictureBox();
+            this.Rest_KM_Label = new System.Windows.Forms.Label();
+            this.Motorbremse_ICON = new System.Windows.Forms.PictureBox();
+            this.label5 = new System.Windows.Forms.Label();
+            this.Luft_Progress = new System.Windows.Forms.ProgressBar();
+            this.pictureBox1 = new System.Windows.Forms.PictureBox();
+            this.pictureBox2 = new System.Windows.Forms.PictureBox();
+            this.label4 = new System.Windows.Forms.Label();
+            this.version_lb = new System.Windows.Forms.Label();
+            this.TaskBar_Icon = new System.Windows.Forms.NotifyIcon(this.components);
+            this.contextTaskbar = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.öffnenToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.einstellungenToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.webseiteToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.überToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.beendenToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.groupStatistiken = new System.Windows.Forms.GroupBox();
+            this.ats_button = new System.Windows.Forms.PictureBox();
+            this.ets2_button = new System.Windows.Forms.PictureBox();
+            this.truckersMP_Button = new System.Windows.Forms.Button();
+            this.user_company_lb = new System.Windows.Forms.Label();
+            this.statistic_panel_topic = new System.Windows.Forms.Label();
+            this.act_bank_balance_lb = new System.Windows.Forms.Label();
+            this.driven_tours_lb = new System.Windows.Forms.Label();
+            this.groupVerkehr = new System.Windows.Forms.GroupBox();
+            this.lbl_Reload_Time = new System.Windows.Forms.Label();
+            this.updateTraffic = new System.Windows.Forms.Timer(this.components);
+            this.lbl_Revision = new System.Windows.Forms.Label();
+            this.statusStrip1 = new System.Windows.Forms.StatusStrip();
+            this.WebServer_Status_label = new System.Windows.Forms.ToolStripStatusLabel();
+            this.Label_DB_Server = new System.Windows.Forms.ToolStripStatusLabel();
+            this.User_Patreon_State = new System.Windows.Forms.ToolStripStatusLabel();
+            this.anti_AFK_TIMER = new System.Windows.Forms.Timer(this.components);
+            this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
+            this.imageList1 = new System.Windows.Forms.ImageList(this.components);
+            ((System.ComponentModel.ISupportInitialize)(this.send_tour_status)).BeginInit();
+            this.menuStrip1.SuspendLayout();
+            this.panel2.SuspendLayout();
+            this.GroupBox_Individ_Texte.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.NUM_LOCK_PICTURE)).BeginInit();
+            this.panel4.SuspendLayout();
+            this.Dashboard_1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.Retarder_ICON)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.Batterie_ICON)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.Handbremse_ICON)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.Motorbremse_ICON)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
+            this.contextTaskbar.SuspendLayout();
+            this.groupStatistiken.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.ats_button)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.ets2_button)).BeginInit();
+            this.groupVerkehr.SuspendLayout();
+            this.statusStrip1.SuspendLayout();
+            this.SuspendLayout();
             // 
             // send_tour_status
             // 
-            send_tour_status.Enabled = true;
-            send_tour_status.Interval = 15000D;
-            send_tour_status.SynchronizingObject = this;
-            send_tour_status.Elapsed += new System.Timers.ElapsedEventHandler(send_tour_status_Tick);
+            this.send_tour_status.Enabled = true;
+            this.send_tour_status.Interval = 15000D;
+            this.send_tour_status.SynchronizingObject = this;
+            this.send_tour_status.Elapsed += new System.Timers.ElapsedEventHandler(this.send_tour_status_Tick);
             // 
             // send_location
             // 
-            send_location.Enabled = true;
-            send_location.Interval = 15000;
-            send_location.Tick += new System.EventHandler(send_location_Tick);
+            this.send_location.Enabled = true;
+            this.send_location.Interval = 15000;
+            this.send_location.Tick += new System.EventHandler(this.send_location_Tick);
             // 
             // menuStrip1
             // 
-            menuStrip1.BackColor = System.Drawing.Color.Transparent;
-            menuStrip1.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0);
-            menuStrip1.ImageScalingSize = new System.Drawing.Size(24, 24);
-            menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            dateiToolStripMenuItem,
-            topMenuAccount,
-            topmenuwebsite,
-            eventsToolStripMenuItem,
-            GUI_SIZE_BUTTON,
-            lbl_Overlay,
-            darkToolStripMenuItem,
-            toolStripMenuItem1,
-            frachtmarktToolStripMenuItem,
-            dockingToolStripMenuItem});
-            menuStrip1.Location = new System.Drawing.Point(0, 0);
-            menuStrip1.Name = "menuStrip1";
-            menuStrip1.Size = new System.Drawing.Size(1384, 32);
-            menuStrip1.TabIndex = 0;
-            menuStrip1.Text = "menuStrip1";
+            this.menuStrip1.BackColor = System.Drawing.Color.Transparent;
+            this.menuStrip1.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.menuStrip1.ImageScalingSize = new System.Drawing.Size(24, 24);
+            this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.dateiToolStripMenuItem,
+            this.topMenuAccount,
+            this.topmenuwebsite,
+            this.eventsToolStripMenuItem,
+            this.GUI_SIZE_BUTTON,
+            this.lbl_Overlay,
+            this.darkToolStripMenuItem,
+            this.toolStripMenuItem1,
+            this.frachtmarktToolStripMenuItem,
+            this.dockingToolStripMenuItem});
+            this.menuStrip1.Location = new System.Drawing.Point(0, 0);
+            this.menuStrip1.Name = "menuStrip1";
+            this.menuStrip1.Size = new System.Drawing.Size(1384, 32);
+            this.menuStrip1.TabIndex = 0;
+            this.menuStrip1.Text = "menuStrip1";
             // 
             // dateiToolStripMenuItem
             // 
-            dateiToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            einstellungenToolStripMenuItem,
-            creditsToolStripMenuItem,
-            beendenToolStripMenuItem});
-            dateiToolStripMenuItem.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0);
-            dateiToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("dateiToolStripMenuItem.Image")));
-            dateiToolStripMenuItem.Name = "dateiToolStripMenuItem";
-            dateiToolStripMenuItem.Size = new System.Drawing.Size(77, 28);
-            dateiToolStripMenuItem.Text = "Menü";
-            dateiToolStripMenuItem.ToolTipText = "Hauptmenü";
+            this.dateiToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.einstellungenToolStripMenuItem,
+            this.creditsToolStripMenuItem,
+            this.beendenToolStripMenuItem});
+            this.dateiToolStripMenuItem.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.dateiToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("dateiToolStripMenuItem.Image")));
+            this.dateiToolStripMenuItem.Name = "dateiToolStripMenuItem";
+            this.dateiToolStripMenuItem.Size = new System.Drawing.Size(77, 28);
+            this.dateiToolStripMenuItem.Text = "Menü";
+            this.dateiToolStripMenuItem.ToolTipText = "Hauptmenü";
             // 
             // einstellungenToolStripMenuItem
             // 
-            einstellungenToolStripMenuItem.Image = global::VTCManager_1._0._0.Properties.Resources.icons8_einstellungen_64;
-            einstellungenToolStripMenuItem.Name = "einstellungenToolStripMenuItem";
-            einstellungenToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-            einstellungenToolStripMenuItem.Text = "Einstellungen";
-            einstellungenToolStripMenuItem.Click += new System.EventHandler(einstellungenToolStripMenuItemClick);
+            this.einstellungenToolStripMenuItem.Image = global::VTCManager_1._0._0.Properties.Resources.icons8_einstellungen_64;
+            this.einstellungenToolStripMenuItem.Name = "einstellungenToolStripMenuItem";
+            this.einstellungenToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.einstellungenToolStripMenuItem.Text = "Einstellungen";
+            this.einstellungenToolStripMenuItem.Click += new System.EventHandler(this.einstellungenToolStripMenuItemClick);
             // 
             // creditsToolStripMenuItem
             // 
-            creditsToolStripMenuItem.Image = global::VTCManager_1._0._0.Properties.Resources.icons8_info_64;
-            creditsToolStripMenuItem.Name = "creditsToolStripMenuItem";
-            creditsToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-            creditsToolStripMenuItem.Text = "Über...";
-            creditsToolStripMenuItem.Click += new System.EventHandler(CreditsToolStripMenuItem_Click);
+            this.creditsToolStripMenuItem.Image = global::VTCManager_1._0._0.Properties.Resources.icons8_info_64;
+            this.creditsToolStripMenuItem.Name = "creditsToolStripMenuItem";
+            this.creditsToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.creditsToolStripMenuItem.Text = "Über...";
+            this.creditsToolStripMenuItem.Click += new System.EventHandler(this.CreditsToolStripMenuItem_Click);
             // 
             // beendenToolStripMenuItem
             // 
-            beendenToolStripMenuItem.Image = global::VTCManager_1._0._0.Properties.Resources.icons8_ausgang_64;
-            beendenToolStripMenuItem.Name = "beendenToolStripMenuItem";
-            beendenToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-            beendenToolStripMenuItem.Text = "Beenden";
-            beendenToolStripMenuItem.Click += new System.EventHandler(beendenToolStripMenuItemClick);
+            this.beendenToolStripMenuItem.Image = global::VTCManager_1._0._0.Properties.Resources.icons8_ausgang_64;
+            this.beendenToolStripMenuItem.Name = "beendenToolStripMenuItem";
+            this.beendenToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.beendenToolStripMenuItem.Text = "Beenden";
+            this.beendenToolStripMenuItem.Click += new System.EventHandler(this.beendenToolStripMenuItemClick);
             // 
             // topMenuAccount
             // 
-            topMenuAccount.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            MenuAbmeldenButton});
-            topMenuAccount.Image = ((System.Drawing.Image)(resources.GetObject("topMenuAccount.Image")));
-            topMenuAccount.Name = "topMenuAccount";
-            topMenuAccount.Size = new System.Drawing.Size(102, 28);
-            topMenuAccount.Text = "Account";
-            topMenuAccount.ToolTipText = "Client an/abmelden";
+            this.topMenuAccount.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.MenuAbmeldenButton});
+            this.topMenuAccount.Image = ((System.Drawing.Image)(resources.GetObject("topMenuAccount.Image")));
+            this.topMenuAccount.Name = "topMenuAccount";
+            this.topMenuAccount.Size = new System.Drawing.Size(102, 28);
+            this.topMenuAccount.Text = "Account";
+            this.topMenuAccount.ToolTipText = "Client an/abmelden";
             // 
             // MenuAbmeldenButton
             // 
-            MenuAbmeldenButton.Image = global::VTCManager_1._0._0.Properties.Resources.icons8_logout_abgerundet_64;
-            MenuAbmeldenButton.Name = "MenuAbmeldenButton";
-            MenuAbmeldenButton.Size = new System.Drawing.Size(159, 30);
-            MenuAbmeldenButton.Text = "Abmelden";
-            MenuAbmeldenButton.Click += new System.EventHandler(MenuAbmeldenButton_Click);
+            this.MenuAbmeldenButton.Image = global::VTCManager_1._0._0.Properties.Resources.icons8_logout_abgerundet_64;
+            this.MenuAbmeldenButton.Name = "MenuAbmeldenButton";
+            this.MenuAbmeldenButton.Size = new System.Drawing.Size(159, 30);
+            this.MenuAbmeldenButton.Text = "Abmelden";
+            this.MenuAbmeldenButton.Click += new System.EventHandler(this.MenuAbmeldenButton_Click);
             // 
             // topmenuwebsite
             // 
-            topmenuwebsite.Image = ((System.Drawing.Image)(resources.GetObject("topmenuwebsite.Image")));
-            topmenuwebsite.Name = "topmenuwebsite";
-            topmenuwebsite.Size = new System.Drawing.Size(101, 28);
-            topmenuwebsite.Text = "Website";
-            topmenuwebsite.ToolTipText = "Gehe zu unserer Homepage";
-            topmenuwebsite.Click += new System.EventHandler(topMenuWebsiteClick);
+            this.topmenuwebsite.Image = ((System.Drawing.Image)(resources.GetObject("topmenuwebsite.Image")));
+            this.topmenuwebsite.Name = "topmenuwebsite";
+            this.topmenuwebsite.Size = new System.Drawing.Size(101, 28);
+            this.topmenuwebsite.Text = "Website";
+            this.topmenuwebsite.ToolTipText = "Gehe zu unserer Homepage";
+            this.topmenuwebsite.Click += new System.EventHandler(this.topMenuWebsiteClick);
             // 
             // eventsToolStripMenuItem
             // 
-            eventsToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("eventsToolStripMenuItem.Image")));
-            eventsToolStripMenuItem.Name = "eventsToolStripMenuItem";
-            eventsToolStripMenuItem.Size = new System.Drawing.Size(91, 28);
-            eventsToolStripMenuItem.Text = "Events";
-            eventsToolStripMenuItem.ToolTipText = "Zeige aktuelle Events (in Bearbeitung)";
-            eventsToolStripMenuItem.Visible = false;
+            this.eventsToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("eventsToolStripMenuItem.Image")));
+            this.eventsToolStripMenuItem.Name = "eventsToolStripMenuItem";
+            this.eventsToolStripMenuItem.Size = new System.Drawing.Size(91, 28);
+            this.eventsToolStripMenuItem.Text = "Events";
+            this.eventsToolStripMenuItem.ToolTipText = "Zeige aktuelle Events (in Bearbeitung)";
+            this.eventsToolStripMenuItem.Visible = false;
             // 
             // GUI_SIZE_BUTTON
             // 
-            GUI_SIZE_BUTTON.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            GUI_SIZE_BUTTON.Image = ((System.Drawing.Image)(resources.GetObject("GUI_SIZE_BUTTON.Image")));
-            GUI_SIZE_BUTTON.Name = "GUI_SIZE_BUTTON";
-            GUI_SIZE_BUTTON.Size = new System.Drawing.Size(36, 28);
-            GUI_SIZE_BUTTON.Text = "Button_Groesse";
-            GUI_SIZE_BUTTON.ToolTipText = "Ansicht verkleinern / vergrößern";
-            GUI_SIZE_BUTTON.Click += new System.EventHandler(buttonGroesseToolStripMenuItem_Click);
+            this.GUI_SIZE_BUTTON.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.GUI_SIZE_BUTTON.Image = ((System.Drawing.Image)(resources.GetObject("GUI_SIZE_BUTTON.Image")));
+            this.GUI_SIZE_BUTTON.Name = "GUI_SIZE_BUTTON";
+            this.GUI_SIZE_BUTTON.Size = new System.Drawing.Size(36, 28);
+            this.GUI_SIZE_BUTTON.Text = "Button_Groesse";
+            this.GUI_SIZE_BUTTON.ToolTipText = "Ansicht verkleinern / vergrößern";
+            this.GUI_SIZE_BUTTON.Click += new System.EventHandler(this.buttonGroesseToolStripMenuItem_Click);
             // 
             // lbl_Overlay
             // 
-            lbl_Overlay.Name = "lbl_Overlay";
-            lbl_Overlay.Size = new System.Drawing.Size(76, 28);
-            lbl_Overlay.Text = "Overlay";
-            lbl_Overlay.Visible = false;
-            lbl_Overlay.Click += new System.EventHandler(overlayToolStripMenuItem_Click);
+            this.lbl_Overlay.Name = "lbl_Overlay";
+            this.lbl_Overlay.Size = new System.Drawing.Size(76, 28);
+            this.lbl_Overlay.Text = "Overlay";
+            this.lbl_Overlay.Visible = false;
+            this.lbl_Overlay.Click += new System.EventHandler(this.overlayToolStripMenuItem_Click);
             // 
             // darkToolStripMenuItem
             // 
-            darkToolStripMenuItem.Image = global::VTCManager_1._0._0.Properties.Resources.icons8_film_noir_50;
-            darkToolStripMenuItem.Name = "darkToolStripMenuItem";
-            darkToolStripMenuItem.Size = new System.Drawing.Size(36, 28);
-            darkToolStripMenuItem.ToolTipText = "Komm auf die Dunkle Seite";
-            darkToolStripMenuItem.Click += new System.EventHandler(darkToolStripMenuItem_Click);
+            this.darkToolStripMenuItem.Image = global::VTCManager_1._0._0.Properties.Resources.icons8_film_noir_50;
+            this.darkToolStripMenuItem.Name = "darkToolStripMenuItem";
+            this.darkToolStripMenuItem.Size = new System.Drawing.Size(36, 28);
+            this.darkToolStripMenuItem.ToolTipText = "Komm auf die Dunkle Seite";
+            this.darkToolStripMenuItem.Click += new System.EventHandler(this.darkToolStripMenuItem_Click);
             // 
             // toolStripMenuItem1
             // 
-            toolStripMenuItem1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            toolStripMenuItem1.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            oldCar1ToolStripMenuItem,
-            oldCar2ToolStripMenuItem,
-            oldCar3ToolStripMenuItem,
-            oldCar4ToolStripMenuItem,
-            keinsToolStripMenuItem});
-            toolStripMenuItem1.Image = ((System.Drawing.Image)(resources.GetObject("toolStripMenuItem1.Image")));
-            toolStripMenuItem1.Name = "toolStripMenuItem1";
-            toolStripMenuItem1.Size = new System.Drawing.Size(36, 28);
+            this.toolStripMenuItem1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.toolStripMenuItem1.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.oldCar1ToolStripMenuItem,
+            this.oldCar2ToolStripMenuItem,
+            this.oldCar3ToolStripMenuItem,
+            this.oldCar4ToolStripMenuItem,
+            this.keinsToolStripMenuItem});
+            this.toolStripMenuItem1.Image = ((System.Drawing.Image)(resources.GetObject("toolStripMenuItem1.Image")));
+            this.toolStripMenuItem1.Name = "toolStripMenuItem1";
+            this.toolStripMenuItem1.Size = new System.Drawing.Size(36, 28);
             // 
             // oldCar1ToolStripMenuItem
             // 
-            oldCar1ToolStripMenuItem.Name = "oldCar1ToolStripMenuItem";
-            oldCar1ToolStripMenuItem.Size = new System.Drawing.Size(146, 26);
-            oldCar1ToolStripMenuItem.Text = "Old Car 1";
-            oldCar1ToolStripMenuItem.Click += new System.EventHandler(oldCar1ToolStripMenuItem_Click);
+            this.oldCar1ToolStripMenuItem.Name = "oldCar1ToolStripMenuItem";
+            this.oldCar1ToolStripMenuItem.Size = new System.Drawing.Size(146, 26);
+            this.oldCar1ToolStripMenuItem.Text = "Old Car 1";
+            this.oldCar1ToolStripMenuItem.Click += new System.EventHandler(this.oldCar1ToolStripMenuItem_Click);
             // 
             // oldCar2ToolStripMenuItem
             // 
-            oldCar2ToolStripMenuItem.Name = "oldCar2ToolStripMenuItem";
-            oldCar2ToolStripMenuItem.Size = new System.Drawing.Size(146, 26);
-            oldCar2ToolStripMenuItem.Text = "Old Car 2";
-            oldCar2ToolStripMenuItem.Click += new System.EventHandler(oldCar2ToolStripMenuItem_Click);
+            this.oldCar2ToolStripMenuItem.Name = "oldCar2ToolStripMenuItem";
+            this.oldCar2ToolStripMenuItem.Size = new System.Drawing.Size(146, 26);
+            this.oldCar2ToolStripMenuItem.Text = "Old Car 2";
+            this.oldCar2ToolStripMenuItem.Click += new System.EventHandler(this.oldCar2ToolStripMenuItem_Click);
             // 
             // oldCar3ToolStripMenuItem
             // 
-            oldCar3ToolStripMenuItem.Name = "oldCar3ToolStripMenuItem";
-            oldCar3ToolStripMenuItem.Size = new System.Drawing.Size(146, 26);
-            oldCar3ToolStripMenuItem.Text = "Old Car 3";
-            oldCar3ToolStripMenuItem.Click += new System.EventHandler(oldCar3ToolStripMenuItem_Click);
+            this.oldCar3ToolStripMenuItem.Name = "oldCar3ToolStripMenuItem";
+            this.oldCar3ToolStripMenuItem.Size = new System.Drawing.Size(146, 26);
+            this.oldCar3ToolStripMenuItem.Text = "Old Car 3";
+            this.oldCar3ToolStripMenuItem.Click += new System.EventHandler(this.oldCar3ToolStripMenuItem_Click);
             // 
             // oldCar4ToolStripMenuItem
             // 
-            oldCar4ToolStripMenuItem.Name = "oldCar4ToolStripMenuItem";
-            oldCar4ToolStripMenuItem.Size = new System.Drawing.Size(146, 26);
-            oldCar4ToolStripMenuItem.Text = "Old Car 4";
-            oldCar4ToolStripMenuItem.Click += new System.EventHandler(oldCar4ToolStripMenuItem_Click);
+            this.oldCar4ToolStripMenuItem.Name = "oldCar4ToolStripMenuItem";
+            this.oldCar4ToolStripMenuItem.Size = new System.Drawing.Size(146, 26);
+            this.oldCar4ToolStripMenuItem.Text = "Old Car 4";
+            this.oldCar4ToolStripMenuItem.Click += new System.EventHandler(this.oldCar4ToolStripMenuItem_Click);
             // 
             // keinsToolStripMenuItem
             // 
-            keinsToolStripMenuItem.Name = "keinsToolStripMenuItem";
-            keinsToolStripMenuItem.Size = new System.Drawing.Size(146, 26);
-            keinsToolStripMenuItem.Text = "Keins";
-            keinsToolStripMenuItem.Click += new System.EventHandler(keinsToolStripMenuItem_Click);
+            this.keinsToolStripMenuItem.Name = "keinsToolStripMenuItem";
+            this.keinsToolStripMenuItem.Size = new System.Drawing.Size(146, 26);
+            this.keinsToolStripMenuItem.Text = "Keins";
+            this.keinsToolStripMenuItem.Click += new System.EventHandler(this.keinsToolStripMenuItem_Click);
             // 
             // frachtmarktToolStripMenuItem
             // 
-            frachtmarktToolStripMenuItem.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            frachtmarktToolStripMenuItem.Image = global::VTCManager_1._0._0.Properties.Resources.gabelstapler_64;
-            frachtmarktToolStripMenuItem.Name = "frachtmarktToolStripMenuItem";
-            frachtmarktToolStripMenuItem.Size = new System.Drawing.Size(36, 28);
-            frachtmarktToolStripMenuItem.Visible = false;
-            frachtmarktToolStripMenuItem.Click += new System.EventHandler(frachtmarktToolStripMenuItem_Click);
+            this.frachtmarktToolStripMenuItem.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.frachtmarktToolStripMenuItem.Image = global::VTCManager_1._0._0.Properties.Resources.gabelstapler_64;
+            this.frachtmarktToolStripMenuItem.Name = "frachtmarktToolStripMenuItem";
+            this.frachtmarktToolStripMenuItem.Size = new System.Drawing.Size(36, 28);
+            this.frachtmarktToolStripMenuItem.Visible = false;
+            this.frachtmarktToolStripMenuItem.Click += new System.EventHandler(this.frachtmarktToolStripMenuItem_Click);
             // 
             // dockingToolStripMenuItem
             // 
-            dockingToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            dockTopToolStripMenuItem,
-            dockBottomToolStripMenuItem});
-            dockingToolStripMenuItem.Name = "dockingToolStripMenuItem";
-            dockingToolStripMenuItem.Size = new System.Drawing.Size(79, 28);
-            dockingToolStripMenuItem.Text = "Docking";
-            dockingToolStripMenuItem.Visible = false;
+            this.dockingToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.dockTopToolStripMenuItem,
+            this.dockBottomToolStripMenuItem});
+            this.dockingToolStripMenuItem.Name = "dockingToolStripMenuItem";
+            this.dockingToolStripMenuItem.Size = new System.Drawing.Size(79, 28);
+            this.dockingToolStripMenuItem.Text = "Docking";
+            this.dockingToolStripMenuItem.Visible = false;
             // 
             // dockTopToolStripMenuItem
             // 
-            dockTopToolStripMenuItem.Name = "dockTopToolStripMenuItem";
-            dockTopToolStripMenuItem.Size = new System.Drawing.Size(170, 26);
-            dockTopToolStripMenuItem.Text = "Dock Top";
-            dockTopToolStripMenuItem.Click += new System.EventHandler(dockTopToolStripMenuItem_Click);
+            this.dockTopToolStripMenuItem.Name = "dockTopToolStripMenuItem";
+            this.dockTopToolStripMenuItem.Size = new System.Drawing.Size(170, 26);
+            this.dockTopToolStripMenuItem.Text = "Dock Top";
+            this.dockTopToolStripMenuItem.Click += new System.EventHandler(this.dockTopToolStripMenuItem_Click);
             // 
             // dockBottomToolStripMenuItem
             // 
-            dockBottomToolStripMenuItem.Name = "dockBottomToolStripMenuItem";
-            dockBottomToolStripMenuItem.Size = new System.Drawing.Size(170, 26);
-            dockBottomToolStripMenuItem.Text = "Dock Bottom";
+            this.dockBottomToolStripMenuItem.Name = "dockBottomToolStripMenuItem";
+            this.dockBottomToolStripMenuItem.Size = new System.Drawing.Size(170, 26);
+            this.dockBottomToolStripMenuItem.Text = "Dock Bottom";
             // 
             // linkLabel1
             // 
-            linkLabel1.AutoSize = true;
-            linkLabel1.Location = new System.Drawing.Point(342, 342);
-            linkLabel1.Name = "linkLabel1";
-            linkLabel1.Size = new System.Drawing.Size(145, 13);
-            linkLabel1.TabIndex = 5;
-            linkLabel1.TabStop = true;
-            linkLabel1.Text = "(powered by Truckyapp.com)";
-            linkLabel1.VisitedLinkColor = System.Drawing.Color.Blue;
-            linkLabel1.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(linkLabel1_LinkClicked);
+            this.linkLabel1.AutoSize = true;
+            this.linkLabel1.Location = new System.Drawing.Point(342, 342);
+            this.linkLabel1.Name = "linkLabel1";
+            this.linkLabel1.Size = new System.Drawing.Size(145, 13);
+            this.linkLabel1.TabIndex = 5;
+            this.linkLabel1.TabStop = true;
+            this.linkLabel1.Text = "(powered by Truckyapp.com)";
+            this.linkLabel1.VisitedLinkColor = System.Drawing.Color.Blue;
+            this.linkLabel1.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabel1_LinkClicked);
             // 
             // label1
             // 
-            label1.AutoSize = true;
-            label1.BackColor = System.Drawing.Color.Transparent;
-            label1.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0);
-            label1.Location = new System.Drawing.Point(12, 16);
-            label1.Name = "label1";
-            label1.Size = new System.Drawing.Size(83, 30);
-            label1.TabIndex = 1;
-            label1.Text = "Verkehr";
-            label1.TextAlign = System.Drawing.ContentAlignment.TopCenter;
+            this.label1.AutoSize = true;
+            this.label1.BackColor = System.Drawing.Color.Transparent;
+            this.label1.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label1.Location = new System.Drawing.Point(12, 16);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(83, 30);
+            this.label1.TabIndex = 1;
+            this.label1.Text = "Verkehr";
+            this.label1.TextAlign = System.Drawing.ContentAlignment.TopCenter;
             // 
             // label2
             // 
-            label2.AutoSize = true;
-            label2.Font = new System.Drawing.Font("Segoe UI", 10F);
-            label2.Location = new System.Drawing.Point(13, 41);
-            label2.Name = "label2";
-            label2.Size = new System.Drawing.Size(18, 19);
-            label2.TabIndex = 2;
-            label2.Text = "...";
+            this.label2.AutoSize = true;
+            this.label2.Font = new System.Drawing.Font("Segoe UI", 10F);
+            this.label2.Location = new System.Drawing.Point(13, 41);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(18, 19);
+            this.label2.TabIndex = 2;
+            this.label2.Text = "...";
             // 
             // panel2
             // 
-            panel2.BackColor = System.Drawing.Color.Transparent;
-            panel2.Controls.Add(lbl_Time_Remain);
-            panel2.Controls.Add(GroupBox_Individ_Texte);
-            panel2.Controls.Add(status_jb_canc_lb);
-            panel2.Controls.Add(truck_lb);
-            panel2.Controls.Add(destination_lb);
-            panel2.Controls.Add(depature_lb);
-            panel2.Controls.Add(cargo_lb);
-            panel2.Controls.Add(speed_lb);
-            panel2.Cursor = System.Windows.Forms.Cursors.Arrow;
-            panel2.Location = new System.Drawing.Point(540, 28);
-            panel2.Name = "panel2";
-            panel2.Size = new System.Drawing.Size(551, 582);
-            panel2.TabIndex = 2;
-            // 
-            // lbl_Time_Remain
-            // 
-            lbl_Time_Remain.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0);
-            lbl_Time_Remain.Location = new System.Drawing.Point(48, 172);
-            lbl_Time_Remain.Name = "lbl_Time_Remain";
-            lbl_Time_Remain.Size = new System.Drawing.Size(487, 28);
-            lbl_Time_Remain.TabIndex = 14;
-            lbl_Time_Remain.Text = "Restliche Lieferzeit";
+            this.panel2.BackColor = System.Drawing.Color.Transparent;
+            this.panel2.Controls.Add(this.GroupBox_Individ_Texte);
+            this.panel2.Controls.Add(this.status_jb_canc_lb);
+            this.panel2.Controls.Add(this.truck_lb);
+            this.panel2.Controls.Add(this.destination_lb);
+            this.panel2.Controls.Add(this.depature_lb);
+            this.panel2.Controls.Add(this.cargo_lb);
+            this.panel2.Controls.Add(this.speed_lb);
+            this.panel2.Cursor = System.Windows.Forms.Cursors.Arrow;
+            this.panel2.Location = new System.Drawing.Point(540, 28);
+            this.panel2.Name = "panel2";
+            this.panel2.Size = new System.Drawing.Size(551, 582);
+            this.panel2.TabIndex = 2;
             // 
             // GroupBox_Individ_Texte
             // 
-            GroupBox_Individ_Texte.Controls.Add(NUM_LOCK_PICTURE);
-            GroupBox_Individ_Texte.Controls.Add(lbl_NUM2_Text);
-            GroupBox_Individ_Texte.Controls.Add(lbl_NUM3_Text);
-            GroupBox_Individ_Texte.Controls.Add(NUM1_Label);
-            GroupBox_Individ_Texte.Controls.Add(NUM3_Label);
-            GroupBox_Individ_Texte.Controls.Add(lbl_NUM1_Text);
-            GroupBox_Individ_Texte.Controls.Add(NUM2_Label);
-            GroupBox_Individ_Texte.Location = new System.Drawing.Point(4, 378);
-            GroupBox_Individ_Texte.Name = "GroupBox_Individ_Texte";
-            GroupBox_Individ_Texte.Size = new System.Drawing.Size(544, 195);
-            GroupBox_Individ_Texte.TabIndex = 13;
-            GroupBox_Individ_Texte.TabStop = false;
-            GroupBox_Individ_Texte.Text = "Individuelle Texte";
+            this.GroupBox_Individ_Texte.Controls.Add(this.NUM_LOCK_PICTURE);
+            this.GroupBox_Individ_Texte.Controls.Add(this.lbl_NUM2_Text);
+            this.GroupBox_Individ_Texte.Controls.Add(this.lbl_NUM3_Text);
+            this.GroupBox_Individ_Texte.Controls.Add(this.NUM1_Label);
+            this.GroupBox_Individ_Texte.Controls.Add(this.NUM3_Label);
+            this.GroupBox_Individ_Texte.Controls.Add(this.lbl_NUM1_Text);
+            this.GroupBox_Individ_Texte.Controls.Add(this.NUM2_Label);
+            this.GroupBox_Individ_Texte.Location = new System.Drawing.Point(4, 378);
+            this.GroupBox_Individ_Texte.Name = "GroupBox_Individ_Texte";
+            this.GroupBox_Individ_Texte.Size = new System.Drawing.Size(544, 195);
+            this.GroupBox_Individ_Texte.TabIndex = 13;
+            this.GroupBox_Individ_Texte.TabStop = false;
+            this.GroupBox_Individ_Texte.Text = "Individuelle Texte";
             // 
             // NUM_LOCK_PICTURE
             // 
-            NUM_LOCK_PICTURE.Location = new System.Drawing.Point(467, 19);
-            NUM_LOCK_PICTURE.Name = "NUM_LOCK_PICTURE";
-            NUM_LOCK_PICTURE.Size = new System.Drawing.Size(64, 18);
-            NUM_LOCK_PICTURE.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            NUM_LOCK_PICTURE.TabIndex = 10;
-            NUM_LOCK_PICTURE.TabStop = false;
+            this.NUM_LOCK_PICTURE.Location = new System.Drawing.Point(467, 19);
+            this.NUM_LOCK_PICTURE.Name = "NUM_LOCK_PICTURE";
+            this.NUM_LOCK_PICTURE.Size = new System.Drawing.Size(64, 18);
+            this.NUM_LOCK_PICTURE.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.NUM_LOCK_PICTURE.TabIndex = 10;
+            this.NUM_LOCK_PICTURE.TabStop = false;
             // 
             // lbl_NUM2_Text
             // 
-            lbl_NUM2_Text.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            lbl_NUM2_Text.Location = new System.Drawing.Point(6, 99);
-            lbl_NUM2_Text.Name = "lbl_NUM2_Text";
-            lbl_NUM2_Text.Size = new System.Drawing.Size(525, 25);
-            lbl_NUM2_Text.TabIndex = 10;
-            lbl_NUM2_Text.Text = "label8";
-            lbl_NUM2_Text.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.lbl_NUM2_Text.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.lbl_NUM2_Text.Location = new System.Drawing.Point(6, 99);
+            this.lbl_NUM2_Text.Name = "lbl_NUM2_Text";
+            this.lbl_NUM2_Text.Size = new System.Drawing.Size(525, 25);
+            this.lbl_NUM2_Text.TabIndex = 10;
+            this.lbl_NUM2_Text.Text = "label8";
+            this.lbl_NUM2_Text.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // lbl_NUM3_Text
             // 
-            lbl_NUM3_Text.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            lbl_NUM3_Text.Location = new System.Drawing.Point(6, 156);
-            lbl_NUM3_Text.Name = "lbl_NUM3_Text";
-            lbl_NUM3_Text.Size = new System.Drawing.Size(525, 25);
-            lbl_NUM3_Text.TabIndex = 12;
-            lbl_NUM3_Text.Text = "label8";
-            lbl_NUM3_Text.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.lbl_NUM3_Text.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.lbl_NUM3_Text.Location = new System.Drawing.Point(6, 156);
+            this.lbl_NUM3_Text.Name = "lbl_NUM3_Text";
+            this.lbl_NUM3_Text.Size = new System.Drawing.Size(525, 25);
+            this.lbl_NUM3_Text.TabIndex = 12;
+            this.lbl_NUM3_Text.Text = "label8";
+            this.lbl_NUM3_Text.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // NUM1_Label
             // 
-            NUM1_Label.AutoSize = true;
-            NUM1_Label.Location = new System.Drawing.Point(3, 26);
-            NUM1_Label.Name = "NUM1_Label";
-            NUM1_Label.Size = new System.Drawing.Size(65, 13);
-            NUM1_Label.TabIndex = 7;
-            NUM1_Label.Text = "NUM1-Text:";
+            this.NUM1_Label.AutoSize = true;
+            this.NUM1_Label.Location = new System.Drawing.Point(3, 26);
+            this.NUM1_Label.Name = "NUM1_Label";
+            this.NUM1_Label.Size = new System.Drawing.Size(65, 13);
+            this.NUM1_Label.TabIndex = 7;
+            this.NUM1_Label.Text = "NUM1-Text:";
             // 
             // NUM3_Label
             // 
-            NUM3_Label.AutoSize = true;
-            NUM3_Label.Location = new System.Drawing.Point(3, 139);
-            NUM3_Label.Name = "NUM3_Label";
-            NUM3_Label.Size = new System.Drawing.Size(65, 13);
-            NUM3_Label.TabIndex = 11;
-            NUM3_Label.Text = "NUM3-Text:";
+            this.NUM3_Label.AutoSize = true;
+            this.NUM3_Label.Location = new System.Drawing.Point(3, 139);
+            this.NUM3_Label.Name = "NUM3_Label";
+            this.NUM3_Label.Size = new System.Drawing.Size(65, 13);
+            this.NUM3_Label.TabIndex = 11;
+            this.NUM3_Label.Text = "NUM3-Text:";
             // 
             // lbl_NUM1_Text
             // 
-            lbl_NUM1_Text.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            lbl_NUM1_Text.Location = new System.Drawing.Point(6, 43);
-            lbl_NUM1_Text.Name = "lbl_NUM1_Text";
-            lbl_NUM1_Text.Size = new System.Drawing.Size(525, 25);
-            lbl_NUM1_Text.TabIndex = 8;
-            lbl_NUM1_Text.Text = "label8";
-            lbl_NUM1_Text.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.lbl_NUM1_Text.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.lbl_NUM1_Text.Location = new System.Drawing.Point(6, 43);
+            this.lbl_NUM1_Text.Name = "lbl_NUM1_Text";
+            this.lbl_NUM1_Text.Size = new System.Drawing.Size(525, 25);
+            this.lbl_NUM1_Text.TabIndex = 8;
+            this.lbl_NUM1_Text.Text = "label8";
+            this.lbl_NUM1_Text.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // NUM2_Label
             // 
-            NUM2_Label.AutoSize = true;
-            NUM2_Label.Location = new System.Drawing.Point(3, 82);
-            NUM2_Label.Name = "NUM2_Label";
-            NUM2_Label.Size = new System.Drawing.Size(65, 13);
-            NUM2_Label.TabIndex = 9;
-            NUM2_Label.Text = "NUM2-Text:";
+            this.NUM2_Label.AutoSize = true;
+            this.NUM2_Label.Location = new System.Drawing.Point(3, 82);
+            this.NUM2_Label.Name = "NUM2_Label";
+            this.NUM2_Label.Size = new System.Drawing.Size(65, 13);
+            this.NUM2_Label.TabIndex = 9;
+            this.NUM2_Label.Text = "NUM2-Text:";
             // 
             // status_jb_canc_lb
             // 
-            status_jb_canc_lb.AutoSize = true;
-            status_jb_canc_lb.Font = new System.Drawing.Font("Segoe UI", 10F);
-            status_jb_canc_lb.Location = new System.Drawing.Point(148, 245);
-            status_jb_canc_lb.Name = "status_jb_canc_lb";
-            status_jb_canc_lb.Size = new System.Drawing.Size(0, 19);
-            status_jb_canc_lb.TabIndex = 6;
+            this.status_jb_canc_lb.AutoSize = true;
+            this.status_jb_canc_lb.Font = new System.Drawing.Font("Segoe UI", 10F);
+            this.status_jb_canc_lb.Location = new System.Drawing.Point(148, 245);
+            this.status_jb_canc_lb.Name = "status_jb_canc_lb";
+            this.status_jb_canc_lb.Size = new System.Drawing.Size(0, 19);
+            this.status_jb_canc_lb.TabIndex = 6;
             // 
             // truck_lb
             // 
-            truck_lb.AutoSize = true;
-            truck_lb.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0);
-            truck_lb.Location = new System.Drawing.Point(47, 110);
-            truck_lb.Name = "truck_lb";
-            truck_lb.Size = new System.Drawing.Size(55, 16);
-            truck_lb.TabIndex = 5;
-            truck_lb.Text = "Truck: ";
+            this.truck_lb.AutoSize = true;
+            this.truck_lb.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.truck_lb.Location = new System.Drawing.Point(47, 110);
+            this.truck_lb.Name = "truck_lb";
+            this.truck_lb.Size = new System.Drawing.Size(55, 16);
+            this.truck_lb.TabIndex = 5;
+            this.truck_lb.Text = "Truck: ";
             // 
             // destination_lb
             // 
-            destination_lb.AutoSize = true;
-            destination_lb.Font = new System.Drawing.Font("Segoe UI", 10F);
-            destination_lb.Location = new System.Drawing.Point(47, 166);
-            destination_lb.Name = "destination_lb";
-            destination_lb.Size = new System.Drawing.Size(0, 19);
-            destination_lb.TabIndex = 3;
+            this.destination_lb.AutoSize = true;
+            this.destination_lb.Font = new System.Drawing.Font("Segoe UI", 10F);
+            this.destination_lb.Location = new System.Drawing.Point(47, 166);
+            this.destination_lb.Name = "destination_lb";
+            this.destination_lb.Size = new System.Drawing.Size(0, 19);
+            this.destination_lb.TabIndex = 3;
             // 
             // depature_lb
             // 
-            depature_lb.AutoSize = true;
-            depature_lb.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0);
-            depature_lb.Location = new System.Drawing.Point(47, 149);
-            depature_lb.Name = "depature_lb";
-            depature_lb.Size = new System.Drawing.Size(84, 16);
-            depature_lb.TabIndex = 2;
-            depature_lb.Text = "Departure: ";
+            this.depature_lb.AutoSize = true;
+            this.depature_lb.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.depature_lb.Location = new System.Drawing.Point(47, 149);
+            this.depature_lb.Name = "depature_lb";
+            this.depature_lb.Size = new System.Drawing.Size(84, 16);
+            this.depature_lb.TabIndex = 2;
+            this.depature_lb.Text = "Departure: ";
             // 
             // cargo_lb
             // 
-            cargo_lb.AutoSize = true;
-            cargo_lb.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0);
-            cargo_lb.Location = new System.Drawing.Point(47, 129);
-            cargo_lb.Name = "cargo_lb";
-            cargo_lb.Size = new System.Drawing.Size(60, 16);
-            cargo_lb.TabIndex = 1;
-            cargo_lb.Text = "Freight:";
+            this.cargo_lb.AutoSize = true;
+            this.cargo_lb.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.cargo_lb.Location = new System.Drawing.Point(47, 129);
+            this.cargo_lb.Name = "cargo_lb";
+            this.cargo_lb.Size = new System.Drawing.Size(60, 16);
+            this.cargo_lb.TabIndex = 1;
+            this.cargo_lb.Text = "Freight:";
             // 
             // speed_lb
             // 
-            speed_lb.Anchor = ((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-            | System.Windows.Forms.AnchorStyles.Right);
-            speed_lb.BackColor = System.Drawing.Color.Transparent;
-            speed_lb.Font = new System.Drawing.Font("Verdana", 26.25F, (System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic), System.Drawing.GraphicsUnit.Point, 0);
-            speed_lb.Location = new System.Drawing.Point(10, 43);
-            speed_lb.Name = "speed_lb";
-            speed_lb.Size = new System.Drawing.Size(525, 42);
-            speed_lb.TabIndex = 0;
-            speed_lb.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.speed_lb.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.speed_lb.BackColor = System.Drawing.Color.Transparent;
+            this.speed_lb.Font = new System.Drawing.Font("Verdana", 26.25F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.speed_lb.Location = new System.Drawing.Point(10, 43);
+            this.speed_lb.Name = "speed_lb";
+            this.speed_lb.Size = new System.Drawing.Size(525, 42);
+            this.speed_lb.TabIndex = 0;
+            this.speed_lb.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // tableLayoutPanel1
             // 
-            tableLayoutPanel1.Anchor = System.Windows.Forms.AnchorStyles.None;
-            tableLayoutPanel1.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            tableLayoutPanel1.ColumnCount = 2;
-            tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 60F));
-            tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 40F));
-            tableLayoutPanel1.Location = new System.Drawing.Point(39, 63);
-            tableLayoutPanel1.Name = "tableLayoutPanel1";
-            tableLayoutPanel1.RowCount = 9;
-            tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            tableLayoutPanel1.Size = new System.Drawing.Size(470, 179);
-            tableLayoutPanel1.TabIndex = 4;
-            tableLayoutPanel1.Visible = true;
+            this.tableLayoutPanel1.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.tableLayoutPanel1.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.tableLayoutPanel1.ColumnCount = 2;
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 60F));
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 40F));
+            this.tableLayoutPanel1.Location = new System.Drawing.Point(39, 63);
+            this.tableLayoutPanel1.Name = "tableLayoutPanel1";
+            this.tableLayoutPanel1.RowCount = 9;
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(470, 179);
+            this.tableLayoutPanel1.TabIndex = 4;
             // 
             // panel4
             // 
-            panel4.BackColor = System.Drawing.Color.Transparent;
-            panel4.Controls.Add(Dashboard_1);
-            panel4.Location = new System.Drawing.Point(1097, 28);
-            panel4.Name = "panel4";
-            panel4.Size = new System.Drawing.Size(284, 582);
-            panel4.TabIndex = 4;
+            this.panel4.BackColor = System.Drawing.Color.Transparent;
+            this.panel4.Controls.Add(this.Dashboard_1);
+            this.panel4.Location = new System.Drawing.Point(1097, 28);
+            this.panel4.Name = "panel4";
+            this.panel4.Size = new System.Drawing.Size(284, 582);
+            this.panel4.TabIndex = 4;
             // 
             // Dashboard_1
             // 
-            Dashboard_1.Controls.Add(progressBar_F);
-            Dashboard_1.Controls.Add(Retarder_ICON);
-            Dashboard_1.Controls.Add(label6);
-            Dashboard_1.Controls.Add(Batterie_ICON);
-            Dashboard_1.Controls.Add(Handbremse_ICON);
-            Dashboard_1.Controls.Add(Rest_KM_Label);
-            Dashboard_1.Controls.Add(Motorbremse_ICON);
-            Dashboard_1.Controls.Add(label5);
-            Dashboard_1.Controls.Add(Luft_Progress);
-            Dashboard_1.Controls.Add(pictureBox1);
-            Dashboard_1.Controls.Add(pictureBox2);
-            Dashboard_1.Controls.Add(label4);
-            Dashboard_1.Location = new System.Drawing.Point(5, 328);
-            Dashboard_1.Name = "Dashboard_1";
-            Dashboard_1.Size = new System.Drawing.Size(276, 245);
-            Dashboard_1.TabIndex = 15;
-            Dashboard_1.TabStop = false;
-            Dashboard_1.Text = "Dashboard";
+            this.Dashboard_1.Controls.Add(this.progressBar_F);
+            this.Dashboard_1.Controls.Add(this.Retarder_ICON);
+            this.Dashboard_1.Controls.Add(this.label6);
+            this.Dashboard_1.Controls.Add(this.Batterie_ICON);
+            this.Dashboard_1.Controls.Add(this.Handbremse_ICON);
+            this.Dashboard_1.Controls.Add(this.Rest_KM_Label);
+            this.Dashboard_1.Controls.Add(this.Motorbremse_ICON);
+            this.Dashboard_1.Controls.Add(this.label5);
+            this.Dashboard_1.Controls.Add(this.Luft_Progress);
+            this.Dashboard_1.Controls.Add(this.pictureBox1);
+            this.Dashboard_1.Controls.Add(this.pictureBox2);
+            this.Dashboard_1.Controls.Add(this.label4);
+            this.Dashboard_1.Location = new System.Drawing.Point(5, 328);
+            this.Dashboard_1.Name = "Dashboard_1";
+            this.Dashboard_1.Size = new System.Drawing.Size(276, 245);
+            this.Dashboard_1.TabIndex = 15;
+            this.Dashboard_1.TabStop = false;
+            this.Dashboard_1.Text = "Dashboard";
             // 
             // progressBar_F
             // 
-            progressBar_F.Location = new System.Drawing.Point(9, 124);
-            progressBar_F.Margin = new System.Windows.Forms.Padding(0);
-            progressBar_F.Name = "progressBar_F";
-            progressBar_F.Size = new System.Drawing.Size(249, 23);
-            progressBar_F.TabIndex = 15;
+            this.progressBar_F.Location = new System.Drawing.Point(9, 124);
+            this.progressBar_F.Margin = new System.Windows.Forms.Padding(0);
+            this.progressBar_F.Name = "progressBar_F";
+            this.progressBar_F.Size = new System.Drawing.Size(249, 23);
+            this.progressBar_F.TabIndex = 15;
             // 
             // Retarder_ICON
             // 
-            Retarder_ICON.Image = global::VTCManager_1._0._0.Properties.Resources.retarder1;
-            Retarder_ICON.Location = new System.Drawing.Point(136, 21);
-            Retarder_ICON.Name = "Retarder_ICON";
-            Retarder_ICON.Size = new System.Drawing.Size(63, 53);
-            Retarder_ICON.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            Retarder_ICON.TabIndex = 12;
-            Retarder_ICON.TabStop = false;
+            this.Retarder_ICON.Image = global::VTCManager_1._0._0.Properties.Resources.retarder1;
+            this.Retarder_ICON.Location = new System.Drawing.Point(136, 21);
+            this.Retarder_ICON.Name = "Retarder_ICON";
+            this.Retarder_ICON.Size = new System.Drawing.Size(63, 53);
+            this.Retarder_ICON.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.Retarder_ICON.TabIndex = 12;
+            this.Retarder_ICON.TabStop = false;
             // 
             // label6
             // 
-            label6.AutoSize = true;
-            label6.Location = new System.Drawing.Point(39, 182);
-            label6.Name = "label6";
-            label6.Size = new System.Drawing.Size(63, 13);
-            label6.TabIndex = 14;
-            label6.Text = "Air Pressure";
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(39, 182);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(63, 13);
+            this.label6.TabIndex = 14;
+            this.label6.Text = "Air Pressure";
             // 
             // Batterie_ICON
             // 
-            Batterie_ICON.Image = global::VTCManager_1._0._0.Properties.Resources.icons8_autobatterie_80;
-            Batterie_ICON.Location = new System.Drawing.Point(10, 21);
-            Batterie_ICON.Name = "Batterie_ICON";
-            Batterie_ICON.Size = new System.Drawing.Size(63, 53);
-            Batterie_ICON.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            Batterie_ICON.TabIndex = 7;
-            Batterie_ICON.TabStop = false;
+            this.Batterie_ICON.Image = global::VTCManager_1._0._0.Properties.Resources.icons8_autobatterie_80;
+            this.Batterie_ICON.Location = new System.Drawing.Point(10, 21);
+            this.Batterie_ICON.Name = "Batterie_ICON";
+            this.Batterie_ICON.Size = new System.Drawing.Size(63, 53);
+            this.Batterie_ICON.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.Batterie_ICON.TabIndex = 7;
+            this.Batterie_ICON.TabStop = false;
             // 
             // Handbremse_ICON
             // 
-            Handbremse_ICON.Image = global::VTCManager_1._0._0.Properties.Resources.bremse_schwarz;
-            Handbremse_ICON.Location = new System.Drawing.Point(73, 21);
-            Handbremse_ICON.Name = "Handbremse_ICON";
-            Handbremse_ICON.Size = new System.Drawing.Size(63, 53);
-            Handbremse_ICON.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            Handbremse_ICON.TabIndex = 8;
-            Handbremse_ICON.TabStop = false;
+            this.Handbremse_ICON.Image = global::VTCManager_1._0._0.Properties.Resources.bremse_schwarz;
+            this.Handbremse_ICON.Location = new System.Drawing.Point(73, 21);
+            this.Handbremse_ICON.Name = "Handbremse_ICON";
+            this.Handbremse_ICON.Size = new System.Drawing.Size(63, 53);
+            this.Handbremse_ICON.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.Handbremse_ICON.TabIndex = 8;
+            this.Handbremse_ICON.TabStop = false;
             // 
             // Rest_KM_Label
             // 
-            Rest_KM_Label.AutoSize = true;
-            Rest_KM_Label.Font = new System.Drawing.Font("Verdana", 12F, (System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic), System.Drawing.GraphicsUnit.Point, 0);
-            Rest_KM_Label.Location = new System.Drawing.Point(44, 102);
-            Rest_KM_Label.Name = "Rest_KM_Label";
-            Rest_KM_Label.Size = new System.Drawing.Size(47, 18);
-            Rest_KM_Label.TabIndex = 6;
-            Rest_KM_Label.Text = "0,00";
+            this.Rest_KM_Label.AutoSize = true;
+            this.Rest_KM_Label.Font = new System.Drawing.Font("Verdana", 12F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.Rest_KM_Label.Location = new System.Drawing.Point(44, 102);
+            this.Rest_KM_Label.Name = "Rest_KM_Label";
+            this.Rest_KM_Label.Size = new System.Drawing.Size(47, 18);
+            this.Rest_KM_Label.TabIndex = 6;
+            this.Rest_KM_Label.Text = "0,00";
             // 
             // Motorbremse_ICON
             // 
-            Motorbremse_ICON.Image = global::VTCManager_1._0._0.Properties.Resources.icons8_motor_128;
-            Motorbremse_ICON.Location = new System.Drawing.Point(195, 21);
-            Motorbremse_ICON.Name = "Motorbremse_ICON";
-            Motorbremse_ICON.Size = new System.Drawing.Size(63, 53);
-            Motorbremse_ICON.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            Motorbremse_ICON.TabIndex = 9;
-            Motorbremse_ICON.TabStop = false;
+            this.Motorbremse_ICON.Image = global::VTCManager_1._0._0.Properties.Resources.icons8_motor_128;
+            this.Motorbremse_ICON.Location = new System.Drawing.Point(195, 21);
+            this.Motorbremse_ICON.Name = "Motorbremse_ICON";
+            this.Motorbremse_ICON.Size = new System.Drawing.Size(63, 53);
+            this.Motorbremse_ICON.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.Motorbremse_ICON.TabIndex = 9;
+            this.Motorbremse_ICON.TabStop = false;
             // 
             // label5
             // 
-            label5.AutoSize = true;
-            label5.Font = new System.Drawing.Font("Microsoft Sans Serif", 6F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0);
-            label5.Location = new System.Drawing.Point(7, 224);
-            label5.Name = "label5";
-            label5.Size = new System.Drawing.Size(265, 9);
-            label5.TabIndex = 5;
-            label5.Text = "0        10         20         30        40        50        60        70        " +
+            this.label5.AutoSize = true;
+            this.label5.Font = new System.Drawing.Font("Microsoft Sans Serif", 6F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label5.Location = new System.Drawing.Point(7, 224);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(265, 9);
+            this.label5.TabIndex = 5;
+            this.label5.Text = "0        10         20         30        40        50        60        70        " +
     "80        90        100    ";
             // 
             // Luft_Progress
             // 
-            Luft_Progress.Location = new System.Drawing.Point(10, 197);
-            Luft_Progress.MarqueeAnimationSpeed = 0;
-            Luft_Progress.Name = "Luft_Progress";
-            Luft_Progress.Size = new System.Drawing.Size(248, 23);
-            Luft_Progress.Style = System.Windows.Forms.ProgressBarStyle.Continuous;
-            Luft_Progress.TabIndex = 4;
+            this.Luft_Progress.Location = new System.Drawing.Point(10, 197);
+            this.Luft_Progress.MarqueeAnimationSpeed = 0;
+            this.Luft_Progress.Name = "Luft_Progress";
+            this.Luft_Progress.Size = new System.Drawing.Size(248, 23);
+            this.Luft_Progress.Style = System.Windows.Forms.ProgressBarStyle.Continuous;
+            this.Luft_Progress.TabIndex = 4;
             // 
             // pictureBox1
             // 
-            pictureBox1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            pictureBox1.Image = global::VTCManager_1._0._0.Properties.Resources.icons8_benzin_24;
-            pictureBox1.Location = new System.Drawing.Point(11, 97);
-            pictureBox1.Name = "pictureBox1";
-            pictureBox1.Size = new System.Drawing.Size(27, 27);
-            pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            pictureBox1.TabIndex = 0;
-            pictureBox1.TabStop = false;
+            this.pictureBox1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.pictureBox1.Image = global::VTCManager_1._0._0.Properties.Resources.icons8_benzin_24;
+            this.pictureBox1.Location = new System.Drawing.Point(11, 97);
+            this.pictureBox1.Name = "pictureBox1";
+            this.pictureBox1.Size = new System.Drawing.Size(27, 27);
+            this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.pictureBox1.TabIndex = 0;
+            this.pictureBox1.TabStop = false;
             // 
             // pictureBox2
             // 
-            pictureBox2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            pictureBox2.Image = global::VTCManager_1._0._0.Properties.Resources.icons8_luftdruck_24;
-            pictureBox2.Location = new System.Drawing.Point(10, 168);
-            pictureBox2.Name = "pictureBox2";
-            pictureBox2.Size = new System.Drawing.Size(27, 27);
-            pictureBox2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            pictureBox2.TabIndex = 3;
-            pictureBox2.TabStop = false;
+            this.pictureBox2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.pictureBox2.Image = global::VTCManager_1._0._0.Properties.Resources.icons8_luftdruck_24;
+            this.pictureBox2.Location = new System.Drawing.Point(10, 168);
+            this.pictureBox2.Name = "pictureBox2";
+            this.pictureBox2.Size = new System.Drawing.Size(27, 27);
+            this.pictureBox2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.pictureBox2.TabIndex = 3;
+            this.pictureBox2.TabStop = false;
             // 
             // label4
             // 
-            label4.AutoSize = true;
-            label4.Font = new System.Drawing.Font("Microsoft Sans Serif", 6F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0);
-            label4.Location = new System.Drawing.Point(8, 153);
-            label4.Name = "label4";
-            label4.Size = new System.Drawing.Size(265, 9);
-            label4.TabIndex = 2;
-            label4.Text = "0        10         20         30        40        50        60        70        " +
+            this.label4.AutoSize = true;
+            this.label4.Font = new System.Drawing.Font("Microsoft Sans Serif", 6F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label4.Location = new System.Drawing.Point(8, 153);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(265, 9);
+            this.label4.TabIndex = 2;
+            this.label4.Text = "0        10         20         30        40        50        60        70        " +
     "80        90        100    ";
             // 
             // version_lb
             // 
-            version_lb.AutoSize = true;
-            version_lb.Location = new System.Drawing.Point(1287, 9);
-            version_lb.Name = "version_lb";
-            version_lb.Size = new System.Drawing.Size(0, 13);
-            version_lb.TabIndex = 5;
+            this.version_lb.AutoSize = true;
+            this.version_lb.Location = new System.Drawing.Point(1287, 9);
+            this.version_lb.Name = "version_lb";
+            this.version_lb.Size = new System.Drawing.Size(0, 13);
+            this.version_lb.TabIndex = 5;
             // 
             // TaskBar_Icon
             // 
-            TaskBar_Icon.BalloonTipText = "VTC-Manager läuft im Hintergrund";
-            TaskBar_Icon.BalloonTipTitle = "VTC-Manager";
-            TaskBar_Icon.ContextMenuStrip = contextTaskbar;
-            TaskBar_Icon.Icon = ((System.Drawing.Icon)(resources.GetObject("TaskBar_Icon.Icon")));
-            TaskBar_Icon.Text = "VTC-Manager";
-            TaskBar_Icon.Visible = true;
+            this.TaskBar_Icon.BalloonTipText = "VTC-Manager läuft im Hintergrund";
+            this.TaskBar_Icon.BalloonTipTitle = "VTC-Manager";
+            this.TaskBar_Icon.ContextMenuStrip = this.contextTaskbar;
+            this.TaskBar_Icon.Icon = ((System.Drawing.Icon)(resources.GetObject("TaskBar_Icon.Icon")));
+            this.TaskBar_Icon.Text = "VTC-Manager";
+            this.TaskBar_Icon.Visible = true;
             // 
             // contextTaskbar
             // 
-            contextTaskbar.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            öffnenToolStripMenuItem,
-            einstellungenToolStripMenuItem1,
-            webseiteToolStripMenuItem,
-            überToolStripMenuItem,
-            beendenToolStripMenuItem1});
-            contextTaskbar.Name = "contextTaskbar";
-            contextTaskbar.Size = new System.Drawing.Size(146, 114);
+            this.contextTaskbar.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.öffnenToolStripMenuItem,
+            this.einstellungenToolStripMenuItem1,
+            this.webseiteToolStripMenuItem,
+            this.überToolStripMenuItem,
+            this.beendenToolStripMenuItem1});
+            this.contextTaskbar.Name = "contextTaskbar";
+            this.contextTaskbar.Size = new System.Drawing.Size(146, 114);
             // 
             // öffnenToolStripMenuItem
             // 
-            öffnenToolStripMenuItem.Name = "öffnenToolStripMenuItem";
-            öffnenToolStripMenuItem.Size = new System.Drawing.Size(145, 22);
-            öffnenToolStripMenuItem.Text = "Öffnen";
+            this.öffnenToolStripMenuItem.Name = "öffnenToolStripMenuItem";
+            this.öffnenToolStripMenuItem.Size = new System.Drawing.Size(145, 22);
+            this.öffnenToolStripMenuItem.Text = "Öffnen";
             // 
             // einstellungenToolStripMenuItem1
             // 
-            einstellungenToolStripMenuItem1.Name = "einstellungenToolStripMenuItem1";
-            einstellungenToolStripMenuItem1.Size = new System.Drawing.Size(145, 22);
-            einstellungenToolStripMenuItem1.Text = "Einstellungen";
-            einstellungenToolStripMenuItem1.Click += new System.EventHandler(einstellungenToolStripMenuItem1_Click);
+            this.einstellungenToolStripMenuItem1.Name = "einstellungenToolStripMenuItem1";
+            this.einstellungenToolStripMenuItem1.Size = new System.Drawing.Size(145, 22);
+            this.einstellungenToolStripMenuItem1.Text = "Einstellungen";
+            this.einstellungenToolStripMenuItem1.Click += new System.EventHandler(this.einstellungenToolStripMenuItem1_Click);
             // 
             // webseiteToolStripMenuItem
             // 
-            webseiteToolStripMenuItem.Name = "webseiteToolStripMenuItem";
-            webseiteToolStripMenuItem.Size = new System.Drawing.Size(145, 22);
-            webseiteToolStripMenuItem.Text = "Webseite";
+            this.webseiteToolStripMenuItem.Name = "webseiteToolStripMenuItem";
+            this.webseiteToolStripMenuItem.Size = new System.Drawing.Size(145, 22);
+            this.webseiteToolStripMenuItem.Text = "Webseite";
             // 
             // überToolStripMenuItem
             // 
-            überToolStripMenuItem.Name = "überToolStripMenuItem";
-            überToolStripMenuItem.Size = new System.Drawing.Size(145, 22);
-            überToolStripMenuItem.Text = "Über...";
+            this.überToolStripMenuItem.Name = "überToolStripMenuItem";
+            this.überToolStripMenuItem.Size = new System.Drawing.Size(145, 22);
+            this.überToolStripMenuItem.Text = "Über...";
             // 
             // beendenToolStripMenuItem1
             // 
-            beendenToolStripMenuItem1.Name = "beendenToolStripMenuItem1";
-            beendenToolStripMenuItem1.Size = new System.Drawing.Size(145, 22);
-            beendenToolStripMenuItem1.Text = "Beenden";
+            this.beendenToolStripMenuItem1.Name = "beendenToolStripMenuItem1";
+            this.beendenToolStripMenuItem1.Size = new System.Drawing.Size(145, 22);
+            this.beendenToolStripMenuItem1.Text = "Beenden";
             // 
             // groupStatistiken
             // 
-            groupStatistiken.BackColor = System.Drawing.Color.Transparent;
-            groupStatistiken.Controls.Add(ats_button);
-            groupStatistiken.Controls.Add(ets2_button);
-            groupStatistiken.Controls.Add(truckersMP_Button);
-            groupStatistiken.Controls.Add(user_company_lb);
-            groupStatistiken.Controls.Add(statistic_panel_topic);
-            groupStatistiken.Controls.Add(act_bank_balance_lb);
-            groupStatistiken.Controls.Add(driven_tours_lb);
-            groupStatistiken.Location = new System.Drawing.Point(0, 35);
-            groupStatistiken.Name = "groupStatistiken";
-            groupStatistiken.Size = new System.Drawing.Size(534, 178);
-            groupStatistiken.TabIndex = 6;
-            groupStatistiken.TabStop = false;
+            this.groupStatistiken.BackColor = System.Drawing.Color.Transparent;
+            this.groupStatistiken.Controls.Add(this.ats_button);
+            this.groupStatistiken.Controls.Add(this.ets2_button);
+            this.groupStatistiken.Controls.Add(this.truckersMP_Button);
+            this.groupStatistiken.Controls.Add(this.user_company_lb);
+            this.groupStatistiken.Controls.Add(this.statistic_panel_topic);
+            this.groupStatistiken.Controls.Add(this.act_bank_balance_lb);
+            this.groupStatistiken.Controls.Add(this.driven_tours_lb);
+            this.groupStatistiken.Location = new System.Drawing.Point(0, 35);
+            this.groupStatistiken.Name = "groupStatistiken";
+            this.groupStatistiken.Size = new System.Drawing.Size(534, 178);
+            this.groupStatistiken.TabIndex = 6;
+            this.groupStatistiken.TabStop = false;
             // 
             // ats_button
             // 
-            ats_button.Image = global::VTCManager_1._0._0.Properties.Resources.ats2l;
-            ats_button.Location = new System.Drawing.Point(17, 124);
-            ats_button.Name = "ats_button";
-            ats_button.Size = new System.Drawing.Size(100, 54);
-            ats_button.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            ats_button.TabIndex = 8;
-            ats_button.TabStop = false;
-            ats_button.Visible = false;
-            ats_button.Click += new System.EventHandler(ats_button_Click);
+            this.ats_button.Image = global::VTCManager_1._0._0.Properties.Resources.ats2l;
+            this.ats_button.Location = new System.Drawing.Point(17, 124);
+            this.ats_button.Name = "ats_button";
+            this.ats_button.Size = new System.Drawing.Size(100, 54);
+            this.ats_button.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.ats_button.TabIndex = 8;
+            this.ats_button.TabStop = false;
+            this.ats_button.Visible = false;
+            this.ats_button.Click += new System.EventHandler(this.ats_button_Click);
             // 
             // ets2_button
             // 
-            ets2_button.Image = global::VTCManager_1._0._0.Properties.Resources._280px_Ets2_logo;
-            ets2_button.Location = new System.Drawing.Point(225, 124);
-            ets2_button.Name = "ets2_button";
-            ets2_button.Size = new System.Drawing.Size(100, 54);
-            ets2_button.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            ets2_button.TabIndex = 7;
-            ets2_button.TabStop = false;
-            ets2_button.Visible = false;
-            ets2_button.Click += new System.EventHandler(ets2_button_Click);
+            this.ets2_button.Image = global::VTCManager_1._0._0.Properties.Resources._280px_Ets2_logo;
+            this.ets2_button.Location = new System.Drawing.Point(225, 124);
+            this.ets2_button.Name = "ets2_button";
+            this.ets2_button.Size = new System.Drawing.Size(100, 54);
+            this.ets2_button.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.ets2_button.TabIndex = 7;
+            this.ets2_button.TabStop = false;
+            this.ets2_button.Visible = false;
+            this.ets2_button.Click += new System.EventHandler(this.ets2_button_Click);
             // 
             // truckersMP_Button
             // 
-            truckersMP_Button.Anchor = (System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right);
-            truckersMP_Button.BackColor = System.Drawing.Color.Transparent;
-            truckersMP_Button.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("truckersMP_Button.BackgroundImage")));
-            truckersMP_Button.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            truckersMP_Button.FlatAppearance.BorderSize = 0;
-            truckersMP_Button.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            truckersMP_Button.Location = new System.Drawing.Point(450, 124);
-            truckersMP_Button.Margin = new System.Windows.Forms.Padding(0);
-            truckersMP_Button.Name = "truckersMP_Button";
-            truckersMP_Button.Size = new System.Drawing.Size(84, 54);
-            truckersMP_Button.TabIndex = 6;
-            truckersMP_Button.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
-            truckersMP_Button.UseVisualStyleBackColor = false;
-            truckersMP_Button.Click += new System.EventHandler(truckersMP_Button_Click);
+            this.truckersMP_Button.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.truckersMP_Button.BackColor = System.Drawing.Color.Transparent;
+            this.truckersMP_Button.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("truckersMP_Button.BackgroundImage")));
+            this.truckersMP_Button.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.truckersMP_Button.FlatAppearance.BorderSize = 0;
+            this.truckersMP_Button.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.truckersMP_Button.Location = new System.Drawing.Point(450, 124);
+            this.truckersMP_Button.Margin = new System.Windows.Forms.Padding(0);
+            this.truckersMP_Button.Name = "truckersMP_Button";
+            this.truckersMP_Button.Size = new System.Drawing.Size(84, 54);
+            this.truckersMP_Button.TabIndex = 6;
+            this.truckersMP_Button.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
+            this.truckersMP_Button.UseVisualStyleBackColor = false;
+            this.truckersMP_Button.Click += new System.EventHandler(this.truckersMP_Button_Click);
             // 
             // user_company_lb
             // 
-            user_company_lb.AutoSize = true;
-            user_company_lb.Font = new System.Drawing.Font("Segoe UI", 10F);
-            user_company_lb.Location = new System.Drawing.Point(16, 86);
-            user_company_lb.Name = "user_company_lb";
-            user_company_lb.Size = new System.Drawing.Size(178, 19);
-            user_company_lb.TabIndex = 5;
-            user_company_lb.Text = "angestellt bei: Selbstständig";
+            this.user_company_lb.AutoSize = true;
+            this.user_company_lb.Font = new System.Drawing.Font("Segoe UI", 10F);
+            this.user_company_lb.Location = new System.Drawing.Point(16, 86);
+            this.user_company_lb.Name = "user_company_lb";
+            this.user_company_lb.Size = new System.Drawing.Size(178, 19);
+            this.user_company_lb.TabIndex = 5;
+            this.user_company_lb.Text = "angestellt bei: Selbstständig";
             // 
             // statistic_panel_topic
             // 
-            statistic_panel_topic.AutoSize = true;
-            statistic_panel_topic.BackColor = System.Drawing.Color.Transparent;
-            statistic_panel_topic.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0);
-            statistic_panel_topic.Location = new System.Drawing.Point(12, 22);
-            statistic_panel_topic.Name = "statistic_panel_topic";
-            statistic_panel_topic.Size = new System.Drawing.Size(174, 30);
-            statistic_panel_topic.TabIndex = 2;
-            statistic_panel_topic.Text = "User\'s  Statistiken";
-            statistic_panel_topic.TextAlign = System.Drawing.ContentAlignment.TopCenter;
+            this.statistic_panel_topic.AutoSize = true;
+            this.statistic_panel_topic.BackColor = System.Drawing.Color.Transparent;
+            this.statistic_panel_topic.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.statistic_panel_topic.Location = new System.Drawing.Point(12, 22);
+            this.statistic_panel_topic.Name = "statistic_panel_topic";
+            this.statistic_panel_topic.Size = new System.Drawing.Size(174, 30);
+            this.statistic_panel_topic.TabIndex = 2;
+            this.statistic_panel_topic.Text = "User\'s  Statistiken";
+            this.statistic_panel_topic.TextAlign = System.Drawing.ContentAlignment.TopCenter;
             // 
             // act_bank_balance_lb
             // 
-            act_bank_balance_lb.AutoSize = true;
-            act_bank_balance_lb.Font = new System.Drawing.Font("Segoe UI", 10F);
-            act_bank_balance_lb.Location = new System.Drawing.Point(16, 67);
-            act_bank_balance_lb.Name = "act_bank_balance_lb";
-            act_bank_balance_lb.Size = new System.Drawing.Size(139, 19);
-            act_bank_balance_lb.TabIndex = 4;
-            act_bank_balance_lb.Text = "aktueller Kontostand:";
+            this.act_bank_balance_lb.AutoSize = true;
+            this.act_bank_balance_lb.Font = new System.Drawing.Font("Segoe UI", 10F);
+            this.act_bank_balance_lb.Location = new System.Drawing.Point(16, 67);
+            this.act_bank_balance_lb.Name = "act_bank_balance_lb";
+            this.act_bank_balance_lb.Size = new System.Drawing.Size(139, 19);
+            this.act_bank_balance_lb.TabIndex = 4;
+            this.act_bank_balance_lb.Text = "aktueller Kontostand:";
             // 
             // driven_tours_lb
             // 
-            driven_tours_lb.AutoSize = true;
-            driven_tours_lb.Font = new System.Drawing.Font("Segoe UI", 10F);
-            driven_tours_lb.Location = new System.Drawing.Point(16, 48);
-            driven_tours_lb.Name = "driven_tours_lb";
-            driven_tours_lb.Size = new System.Drawing.Size(119, 19);
-            driven_tours_lb.TabIndex = 3;
-            driven_tours_lb.Text = "gefahrene Touren:";
+            this.driven_tours_lb.AutoSize = true;
+            this.driven_tours_lb.Font = new System.Drawing.Font("Segoe UI", 10F);
+            this.driven_tours_lb.Location = new System.Drawing.Point(16, 48);
+            this.driven_tours_lb.Name = "driven_tours_lb";
+            this.driven_tours_lb.Size = new System.Drawing.Size(119, 19);
+            this.driven_tours_lb.TabIndex = 3;
+            this.driven_tours_lb.Text = "gefahrene Touren:";
             // 
             // groupVerkehr
             // 
-            groupVerkehr.Anchor = (System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left);
-            groupVerkehr.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            groupVerkehr.BackColor = System.Drawing.Color.Transparent;
-            groupVerkehr.Controls.Add(lbl_Reload_Time);
-            groupVerkehr.Controls.Add(tableLayoutPanel1);
-            groupVerkehr.Controls.Add(label1);
-            groupVerkehr.Controls.Add(linkLabel1);
-            groupVerkehr.Controls.Add(label2);
-            groupVerkehr.Location = new System.Drawing.Point(0, 239);
-            groupVerkehr.Name = "groupVerkehr";
-            groupVerkehr.Size = new System.Drawing.Size(537, 367);
-            groupVerkehr.TabIndex = 7;
-            groupVerkehr.TabStop = false;
+            this.groupVerkehr.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.groupVerkehr.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.groupVerkehr.BackColor = System.Drawing.Color.Transparent;
+            this.groupVerkehr.Controls.Add(this.lbl_Reload_Time);
+            this.groupVerkehr.Controls.Add(this.tableLayoutPanel1);
+            this.groupVerkehr.Controls.Add(this.label1);
+            this.groupVerkehr.Controls.Add(this.linkLabel1);
+            this.groupVerkehr.Controls.Add(this.label2);
+            this.groupVerkehr.Location = new System.Drawing.Point(0, 239);
+            this.groupVerkehr.Name = "groupVerkehr";
+            this.groupVerkehr.Size = new System.Drawing.Size(537, 367);
+            this.groupVerkehr.TabIndex = 7;
+            this.groupVerkehr.TabStop = false;
             // 
             // lbl_Reload_Time
             // 
-            lbl_Reload_Time.AutoSize = true;
-            lbl_Reload_Time.Location = new System.Drawing.Point(12, 345);
-            lbl_Reload_Time.Name = "lbl_Reload_Time";
-            lbl_Reload_Time.Size = new System.Drawing.Size(16, 13);
-            lbl_Reload_Time.TabIndex = 6;
-            lbl_Reload_Time.Text = "...";
+            this.lbl_Reload_Time.AutoSize = true;
+            this.lbl_Reload_Time.Location = new System.Drawing.Point(12, 345);
+            this.lbl_Reload_Time.Name = "lbl_Reload_Time";
+            this.lbl_Reload_Time.Size = new System.Drawing.Size(16, 13);
+            this.lbl_Reload_Time.TabIndex = 6;
+            this.lbl_Reload_Time.Text = "...";
             // 
             // updateTraffic
             // 
-            updateTraffic.Enabled = true;
-            updateTraffic.Interval = 30000;
-            updateTraffic.Tick += new System.EventHandler(updateTraffic_Tick);
+            this.updateTraffic.Enabled = true;
+            this.updateTraffic.Interval = 30000;
+            this.updateTraffic.Tick += new System.EventHandler(this.updateTraffic_Tick);
             // 
             // lbl_Revision
             // 
-            lbl_Revision.BackColor = System.Drawing.Color.Transparent;
-            lbl_Revision.Location = new System.Drawing.Point(1228, 7);
-            lbl_Revision.Name = "lbl_Revision";
-            lbl_Revision.Size = new System.Drawing.Size(151, 18);
-            lbl_Revision.TabIndex = 8;
-            lbl_Revision.Text = "...";
-            lbl_Revision.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.lbl_Revision.BackColor = System.Drawing.Color.Transparent;
+            this.lbl_Revision.Location = new System.Drawing.Point(1228, 7);
+            this.lbl_Revision.Name = "lbl_Revision";
+            this.lbl_Revision.Size = new System.Drawing.Size(151, 18);
+            this.lbl_Revision.TabIndex = 8;
+            this.lbl_Revision.Text = "...";
+            this.lbl_Revision.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // statusStrip1
             // 
-            statusStrip1.BackColor = System.Drawing.Color.Transparent;
-            statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            WebServer_Status_label,
-            Label_DB_Server,
-            User_Patreon_State});
-            statusStrip1.Location = new System.Drawing.Point(0, 616);
-            statusStrip1.Name = "statusStrip1";
-            statusStrip1.Size = new System.Drawing.Size(1384, 22);
-            statusStrip1.TabIndex = 9;
-            statusStrip1.Text = "statusStrip1";
+            this.statusStrip1.BackColor = System.Drawing.Color.Transparent;
+            this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.WebServer_Status_label,
+            this.Label_DB_Server,
+            this.User_Patreon_State});
+            this.statusStrip1.Location = new System.Drawing.Point(0, 616);
+            this.statusStrip1.Name = "statusStrip1";
+            this.statusStrip1.Size = new System.Drawing.Size(1384, 22);
+            this.statusStrip1.TabIndex = 9;
+            this.statusStrip1.Text = "statusStrip1";
             // 
             // WebServer_Status_label
             // 
-            WebServer_Status_label.Name = "WebServer_Status_label";
-            WebServer_Status_label.Size = new System.Drawing.Size(10, 17);
-            WebServer_Status_label.Text = ".";
-            WebServer_Status_label.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.WebServer_Status_label.Name = "WebServer_Status_label";
+            this.WebServer_Status_label.Size = new System.Drawing.Size(10, 17);
+            this.WebServer_Status_label.Text = ".";
+            this.WebServer_Status_label.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // Label_DB_Server
             // 
-            Label_DB_Server.Name = "Label_DB_Server";
-            Label_DB_Server.Size = new System.Drawing.Size(10, 17);
-            Label_DB_Server.Text = ".";
+            this.Label_DB_Server.Name = "Label_DB_Server";
+            this.Label_DB_Server.Size = new System.Drawing.Size(10, 17);
+            this.Label_DB_Server.Text = ".";
             // 
             // User_Patreon_State
             // 
-            User_Patreon_State.Image = global::VTCManager_1._0._0.Properties.Resources.patreon_24;
-            User_Patreon_State.Name = "User_Patreon_State";
-            User_Patreon_State.Size = new System.Drawing.Size(16, 17);
+            this.User_Patreon_State.Image = global::VTCManager_1._0._0.Properties.Resources.patreon_24;
+            this.User_Patreon_State.Name = "User_Patreon_State";
+            this.User_Patreon_State.Size = new System.Drawing.Size(16, 17);
             // 
             // anti_AFK_TIMER
             // 
-            anti_AFK_TIMER.Interval = 240000;
-            anti_AFK_TIMER.Tick += new System.EventHandler(anti_AFK_TIMER_Tick);
+            this.anti_AFK_TIMER.Interval = 240000;
+            this.anti_AFK_TIMER.Tick += new System.EventHandler(this.anti_AFK_TIMER_Tick);
             // 
             // imageList1
             // 
-            imageList1.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("imageList1.ImageStream")));
-            imageList1.TransparentColor = System.Drawing.Color.Transparent;
-            imageList1.Images.SetKeyName(0, "icons8-einstellungen-64.png");
+            this.imageList1.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("imageList1.ImageStream")));
+            this.imageList1.TransparentColor = System.Drawing.Color.Transparent;
+            this.imageList1.Images.SetKeyName(0, "icons8-einstellungen-64.png");
             // 
             // Main
             // 
-            BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            ClientSize = new System.Drawing.Size(1384, 638);
-            Controls.Add(lbl_Revision);
-            Controls.Add(groupVerkehr);
-            Controls.Add(groupStatistiken);
-            Controls.Add(version_lb);
-            Controls.Add(panel4);
-            Controls.Add(panel2);
-            Controls.Add(menuStrip1);
-            Controls.Add(statusStrip1);
-            FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
-            Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            MainMenuStrip = menuStrip1;
-            MaximizeBox = false;
-            MaximumSize = new System.Drawing.Size(1404, 681);
-            Name = "Main";
-            SizeGripStyle = System.Windows.Forms.SizeGripStyle.Hide;
-            StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            Text = "VTC-Manager";
-            FormClosing += new System.Windows.Forms.FormClosingEventHandler(Main_FormClosing_1);
-            Load += new System.EventHandler(Main_Load);
-            ((System.ComponentModel.ISupportInitialize)(send_tour_status)).EndInit();
-            menuStrip1.ResumeLayout(false);
-            menuStrip1.PerformLayout();
-            panel2.ResumeLayout(false);
-            panel2.PerformLayout();
-            GroupBox_Individ_Texte.ResumeLayout(false);
-            GroupBox_Individ_Texte.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(NUM_LOCK_PICTURE)).EndInit();
-            panel4.ResumeLayout(false);
-            Dashboard_1.ResumeLayout(false);
-            Dashboard_1.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(Retarder_ICON)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(Batterie_ICON)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(Handbremse_ICON)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(Motorbremse_ICON)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(pictureBox1)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(pictureBox2)).EndInit();
-            contextTaskbar.ResumeLayout(false);
-            groupStatistiken.ResumeLayout(false);
-            groupStatistiken.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(ats_button)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(ets2_button)).EndInit();
-            groupVerkehr.ResumeLayout(false);
-            groupVerkehr.PerformLayout();
-            statusStrip1.ResumeLayout(false);
-            statusStrip1.PerformLayout();
-            ResumeLayout(false);
-            PerformLayout();
+            this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.ClientSize = new System.Drawing.Size(1384, 638);
+            this.Controls.Add(this.lbl_Revision);
+            this.Controls.Add(this.groupVerkehr);
+            this.Controls.Add(this.groupStatistiken);
+            this.Controls.Add(this.version_lb);
+            this.Controls.Add(this.panel4);
+            this.Controls.Add(this.panel2);
+            this.Controls.Add(this.menuStrip1);
+            this.Controls.Add(this.statusStrip1);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.MainMenuStrip = this.menuStrip1;
+            this.MaximizeBox = false;
+            this.MaximumSize = new System.Drawing.Size(1404, 681);
+            this.Name = "Main";
+            this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Hide;
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
+            this.Text = "VTC-Manager";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Main_FormClosing_1);
+            this.Load += new System.EventHandler(this.Main_Load);
+            ((System.ComponentModel.ISupportInitialize)(this.send_tour_status)).EndInit();
+            this.menuStrip1.ResumeLayout(false);
+            this.menuStrip1.PerformLayout();
+            this.panel2.ResumeLayout(false);
+            this.panel2.PerformLayout();
+            this.GroupBox_Individ_Texte.ResumeLayout(false);
+            this.GroupBox_Individ_Texte.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.NUM_LOCK_PICTURE)).EndInit();
+            this.panel4.ResumeLayout(false);
+            this.Dashboard_1.ResumeLayout(false);
+            this.Dashboard_1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.Retarder_ICON)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.Batterie_ICON)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.Handbremse_ICON)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.Motorbremse_ICON)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
+            this.contextTaskbar.ResumeLayout(false);
+            this.groupStatistiken.ResumeLayout(false);
+            this.groupStatistiken.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.ats_button)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.ets2_button)).EndInit();
+            this.groupVerkehr.ResumeLayout(false);
+            this.groupVerkehr.PerformLayout();
+            this.statusStrip1.ResumeLayout(false);
+            this.statusStrip1.PerformLayout();
+            this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
         public System.Windows.Controls.Orientation Orientation { get; set; }
