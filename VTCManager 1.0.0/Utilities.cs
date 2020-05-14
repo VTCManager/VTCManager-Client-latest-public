@@ -17,7 +17,6 @@ namespace VTCManager_1._0._0
         private static bool _cachedRunningFlag;
        // private static string _chachedGame;
         private static bool _DiscordRunningFlag;
-        CultureInfo ci = CultureInfo.InstalledUICulture;
         Logging Logging = new Logging();
 
         //Properties
@@ -50,8 +49,10 @@ namespace VTCManager_1._0._0
         public static void HardRestart()
         {
             //get current Process info and path
-            ProcessStartInfo startInfo = new ProcessStartInfo();
-            startInfo.FileName = Application.ExecutablePath;
+            ProcessStartInfo startInfo = new ProcessStartInfo
+            {
+                FileName = Application.ExecutablePath
+            };
             //start new process and close the current
             Process.Start(startInfo);
             Process.GetCurrentProcess().Kill();

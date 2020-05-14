@@ -15,8 +15,6 @@ namespace VTCManager_1._0._0
         private ComboBox comboBox1;
         private Label label1;
         private SettingsManager data;
-        private Translation translation;
-        private Main mi;
         private Button save_button;
         private GroupBox groupBox1;
         private GroupBox btn_TruckersMP_suchen;
@@ -55,7 +53,6 @@ namespace VTCManager_1._0._0
         private FolderBrowserDialog ETS2_folderBrowserDialog;
         private FolderBrowserDialog ATS_folderBrowserDialog;
         private Button Reg_Reset;
-        private System.Windows.Forms.OpenFileDialog openFileDialog1;
         private PictureBox patreon_image;
         private PictureBox team_image;
         private GroupBox Group_Box_Indiv_Texte;
@@ -71,7 +68,9 @@ namespace VTCManager_1._0._0
         private ImageList Image_List_1;
         private System.ComponentModel.IContainer components;
         private CheckBox chk_Programm_Ontop;
+        private CheckBox discordrpccheckbox;
         public int Patreon;
+        private bool restart_required;
 
         public SettingsWindow(Translation translation, int patreon)
         {
@@ -127,6 +126,7 @@ namespace VTCManager_1._0._0
             this.GameLog_oeffnen = new System.Windows.Forms.Button();
             this.Diagnostic_Checkbox = new System.Windows.Forms.CheckBox();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.discordrpccheckbox = new System.Windows.Forms.CheckBox();
             this.chk_Programm_Ontop = new System.Windows.Forms.CheckBox();
             this.Autostart_Checkbox = new System.Windows.Forms.CheckBox();
             this.Chk_Dashboard = new System.Windows.Forms.CheckBox();
@@ -562,6 +562,7 @@ namespace VTCManager_1._0._0
             // 
             // groupBox2
             // 
+            this.groupBox2.Controls.Add(this.discordrpccheckbox);
             this.groupBox2.Controls.Add(this.chk_Programm_Ontop);
             this.groupBox2.Controls.Add(this.Autostart_Checkbox);
             this.groupBox2.Controls.Add(this.Chk_Dashboard);
@@ -572,10 +573,21 @@ namespace VTCManager_1._0._0
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Sonstiges";
             // 
+            // discordrpccheckbox
+            // 
+            this.discordrpccheckbox.AutoSize = true;
+            this.discordrpccheckbox.Location = new System.Drawing.Point(10, 79);
+            this.discordrpccheckbox.Name = "discordrpccheckbox";
+            this.discordrpccheckbox.Size = new System.Drawing.Size(251, 17);
+            this.discordrpccheckbox.TabIndex = 3;
+            this.discordrpccheckbox.Text = "DiscordRPC aktivieren (automatischer Neustart)";
+            this.discordrpccheckbox.UseVisualStyleBackColor = true;
+            this.discordrpccheckbox.CheckedChanged += new System.EventHandler(this.discordrpccheckbox_CheckedChanged);
+            // 
             // chk_Programm_Ontop
             // 
             this.chk_Programm_Ontop.AutoSize = true;
-            this.chk_Programm_Ontop.Location = new System.Drawing.Point(10, 68);
+            this.chk_Programm_Ontop.Location = new System.Drawing.Point(10, 60);
             this.chk_Programm_Ontop.Name = "chk_Programm_Ontop";
             this.chk_Programm_Ontop.Size = new System.Drawing.Size(177, 17);
             this.chk_Programm_Ontop.TabIndex = 2;
@@ -586,7 +598,7 @@ namespace VTCManager_1._0._0
             // Autostart_Checkbox
             // 
             this.Autostart_Checkbox.AutoSize = true;
-            this.Autostart_Checkbox.Location = new System.Drawing.Point(10, 44);
+            this.Autostart_Checkbox.Location = new System.Drawing.Point(10, 42);
             this.Autostart_Checkbox.Name = "Autostart_Checkbox";
             this.Autostart_Checkbox.Size = new System.Drawing.Size(171, 17);
             this.Autostart_Checkbox.TabIndex = 1;
@@ -597,7 +609,7 @@ namespace VTCManager_1._0._0
             // Chk_Dashboard
             // 
             this.Chk_Dashboard.AutoSize = true;
-            this.Chk_Dashboard.Location = new System.Drawing.Point(10, 20);
+            this.Chk_Dashboard.Location = new System.Drawing.Point(10, 23);
             this.Chk_Dashboard.Name = "Chk_Dashboard";
             this.Chk_Dashboard.Size = new System.Drawing.Size(124, 17);
             this.Chk_Dashboard.TabIndex = 0;
@@ -850,6 +862,10 @@ namespace VTCManager_1._0._0
             {
                 utils.Reg_Schreiben("ANTI_AFK_AN", "0", "TruckersMP_Autorun");
             }
+            if (restart_required)
+            {
+                Application.Restart();
+            }
             this.Close();
         }
 
@@ -863,8 +879,9 @@ namespace VTCManager_1._0._0
             Chk_Dashboard.CheckState = (utils.Reg_Lesen("TruckersMP_Autorun", "Dashboard") == "1") ? CheckState.Checked : CheckState.Unchecked;
             Group_Box_Indiv_Texte.Visible = (Patreon >= 2) ? true : false;
             chk_Programm_Ontop.CheckState = (utils.Reg_Lesen("TruckersMP_Autorun", "OnTop") == "1") ? CheckState.Checked : CheckState.Unchecked;
+            discordrpccheckbox.CheckState = (utils.Reg_Lesen("Config", "Discord_Active") == "true") ? CheckState.Checked : CheckState.Unchecked;
 
-                // ##################   HOTKEYS   ######################
+            // ##################   HOTKEYS   ######################
             Num1_Text.Text = utils.Reg_Lesen("TruckersMP_Autorun", "NUM1");
             Num2_Text.Text = utils.Reg_Lesen("TruckersMP_Autorun", "NUM2");
             Num3_Text.Text = utils.Reg_Lesen("TruckersMP_Autorun", "NUM3");
@@ -1226,6 +1243,20 @@ namespace VTCManager_1._0._0
             else
             {
                 utils.Reg_Schreiben("OnTop", "0", "TruckersMP_Autorun");
+            }
+        }
+
+        private void discordrpccheckbox_CheckedChanged(object sender, EventArgs e)
+        {
+            if (discordrpccheckbox.CheckState == CheckState.Checked)
+                {
+                    utils.Reg_Schreiben("Discord_Active", "true", "Config");
+                    restart_required = true;
+            }
+            else
+            {
+                utils.Reg_Schreiben("Discord_Active", "false", "Config");
+                restart_required = true;
             }
         }
     }

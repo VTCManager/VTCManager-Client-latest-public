@@ -3,12 +3,10 @@
 namespace System.Windows.Forms
     {
         using System;
-        using System.Runtime.CompilerServices;
         using System.Runtime.InteropServices;
 
         public static class Extensions
         {
-            private const uint SW_RESTORE = 9;
 
             public static void Restore(this Form form)
             {

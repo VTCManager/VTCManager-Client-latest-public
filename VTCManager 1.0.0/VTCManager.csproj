@@ -38,7 +38,7 @@
     <CreateWebPageOnPublish>true</CreateWebPageOnPublish>
     <WebPage>publish.htm</WebPage>
     <OpenBrowserOnPublish>false</OpenBrowserOnPublish>
-    <ApplicationRevision>26</ApplicationRevision>
+    <ApplicationRevision>27</ApplicationRevision>
     <ApplicationVersion>1.1.2.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <CreateDesktopShortcut>true</CreateDesktopShortcut>
@@ -103,34 +103,33 @@
     <Compile Include="About.Designer.cs">
       <DependentUpon>About.cs</DependentUpon>
     </Compile>
-    <Compile Include="API.cs" />
+    <Compile Include="Klassen\API.cs" />
     <Compile Include="Klassen\Discord.cs" />
-    <Compile Include="DispoMethoden.cs" />
+    <Compile Include="Klassen\DispoMethoden.cs" />
     <Compile Include="ETS2-Pfad_Window.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="ETS2-Pfad_Window.Designer.cs">
       <DependentUpon>ETS2-Pfad_Window.cs</DependentUpon>
     </Compile>
-    <Compile Include="Extensions.cs" />
+    <Compile Include="Klassen\Extensions.cs" />
     <Compile Include="Frachtmarkt.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Frachtmarkt.Designer.cs">
       <DependentUpon>Frachtmarkt.cs</DependentUpon>
     </Compile>
-    <Compile Include="GameChecks.cs" />
     <Compile Include="Information.cs" />
     <Compile Include="Klassen\RuntimeInformation.cs" />
     <Compile Include="Klassen\SendMail.cs" />
-    <Compile Include="Logging.cs" />
+    <Compile Include="Klassen\Logging.cs" />
     <Compile Include="Login.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Main.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="MemoryInfo.cs" />
+    <Compile Include="Klassen\MemoryInfo.cs" />
     <Compile Include="Objekte\Job.cs" />
     <Compile Include="Objekte\User.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -139,17 +138,17 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="RamInfo.cs" />
-    <Compile Include="Servercheck.cs" />
-    <Compile Include="SettingsDataObject.cs" />
-    <Compile Include="SettingsManager.cs" />
+    <Compile Include="Klassen\RamInfo.cs" />
+    <Compile Include="Klassen\Servercheck.cs" />
+    <Compile Include="Objekte\SettingsDataObject.cs" />
+    <Compile Include="Klassen\SettingsManager.cs" />
     <Compile Include="SettingsWindow.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Sound.cs" />
+    <Compile Include="Klassen\Sound.cs" />
     <Compile Include="Starter.cs" />
-    <Compile Include="Thommy.cs" />
-    <Compile Include="Translation.cs" />
+    <Compile Include="Klassen\Thommy.cs" />
+    <Compile Include="Objekte\Translation.cs" />
     <Compile Include="Trucky_Traffic_Converter.cs" />
     <Compile Include="Ueber.cs">
       <SubType>Form</SubType>
@@ -332,6 +331,8 @@
     <Content Include="ManagedWinapi.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <None Include="Resources\ets_heavy_cargo.bmp" />
+    <None Include="Resources\ets2_20200508_184706_00.png" />
     <Content Include="Resources\gabelstapler-64.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

@@ -8,15 +8,10 @@ using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Net;
-using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Text;
-using System.Threading;
-//using System.Windows;
 using System.Windows.Forms;
 using VTCManager_1._0._0.Objekte;
-using WindowsInput;
-using Xamarin.Forms.Internals;
 using Timer = System.Windows.Forms.Timer;
 
 namespace VTCManager_1._0._0
@@ -55,7 +50,6 @@ namespace VTCManager_1._0._0
         public Label label2;
         private Sound sound;
         private TableLayoutPanel tableLayoutPanel1;
-        private string traffic_response;
         private Label status_jb_canc_lb;
         private double num1;
         private double num2;
@@ -140,7 +134,6 @@ namespace VTCManager_1._0._0
         public Label lbl_NUM1_Text;
         private Label NUM1_Label;
         private GroupBox GroupBox_Individ_Texte;
-        private bool jobStarted;
         private PictureBox NUM_LOCK_PICTURE;
         private ToolStripMenuItem dockingToolStripMenuItem;
         private ToolStripMenuItem dockTopToolStripMenuItem;
@@ -481,7 +474,6 @@ namespace VTCManager_1._0._0
                       
                             if (this.jobrunningcounter == 30)
                                 {
-                                    Console.WriteLine("tiick");
                                     this.api.HTTPSRequestPost(this.api.api_server + this.api.job_update_path, new Dictionary<string, string>()
                                     {
                                         { "authcode", user.authcode },
@@ -533,22 +525,23 @@ namespace VTCManager_1._0._0
                         this.depature_lb.Text = "Von: " + data.JobValues.CitySource + " ( " + data.JobValues.CompanySource + " ) nach: " + data.JobValues.CityDestination + " ( " + data.JobValues.CompanyDestination + " )";
                         job.fuelatstart = data.TruckValues.ConstantsValues.CapacityValues.Fuel;
                     Logs.WriteLOG("<INFO> job.fuel@start = " + job.fuelatstart.ToString());
-                      
-                        Dictionary<string, string> postParameters = new Dictionary<string, string>();
-                        postParameters.Add("authcode", user.authcode);
-                        postParameters.Add("cargo", data.JobValues.CargoValues.Name);
-                        postParameters.Add("weight", ((int)Math.Round((double)data.JobValues.CargoValues.Mass, 0) / 1000).ToString());
-                        postParameters.Add("depature", data.JobValues.CitySource);
-                        postParameters.Add("depature_company", data.JobValues.CompanySource);
-                        postParameters.Add("destination_company", data.JobValues.CompanyDestination);
-                        postParameters.Add("destination", data.JobValues.CityDestination);
-                        postParameters.Add("truck_manufacturer", data.TruckValues.ConstantsValues.Brand);
-                        postParameters.Add("truck_model", data.TruckValues.ConstantsValues.Name);
-                        postParameters.Add("distance", data.JobValues.PlannedDistanceKm.ToString());
-                        job.ID = Convert.ToInt32(this.api.HTTPSRequestPost(this.api.api_server + this.api.new_job_path, postParameters, true).ToString());
+
+                    Dictionary<string, string> postParameters = new Dictionary<string, string>
+                    { { "authcode", user.authcode },
+                        { "cargo", data.JobValues.CargoValues.Name },
+                        { "weight", ((int)Math.Round((double)data.JobValues.CargoValues.Mass, 0) / 1000).ToString() },
+                        { "depature", data.JobValues.CitySource },
+                        { "depature_company", data.JobValues.CompanySource },
+                        { "destination_company", data.JobValues.CompanyDestination },
+                        { "destination", data.JobValues.CityDestination },
+                        { "truck_manufacturer", data.TruckValues.ConstantsValues.Brand },
+                        { "truck_model", data.TruckValues.ConstantsValues.Name },
+                        { "distance", data.JobValues.PlannedDistanceKm.ToString() }
+                    };
+                    job.ID = Convert.ToInt32(this.api.HTTPSRequestPost(this.api.api_server + this.api.new_job_path, postParameters, true).ToString());
                     Logs.WriteLOG("<INFO> PostParameters: " + postParameters.ToString());
 
-                        Dictionary<string, string> lastJobDictionary = this.lastJobDictionary;
+                    Dictionary<string, string> lastJobDictionary = this.lastJobDictionary;
                         this.lastJobDictionary.Add("cargo", data.JobValues.CargoValues.Name);
                         this.lastJobDictionary.Add("source", data.JobValues.CitySource);
                         this.lastJobDictionary.Add("destination", data.JobValues.CityDestination);
@@ -584,10 +577,11 @@ namespace VTCManager_1._0._0
                             job.fuelatend = (float)data.TruckValues.ConstantsValues.CapacityValues.Fuel;
                             job.fuelconsumption = job.fuelatstart - job.fuelatend;
                             Console.WriteLine(job.fuelconsumption);
-                            Dictionary<string, string> postParameters = new Dictionary<string, string>();
-                            postParameters.Add("authcode", user.authcode);
-                            postParameters.Add("job_id", job.ID.ToString());
-                            Dictionary<string, string> dictionary2 = postParameters;
+                        Dictionary<string, string> postParameters = new Dictionary<string, string>
+                        { { "authcode", user.authcode },
+                            { "job_id", job.ID.ToString() }
+                        };
+                        Dictionary<string, string> dictionary2 = postParameters;
                             num2 = Math.Floor((double)data.TruckValues.CurrentValues.DamageValues.Transmission * 100.0 / 1.0);
                             string str3 = num2.ToString();
                             dictionary2.Add("trailer_damage", str3);
@@ -1754,8 +1748,10 @@ namespace VTCManager_1._0._0
             groupVerkehr.Visible = false;
 
             User_Patreon_State.Text = user.patreon_state.ToString();
-            Frachtmarkt fm = new Frachtmarkt();
-            fm.FM_Patreon_State = user.patreon_state;
+            Frachtmarkt fm = new Frachtmarkt
+            {
+                FM_Patreon_State = user.patreon_state
+            };
 
             frachtmarktToolStripMenuItem.Visible = (user.patreon_state >= 2) ? true : false;
 
@@ -1783,8 +1779,10 @@ namespace VTCManager_1._0._0
             lade_NUMx_TEXTE();   // FIRST LOAD -> dann über locationupdate()
 
 
-            Hotkey _Hotkey1 = new Hotkey();
-            _Hotkey1.KeyCode = Keys.NumPad1;
+            Hotkey _Hotkey1 = new Hotkey
+            {
+                KeyCode = Keys.NumPad1
+            };
             _Hotkey1.HotkeyPressed += new EventHandler(NUM_PAD_1_PRESSED);
             try
             {
@@ -1792,8 +1790,10 @@ namespace VTCManager_1._0._0
             }
             catch (Exception ex) { Logs.WriteLOG("<ERROR> NUM_PAD 1 Exeption " + ex.StackTrace); }
 
-            Hotkey _Hotkey2 = new Hotkey();
-            _Hotkey2.KeyCode = Keys.NumPad2;
+            Hotkey _Hotkey2 = new Hotkey
+            {
+                KeyCode = Keys.NumPad2
+            };
             _Hotkey2.HotkeyPressed += new EventHandler(NUM_PAD_2_PRESSED);
             try
             {
@@ -1801,8 +1801,10 @@ namespace VTCManager_1._0._0
             }
             catch (Exception ex) { Logs.WriteLOG("<ERROR> NUM_PAD 2 Exeption " + ex.StackTrace); }
 
-            Hotkey _Hotkey3 = new Hotkey();
-            _Hotkey3.KeyCode = Keys.NumPad3;
+            Hotkey _Hotkey3 = new Hotkey
+            {
+                KeyCode = Keys.NumPad3
+            };
             _Hotkey3.HotkeyPressed += new EventHandler(NUM_PAD_3_PRESSED);
             try
             {
@@ -2323,8 +2325,7 @@ namespace VTCManager_1._0._0
 
         private void TelemetryJobCancelled(object sender, EventArgs e)
         {
-            this.jobStarted = false;
-            job.cancel(sound,utils,user);
+            job.cancel(sound,user);
             Logs.WriteLOG("<TOUR> Tour abgebrochen !");
         }
 

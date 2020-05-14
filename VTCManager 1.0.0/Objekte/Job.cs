@@ -100,7 +100,7 @@ namespace VTCManager_1._0._0.Objekte
             this.fuelatstart = 0;
         }
 
-        public void cancel(Sound sound, Utilities utils, User user)
+        public void cancel(Sound sound, User user)
         {
             jobRunning = false;
             sound.Play(sound.ton_fehler);

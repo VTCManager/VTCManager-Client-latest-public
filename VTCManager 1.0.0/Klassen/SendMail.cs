@@ -20,11 +20,13 @@ namespace VTCManager_1._0._0.Klassen
 
             Erstelle_DLC_LOG();
 
-            MailMessage mail = new MailMessage();
-            mail.From = new MailAddress("vtc_diag@web.de"); 
+            MailMessage mail = new MailMessage
+            {
+                From = new MailAddress("vtc_diag@web.de"),
+                Subject = "Log Datei aus Client von " + utils.Reg_Lesen("TruckersMP_Autorun", "usr"),
+                Body = "Hier die LOG Dateien",
+            };
             mail.To.Add("devlogs@northwestvideo.de");
-            mail.Subject = "Log Datei aus Client von " + utils.Reg_Lesen("TruckersMP_Autorun", "usr");
-            mail.Body = "Hier die LOG Dateien";
         
             File.Copy(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + @"\VTC_Manager\VTC_LOG.txt", Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + @"\VTC_Manager\VTC_LOG_COPY.txt", true);
             File.Copy(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + @"\VTC_Manager\VTC_SYSTEM_LOG.txt", Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + @"\VTC_Manager\VTC_SYSTEM_LOG_COPY.txt", true);
