@@ -23,7 +23,7 @@ namespace VTCManager_1._0._0
                 if (File.Exists(Environment.CurrentDirectory + @"\Ressources\insight.wav"))
                 {
                     this.ton_erfolg = new SoundPlayer(Environment.CurrentDirectory + @"\Ressources\insight.wav");
-                    Console.WriteLine("insight.wav geladen");         
+                    Console.WriteLine("insight.wav geladen");
                 }
                 else
                 {
@@ -66,7 +66,7 @@ namespace VTCManager_1._0._0
             }
             catch
             {
-                MessageBox.Show(translation.error_sound_load,translation.error,MessageBoxButtons.OK,MessageBoxIcon.Error);
+                MessageBox.Show(translation.error_sound_load, translation.error, MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 

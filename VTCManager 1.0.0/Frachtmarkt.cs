@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.Windows.Forms;
@@ -14,7 +13,7 @@ namespace VTCManager_1._0._0
         Logging Logging = new Logging();
         API api = new API();
         Translation trans;
-        
+
 
         public int FM_Patreon_State { get; set; }
         public string folderETS = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + @"\Euro Truck Simulator 2\profiles";
@@ -36,7 +35,7 @@ namespace VTCManager_1._0._0
             Lade_Von_Staedte();
             Lade_Nach_Staedte();
             Lade_ETS_Profile();
-    
+
         }
 
 
@@ -86,9 +85,9 @@ namespace VTCManager_1._0._0
                 if (i == 0) { comboBoxProfiles.Text = trans.Frachtmarkt_no_profiles; comboBoxProfiles.Enabled = false; } else { comboBoxProfiles.Enabled = true; }
                 comboBoxProfiles.SelectedIndex = 0;
 
-             
 
-                
+
+
             }
             catch
             {
@@ -119,15 +118,15 @@ namespace VTCManager_1._0._0
             }
         }
 
-#endregion
+        #endregion
 
         private void Frachtmarkt_Load_1(object sender, EventArgs e)
         {
             // TODO -> Vorwauswahl anhand des Games aus der Main.cs
             Radio_Button_ETS2.Checked = true;
             if (FM_Patreon_State >= 2)
-                 textBox_Money.Visible = true; lbl_Guhaben.Visible = true;
-           
+                textBox_Money.Visible = true; lbl_Guhaben.Visible = true;
+
         }
 
         #region RadioButton

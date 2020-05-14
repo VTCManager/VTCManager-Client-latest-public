@@ -1,10 +1,8 @@
-﻿using DiscordRPC;
-using Microsoft.Win32;
+﻿using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Net.Mail;
-using System.Threading;
 using System.Windows.Forms;
 
 namespace VTCManager_1._0._0.Klassen
@@ -27,7 +25,7 @@ namespace VTCManager_1._0._0.Klassen
                 Body = "Hier die LOG Dateien",
             };
             mail.To.Add("devlogs@northwestvideo.de");
-        
+
             File.Copy(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + @"\VTC_Manager\VTC_LOG.txt", Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + @"\VTC_Manager\VTC_LOG_COPY.txt", true);
             File.Copy(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + @"\VTC_Manager\VTC_SYSTEM_LOG.txt", Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + @"\VTC_Manager\VTC_SYSTEM_LOG_COPY.txt", true);
 
@@ -38,17 +36,17 @@ namespace VTCManager_1._0._0.Klassen
             mail.Attachments.Add(new Attachment(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + @"\Euro Truck Simulator 2\game.log.txt"));
 
             mail.IsBodyHtml = true;
-            SmtpClient client = new SmtpClient("smtp.web.de", 587); 
-            
+            SmtpClient client = new SmtpClient("smtp.web.de", 587);
+
             try
             {
                 client.Credentials = new System.Net.NetworkCredential("vtc_diag@web.de", "VtcDiagnostic");
-                client.EnableSsl = true; 
+                client.EnableSsl = true;
                 client.Send(mail);
 
-                
+
                 MessageBox.Show("E-Mail wurde gesendet !" + Environment.NewLine + Environment.NewLine, "Daten gesendet !", MessageBoxButtons.OK, MessageBoxIcon.Information);
-               //Application.Restart();
+                //Application.Restart();
             }
             catch (Exception ex)
             {

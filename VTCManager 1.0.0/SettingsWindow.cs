@@ -1,6 +1,5 @@
 ﻿using Microsoft.Win32;
 using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Windows.Forms;
 using VTCManager_1._0._0.Klassen;
@@ -485,7 +484,7 @@ namespace VTCManager_1._0._0
             // 
             // GroupBox_Diagnostic
             // 
-            this.GroupBox_Diagnostic.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            this.GroupBox_Diagnostic.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)
             | System.Windows.Forms.AnchorStyles.Right)));
             this.GroupBox_Diagnostic.BackColor = System.Drawing.SystemColors.GradientActiveCaption;
             this.GroupBox_Diagnostic.Controls.Add(this.button2);
@@ -890,13 +889,14 @@ namespace VTCManager_1._0._0
             {
                 utils.Reg_Schreiben("Autostart", "1", "TruckersMP_Autorun");
                 Autostart_Checkbox.CheckState = CheckState.Checked;
-            } else
+            }
+            else
             {
                 utils.Reg_Schreiben("Autostart", "0", "TruckersMP_Autorun");
                 Autostart_Checkbox.CheckState = CheckState.Unchecked;
             }
 
-                group_Overlay.Visible = false;
+            group_Overlay.Visible = false;
             // Settings_Windows_Label_Settings.Text = translation.settings_window_titel_text; ######### GEHT NICHT ############
             Settings_Windows_Label_Settings.Text = "Einstellungen";
 
@@ -905,10 +905,10 @@ namespace VTCManager_1._0._0
                 utils.Reg_Schreiben("Dashboard", "0", "TruckersMP_Autorun");
 
 
-   
+
             if (string.IsNullOrEmpty(utils.Reg_Lesen("TruckersMP_Autorun", "TruckersMP_Pfad")))
                 MessageBox.Show("der Pfad zu TruckersMP stimmt nicht" + Environment.NewLine + "Bitte korrigiere diesen im folgenden Fenster", "Fehler TruckersMP", MessageBoxButtons.OK, MessageBoxIcon.Error);
-       
+
 
             string wert27 = utils.Reg_Lesen("TruckersMP_Autorun", "verkehr_SERVER");
             string wert28 = utils.Reg_Lesen("TruckersMP_Autorun", "TruckersMP_Pfad");
@@ -986,7 +986,7 @@ namespace VTCManager_1._0._0
                     patreon_image.Visible = false;
                     break;
             }
-            
+
 
         }
 
@@ -1068,7 +1068,7 @@ namespace VTCManager_1._0._0
             catch (Exception ex)
             {
                 Logging.WriteLOG("<ERROR> Methode GameLog_suchen_Click in SettingsWindow.cs -> " + ex.Message + " [SettingsWindow.cs->807]");
-                MessageBox.Show("Der Pfad zum GameLog Ordner wurde nicht gefunden!", "Fehler", MessageBoxButtons.OK, MessageBoxIcon.Error); 
+                MessageBox.Show("Der Pfad zum GameLog Ordner wurde nicht gefunden!", "Fehler", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
 
         }
@@ -1094,10 +1094,10 @@ namespace VTCManager_1._0._0
                 if (File.Exists(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + @"\Euro Truck Simulator 2\game.log.txt"))
                     System.Diagnostics.Process.Start(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + @"\Euro Truck Simulator 2\game.log.txt");
             }
-            catch (Exception ex) 
+            catch (Exception ex)
             {
                 Logging.WriteLOG("<ERROR> Methode GameLog_oeffnen_Click in SettingsWindow.cs -> " + ex.Message + " [SettingsWindow.cs->836]");
-                MessageBox.Show("Der Pfad zur GameLog wurde nicht gefunden!", "Fehler", MessageBoxButtons.OK, MessageBoxIcon.Error); 
+                MessageBox.Show("Der Pfad zur GameLog wurde nicht gefunden!", "Fehler", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
 
         }
@@ -1150,15 +1150,16 @@ namespace VTCManager_1._0._0
 
         private void Autostart_Checkbox_CheckedChanged(object sender, EventArgs e)
         {
-            if(Autostart_Checkbox.CheckState == CheckState.Checked)
+            if (Autostart_Checkbox.CheckState == CheckState.Checked)
             {
                 addAutoStartRegistry();
-    
-            } else
+
+            }
+            else
             {
                 delAutoStartRegistry();
             }
-            
+
         }
 
         public static void addAutoStartRegistry()
@@ -1227,7 +1228,8 @@ namespace VTCManager_1._0._0
             {
                 SendMail sm = new SendMail();
                 sm.SendeMail();
-            } else
+            }
+            else
             {
                 MessageBox.Show("Es wurden keine Daten an uns Gesendet !" + Environment.NewLine + "Leider können wir ohne diese Daten keinen Support gewähren.", "Daten", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
             }
@@ -1249,9 +1251,9 @@ namespace VTCManager_1._0._0
         private void discordrpccheckbox_CheckedChanged(object sender, EventArgs e)
         {
             if (discordrpccheckbox.CheckState == CheckState.Checked)
-                {
-                    utils.Reg_Schreiben("Discord_Active", "true", "Config");
-                    restart_required = true;
+            {
+                utils.Reg_Schreiben("Discord_Active", "true", "Config");
+                restart_required = true;
             }
             else
             {

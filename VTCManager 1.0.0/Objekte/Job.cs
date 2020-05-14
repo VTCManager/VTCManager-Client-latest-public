@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace VTCManager_1._0._0.Objekte
 {
@@ -24,7 +21,7 @@ namespace VTCManager_1._0._0.Objekte
         public int updatedPercentage;
         public int fuelValue;
         public bool ownTrailerAttached;
-       
+
         public string CityDestination;
         public string CitySource;
         public bool Tollgate;

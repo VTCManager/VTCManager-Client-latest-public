@@ -23,7 +23,7 @@ namespace VTCManager_1._0._0.Objekte
 
         public string Spiel;
 
-        public User(int userID, String company, String username,String profile_picture, int driven_tours, int bank_balance, int patreon_state,String authcode)
+        public User(int userID, String company, String username, String profile_picture, int driven_tours, int bank_balance, int patreon_state, String authcode)
         {
             CultureInfo ci = CultureInfo.InstalledUICulture;
             this.translation = new Translation(ci.DisplayName);

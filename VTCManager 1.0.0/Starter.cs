@@ -32,7 +32,7 @@ namespace VTCManager_1._0._0
                 {
                     Application.Run((Form)new Login(false));
                 }
-                
+
             }
             else
             {

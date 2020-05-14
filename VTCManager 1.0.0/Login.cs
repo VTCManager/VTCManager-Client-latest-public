@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Diagnostics;
 using System.Drawing;
 using System.Globalization;
-using System.Net;
 using System.Windows.Forms;
 using VTCManager_1._0._0.Objekte;
 
@@ -35,7 +33,8 @@ namespace VTCManager_1._0._0
         // Edit by Thommy
         public int spender = 0;
 
-        public Login(bool debug) {
+        public Login(bool debug)
+        {
             this.debug = debug;
             CultureInfo ci = CultureInfo.InstalledUICulture;
             this.translation = new Translation(ci.DisplayName);
@@ -184,7 +183,7 @@ namespace VTCManager_1._0._0
                     this.authCode
                   }
                 }, true).ToString().Split(',');
-                
+
                 if (this.authCode.Equals("Error: PIN_Invalid") || this.authCode.Equals("Error: User_Invalid") || this.authCode.Equals("Error: Serverside"))
                 {
                     this.login_panel.Visible = true;
@@ -198,7 +197,7 @@ namespace VTCManager_1._0._0
                 //Bei normalen Benutzern ist der String leer
                 /*if (String.IsNullOrEmpty(strArray[7]))
                     Application.Exit();*/
-                User user = new User(Convert.ToInt32(strArray[0]), strArray[1], strArray[2], strArray[3], Convert.ToInt32(strArray[4]), Convert.ToInt32(strArray[5]), Convert.ToInt32(strArray[6]),this.authCode);
+                User user = new User(Convert.ToInt32(strArray[0]), strArray[1], strArray[2], strArray[3], Convert.ToInt32(strArray[4]), Convert.ToInt32(strArray[5]), Convert.ToInt32(strArray[6]), this.authCode);
                 this.Hide();
 
                 Main Mainwindow = new Main(user);

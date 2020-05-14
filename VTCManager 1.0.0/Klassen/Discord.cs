@@ -13,7 +13,7 @@ namespace VTCManager_1._0._0
             this.utils = new Utilities();
             if (!string.IsNullOrEmpty(utils.Reg_Lesen("Config", "Discord_Active")))
             {
-                if(utils.Reg_Lesen("Config", "Discord_Active") == "false")
+                if (utils.Reg_Lesen("Config", "Discord_Active") == "false")
                 {
                     this.active = false;
                 }

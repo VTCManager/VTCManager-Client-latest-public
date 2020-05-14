@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Net;
 using System.Text;
-using System.Threading.Tasks;
 using System.Web;
 using System.Windows.Forms;
 
@@ -96,7 +94,7 @@ namespace VTCManager_1._0._0
                 Console.WriteLine(s);
                 return str3;
 
-                
+
             }
             catch (WebException exception)
             {

@@ -1,8 +1,6 @@
 ﻿using Microsoft.Win32;
 using System;
 using System.Diagnostics;
-using System.Globalization;
-using System.IO;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading;
@@ -15,7 +13,7 @@ namespace VTCManager_1._0._0
         //Fields
         private static long _lastCheckTime;
         private static bool _cachedRunningFlag;
-       // private static string _chachedGame;
+        // private static string _chachedGame;
         private static bool _DiscordRunningFlag;
         Logging Logging = new Logging();
 
@@ -95,13 +93,14 @@ namespace VTCManager_1._0._0
                                     if (process.ProcessName == "eurotrucks2")
                                     {
                                         LastRunningGameName = "ETS2";
-                                    }else if (process.ProcessName == "amtrucks")
+                                    }
+                                    else if (process.ProcessName == "amtrucks")
                                     {
                                         LastRunningGameName = "ATS";
                                     }
                                     return _cachedRunningFlag;
                                 }
-                              
+
 
                             }
                             catch
@@ -140,18 +139,18 @@ namespace VTCManager_1._0._0
                                 if (process.ProcessName == "Discord")
                                 {
                                     _DiscordRunningFlag = true;
-      
+
                                     return _DiscordRunningFlag;
                                 }
 
                             }
-                            catch{}
+                            catch { }
                             index++;
                             continue;
                         }
                         else
                         {
-                     
+
                             _DiscordRunningFlag = false;
                         }
                         break;
@@ -201,14 +200,16 @@ namespace VTCManager_1._0._0
 
         }
 
-        public string Reg_Lesen(string ordner, string value ,bool logging = true)
+        public string Reg_Lesen(string ordner, string value, bool logging = true)
         {
             try
             {
                 RegistryKey key = Registry.CurrentUser.OpenSubKey(@"SOFTWARE\VTCManager\" + ordner);
                 return key.GetValue(value).ToString();
-            } catch (Exception ex) {
-                if(logging)
+            }
+            catch (Exception ex)
+            {
+                if (logging)
                     Logging.WriteLOG("<ERROR> Methode Reg_Lesen in Utilities.cs" + ex.StackTrace);
                 return null;
             }
