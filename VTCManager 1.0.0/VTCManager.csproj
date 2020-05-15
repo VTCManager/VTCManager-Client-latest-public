@@ -73,11 +73,10 @@
     <ApplicationIcon>vtcmanager-icon.ico</ApplicationIcon>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestCertificateThumbprint>3D62EC7446CCB021C9569C336E3ACB4A9E008680</ManifestCertificateThumbprint>
+    <ManifestCertificateThumbprint>B7B7579FDE899F38EF2A62D2856A77FDD4CAD5CD</ManifestCertificateThumbprint>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestKeyFile>
-    </ManifestKeyFile>
+    <ManifestKeyFile>VTCManager_TemporaryKey.pfx</ManifestKeyFile>
   </PropertyGroup>
   <PropertyGroup>
     <GenerateManifests>true</GenerateManifests>
@@ -95,6 +94,7 @@
     </None>
     <None Include="App.config" />
     <None Include="packages.config" />
+    <None Include="VTCManager_TemporaryKey.pfx" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="About.cs">
