@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace VTCManager_1._0._0
+﻿namespace VTCManager_1._0._0
 {
     static class Information
     {
@@ -16,6 +10,10 @@ namespace VTCManager_1._0._0
         public static string DiscordAppID = "659036297561767948";
         public static string DiscordLargeImageKey = "truck-icon";
         public static string DiscordSmallImageKey = "vtcm-logo";
-
+        //EMAIL
+        public static string Email_receiver = "devlogs@northwestvideo.de";
+        public static string Email_sender = "vtc_diag@web.de";
+        public static string Email_smtp_url = "smtp.web.de";
+        public static int Email_smtp_port = 587;
     }
 }

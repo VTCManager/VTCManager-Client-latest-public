@@ -10,24 +10,24 @@ namespace VTCManager_1._0._0
 
         public Discord()
         {
-            this.utils = new Utilities();
+            utils = new Utilities();
             if (!string.IsNullOrEmpty(utils.Reg_Lesen("Config", "Discord_Active")))
             {
-                if(utils.Reg_Lesen("Config", "Discord_Active") == "false")
+                if (utils.Reg_Lesen("Config", "Discord_Active") == "false")
                 {
-                    this.active = false;
+                    active = false;
                 }
                 else
                 {
-                    this.active = true;
+                    active = true;
                 }
             }
             else
             {
                 utils.Reg_Schreiben("Discord_Active", "true", "Config");
-                this.active = true;
+                active = true;
             }
-            if (this.active)
+            if (active)
             {
                 if (Utilities.IsDiscordRunning == true)
                 {
@@ -51,7 +51,7 @@ namespace VTCManager_1._0._0
         }
         public void onTour(string destination, string depature, string freight, string weight)
         {
-            if (this.active)
+            if (active)
             {
                 RichPresence rpc = new RichPresence()
                 {
@@ -73,7 +73,7 @@ namespace VTCManager_1._0._0
         }
         public void noTour()
         {
-            if (this.active)
+            if (active)
             {
                 RichPresence rpc = new RichPresence()
                 {

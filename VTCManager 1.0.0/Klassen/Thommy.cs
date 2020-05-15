@@ -1,12 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Net;
 using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-using Xamarin.Forms.Internals;
 
 namespace VTCManager_1._0._0
 {
@@ -79,7 +74,8 @@ namespace VTCManager_1._0._0
             try
             {
                 File.Delete(dest_leer + @"\bin\win_x64\plugins\scs-telemetry.dll");
-            } catch (Exception ex)
+            }
+            catch (Exception ex)
             {
                 Logs.WriteSystemLOG("<ERROR DELETE> scs-telemetry.dll in ETS2" + ex.Message + Environment.NewLine);
             }

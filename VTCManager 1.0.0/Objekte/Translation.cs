@@ -1,10 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
 
 namespace VTCManager_1._0._0
 {
@@ -84,7 +78,8 @@ namespace VTCManager_1._0._0
         public Translation(String language)
         {
             version = "Version: 1.1.0";
-            if (language == "Deutsch (Deutschland)") {
+            if (language == "Deutsch (Deutschland)")
+            {
                 log.WriteSystemLOG("<INFO LANGUAGE> " + language);
                 waehrung = " €";
                 speeding = " KM/H";

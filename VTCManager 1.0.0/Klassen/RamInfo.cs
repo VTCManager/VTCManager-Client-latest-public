@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Management;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace VTCManager_1._0._0
 {
@@ -16,8 +12,10 @@ namespace VTCManager_1._0._0
             {
                 int type = 0;
 
-                ConnectionOptions connection = new ConnectionOptions();
-                connection.Impersonation = ImpersonationLevel.Impersonate;
+                ConnectionOptions connection = new ConnectionOptions
+                {
+                    Impersonation = ImpersonationLevel.Impersonate
+                };
                 ManagementScope scope = new ManagementScope("\\\\.\\root\\CIMV2", connection);
                 scope.Connect();
                 ObjectQuery query = new ObjectQuery("SELECT * FROM Win32_PhysicalMemory");
@@ -69,6 +67,6 @@ namespace VTCManager_1._0._0
 
             return outValue;
         }
-    
+
     }
 }

@@ -29,7 +29,9 @@ namespace VTCManager_1._0._0
         public MemoryInfo(bool Update)
         {
             if (Update)
+            {
                 this.Update();
+            }
         }
 
         public bool Update()

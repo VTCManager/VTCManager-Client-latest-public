@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Net;
 using System.Text;
-using System.Threading.Tasks;
 using System.Web;
 using System.Windows.Forms;
 
@@ -23,24 +21,26 @@ namespace VTCManager_1._0._0
         public string tollgate_path;
         public string new_job_path;
         public string trucky_api_server;
+        public string traffic_data;
         public string get_cities_path = "load_cities.php";
         public string get_cities_path_to = "load_cities_to.php";
         public string load_firmen_in_city = "load_firmen_in_city.php";
 
         public API()
         {
-            this.login_path = "login.php";
+            login_path = "login.php";
             //this.api_server = "https://vtc.northwestvideo.de/api/app/";
-            this.api_server = "https://vtc.northwestvideo.de/api/app_beta/";
-            this.trucky_api_server = "https://api.truckyapp.com/v2/";
-            this.load_data_path = "load_data.php";
-            this.canceltourpath = "cancel_tour.php";
-            this.job_update_path = "job_update.php";
-            this.finishjob_path = "job_finish.php";
-            this.new_job_path = "start_tour.php";
-            this.tollgate_path = "tollgate.php";
-            this.loc_update_path = "loc_update.php";
-            this.get_traffic_path = "traffic/top";
+            api_server = "https://vtc.northwestvideo.de/api/app_beta/";
+            traffic_data = "http://vtc.northwestvideo.de/api/web/traffic/data";
+            trucky_api_server = "https://api.truckyapp.com/v2/";
+            load_data_path = "load_data.php";
+            canceltourpath = "cancel_tour.php";
+            job_update_path = "job_update.php";
+            finishjob_path = "job_finish.php";
+            new_job_path = "start_tour.php";
+            tollgate_path = "tollgate.php";
+            loc_update_path = "loc_update.php";
+            get_traffic_path = "traffic/top";
 
         }
         public string HTTPSRequestGet(string url, Dictionary<string, string> getParameters = null)
@@ -96,7 +96,7 @@ namespace VTCManager_1._0._0
                 Console.WriteLine(s);
                 return str3;
 
-                
+
             }
             catch (WebException exception)
             {

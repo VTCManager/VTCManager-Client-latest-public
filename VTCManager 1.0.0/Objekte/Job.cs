@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace VTCManager_1._0._0.Objekte
 {
@@ -24,7 +21,7 @@ namespace VTCManager_1._0._0.Objekte
         public int updatedPercentage;
         public int fuelValue;
         public bool ownTrailerAttached;
-       
+
         public string CityDestination;
         public string CitySource;
         public bool Tollgate;
@@ -37,67 +34,72 @@ namespace VTCManager_1._0._0.Objekte
         public string FaehreKosten;
         public float fuelatstart;
         public DateTime resttime;
-
+        public double truck_damage;
+        public double trailer_damage;
+        public float cargo_damage;
         public Job()
         {
             //init
-            this.ID = 0;
-            this.jobStarted = false;
-            this.jobRunning = false;
-            this.fuelatend = 0;
-            this.fuelconsumption = 0;
-            this.jobFinished = false;
-            this.locationUpdate = false;
-            this.totalDistance = 0;
-            this.invertedDistance = 0;
-            this.lastNotZeroDistance = 0;
-            this.lastCargoDamage = 0;
-            this.currentPercentage = 0;
-            this.updatedPercentage = 0;
-            this.fuelValue = 0;
-            this.ownTrailerAttached = false;
-            this.CityDestination = "";
-            this.CitySource = "";
-            this.Tollgate = false;
-            this.Tollgate_Payment = 0;
-            this.Ferry = false;
-            this.Train = false;
-            this.Refuel_Amount = "";
-            this.Strafe = "";
-            this.Faehre = "";
-            this.FaehreKosten = "";
-            this.fuelatstart = 0;
+            ID = 0;
+            jobStarted = false;
+            jobRunning = false;
+            fuelatend = 0;
+            fuelconsumption = 0;
+            jobFinished = false;
+            locationUpdate = false;
+            totalDistance = 0;
+            invertedDistance = 0;
+            lastNotZeroDistance = 0;
+            lastCargoDamage = 0;
+            currentPercentage = 0;
+            updatedPercentage = 0;
+            fuelValue = 0;
+            ownTrailerAttached = false;
+            CityDestination = "";
+            CitySource = "";
+            Tollgate = false;
+            Tollgate_Payment = 0;
+            Ferry = false;
+            Train = false;
+            Refuel_Amount = "";
+            Strafe = "";
+            Faehre = "";
+            FaehreKosten = "";
+            fuelatstart = 0;
+            truck_damage = 0.0;
+            trailer_damage = 0.0;
+            cargo_damage = 0;
         }
 
         public void clear()
         {
             //Variablen reseten
-            this.ID = 0;
-            this.jobStarted = false;
-            this.jobRunning = false;
-            this.fuelatend = 0;
-            this.fuelconsumption = 0;
-            this.jobFinished = false;
-            this.locationUpdate = false;
-            this.totalDistance = 0;
-            this.invertedDistance = 0;
-            this.lastNotZeroDistance = 0;
-            this.lastCargoDamage = 0;
-            this.currentPercentage = 0;
-            this.updatedPercentage = 0;
-            this.fuelValue = 0;
-            this.ownTrailerAttached = false;
-            this.CityDestination = "";
-            this.CitySource = "";
-            this.Tollgate = false;
-            this.Tollgate_Payment = 0;
-            this.Ferry = false;
-            this.Train = false;
-            this.Refuel_Amount = "";
-            this.Strafe = "";
-            this.Faehre = "";
-            this.FaehreKosten = "";
-            this.fuelatstart = 0;
+            ID = 0;
+            jobStarted = false;
+            jobRunning = false;
+            fuelatend = 0;
+            fuelconsumption = 0;
+            jobFinished = false;
+            locationUpdate = false;
+            totalDistance = 0;
+            invertedDistance = 0;
+            lastNotZeroDistance = 0;
+            lastCargoDamage = 0;
+            currentPercentage = 0;
+            updatedPercentage = 0;
+            fuelValue = 0;
+            ownTrailerAttached = false;
+            CityDestination = "";
+            CitySource = "";
+            Tollgate = false;
+            Tollgate_Payment = 0;
+            Ferry = false;
+            Train = false;
+            Refuel_Amount = "";
+            Strafe = "";
+            Faehre = "";
+            FaehreKosten = "";
+            fuelatstart = 0;
         }
 
         public void cancel(Sound sound, User user)

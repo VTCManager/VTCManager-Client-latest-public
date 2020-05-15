@@ -26,15 +26,20 @@ namespace VTCManager_1._0._0
         {
             // #### ERSTELLE LOG VERZEICHNIS #######
             if (!Directory.Exists(logDirectory))
+            {
                 Directory.CreateDirectory(logDirectory);
+            }
 
             // #### ERSTELLE NORMALES LOG FILE #####
             if (!File.Exists(logDirectory + logFile))
-                    File.Create(logDirectory + logFile);
+            {
+                File.Create(logDirectory + logFile);
+            }
             // #### ERSTELLE SYSTEM LOG FILE #######
-            if(!File.Exists(logDirectory + systemlogFile))
+            if (!File.Exists(logDirectory + systemlogFile))
+            {
                 File.Create(logDirectory + systemlogFile);
-
+            }
         }
 
 
@@ -48,12 +53,13 @@ namespace VTCManager_1._0._0
                     {
                         File.AppendAllText(logDirectory + logFile, "<" + DateTime.Now + "> " + text + " - File " + file + " :: " + lineNumber + "; Caller: " + caller + Environment.NewLine);
                     }
-                    catch (Exception ex) {
+                    catch (Exception ex)
+                    {
                         MessageBox.Show("<ERROR> " + ex.Message + ex.StackTrace + " - Given String: " + text + " [Logging.cs->56]", "Fehler beim Schreiben in Log", MessageBoxButton.OK, MessageBoxImage.Error);
                     }
                 }
             }
-            catch {}
+            catch { }
         }
 
 
@@ -67,15 +73,15 @@ namespace VTCManager_1._0._0
                     {
                         Thread.Sleep(100);
                         File.AppendAllText(logDirectory + systemlogFile, "<" + DateTime.Now + "> " + text + " - File " + file + " :: " + lineNumber + "; Caller: " + caller + Environment.NewLine);
-                    
+
                     }
                     catch (Exception ex)
                     {
                         MessageBox.Show("<ERROR> " + ex.Message + ex.StackTrace + " - Given String: " + text + " [Logging.cs->79]", "Fehler beim Schreiben in System-Log", MessageBoxButton.OK, MessageBoxImage.Error);
                     }
-                } 
+                }
             }
-            catch {}
+            catch { }
 
         }
 
@@ -88,7 +94,7 @@ namespace VTCManager_1._0._0
             ManagementObjectCollection queryCollection1 = cpu.Get();
             foreach (ManagementObject mo in queryCollection1)
             {
-                this.WriteSystemLOG("<SYSTEM CPU> " + mo["name"].ToString() + " @ " + mo["DataWidth"] + " Bit");
+                WriteSystemLOG("<SYSTEM CPU> " + mo["name"].ToString() + " @ " + mo["DataWidth"] + " Bit");
             }
 
             // ###################################################################################################
@@ -96,9 +102,9 @@ namespace VTCManager_1._0._0
             // ###################################################################################################
             ManagementObjectSearcher BitVersion = new ManagementObjectSearcher("SELECT * FROM CIM_OperatingSystem");
             ManagementObjectCollection queryCollection2 = BitVersion.Get();
-            foreach(ManagementObject m1 in queryCollection2)
+            foreach (ManagementObject m1 in queryCollection2)
             {
-                this.WriteSystemLOG ("<SYSTEM OS> Name: " + m1["name"] + "; Architekture: " + m1["OSArchitecture"] + "; Users: " + m1["NumberOfUsers"] + "; Lang: " + m1["MUILanguages"]);
+                WriteSystemLOG("<SYSTEM OS> Name: " + m1["name"] + "; Architekture: " + m1["OSArchitecture"] + "; Users: " + m1["NumberOfUsers"] + "; Lang: " + m1["MUILanguages"]);
             }
 
             // ###################################################################################################
@@ -107,7 +113,7 @@ namespace VTCManager_1._0._0
             ManagementObjectSearcher searcher = new ManagementObjectSearcher("root\\CIMV2", "SELECT * FROM Win32_ComputerSystem");
             foreach (ManagementObject queryObj in searcher.Get())
             {
-                this.WriteSystemLOG("<RAM INFO> " + memoryInfo.MemoryLoad + "% RAM Belegt; " + ((ulong)queryObj["TotalPhysicalMemory"]/1024/1024/1000).ToString() + "GB " + RamInfo.RamType + " RAM Gesamt");
+                WriteSystemLOG("<RAM INFO> " + memoryInfo.MemoryLoad + "% RAM Belegt; " + ((ulong)queryObj["TotalPhysicalMemory"] / 1024 / 1024 / 1000).ToString() + "GB " + RamInfo.RamType + " RAM Gesamt");
             }
 
             // ###################################################################################################
@@ -117,7 +123,7 @@ namespace VTCManager_1._0._0
             ManagementObjectCollection queryCollection3 = moni.Get();
             foreach (ManagementObject m3 in queryCollection3)
             {
-                this.WriteSystemLOG("<SYSTEM MONITOR> " + m3["Caption"].ToString() + "; ScreenHeight: " + m3["ScreenHeight"] + "; ScreenWidth: " + m3["ScreenWidth"]);
+                WriteSystemLOG("<SYSTEM MONITOR> " + m3["Caption"].ToString() + "; ScreenHeight: " + m3["ScreenHeight"] + "; ScreenWidth: " + m3["ScreenWidth"]);
             }
 
             // ###################################################################################################
@@ -130,7 +136,7 @@ namespace VTCManager_1._0._0
                 {
                     foreach (ManagementObject moItem in driveCollection)
                     {
-                        this.WriteSystemLOG("<SYSTEM-DRIVES> Caption: " + moItem["Caption"] + "; Interface: " + moItem["InterfaceType"] + "; Modell: " + moItem["Model"] + "; Status: " + moItem["Status"]);
+                        WriteSystemLOG("<SYSTEM-DRIVES> Caption: " + moItem["Caption"] + "; Interface: " + moItem["InterfaceType"] + "; Modell: " + moItem["Model"] + "; Status: " + moItem["Status"]);
                     }
                 }
             }

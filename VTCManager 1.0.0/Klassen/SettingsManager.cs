@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Xml.Serialization;
 
@@ -19,10 +15,10 @@ namespace VTCManager_1._0._0
         public string tmp_server;
         public SettingsManager()
         {
-            this.settingsDirectory = Path.Combine(userFolder, ".vtcmanager");
-            this.settingsFile = "settings.xml";
-            this.SConfigFileName = Path.GetFileNameWithoutExtension(Application.ExecutablePath) + ".xml";
-            this.Config = new SettingsDataObject();
+            settingsDirectory = Path.Combine(userFolder, ".vtcmanager");
+            settingsFile = "settings.xml";
+            SConfigFileName = Path.GetFileNameWithoutExtension(Application.ExecutablePath) + ".xml";
+            Config = new SettingsDataObject();
         }
         static SettingsManager()
         {
@@ -30,36 +26,36 @@ namespace VTCManager_1._0._0
         }
         public void CreateConfig()
         {
-            if (!Directory.Exists(this.settingsDirectory))
+            if (!Directory.Exists(settingsDirectory))
             {
-                Directory.CreateDirectory(this.settingsDirectory);
+                Directory.CreateDirectory(settingsDirectory);
             }
-            if (!File.Exists(Path.Combine(this.settingsDirectory, this.settingsFile)))
+            if (!File.Exists(Path.Combine(settingsDirectory, settingsFile)))
             {
-                File.Create(Path.Combine(this.settingsDirectory, this.settingsFile)).Dispose();
+                File.Create(Path.Combine(settingsDirectory, settingsFile)).Dispose();
                 string[] contents = new string[] { "<SettingsDataObject></SettingsDataObject>" };
-                File.AppendAllLines(Path.Combine(this.settingsDirectory, this.settingsFile), contents);
+                File.AppendAllLines(Path.Combine(settingsDirectory, settingsFile), contents);
             }
         }
 
         public void LoadConfig()
         {
-            if (File.Exists(Path.Combine(this.settingsDirectory, this.settingsFile)))
+            if (File.Exists(Path.Combine(settingsDirectory, settingsFile)))
             {
-                StreamReader textReader = File.OpenText(Path.Combine(this.settingsDirectory, this.settingsFile));
-                object obj2 = new XmlSerializer(this.Config.GetType()).Deserialize(textReader);
-                this.Config = (SettingsDataObject)obj2;
+                StreamReader textReader = File.OpenText(Path.Combine(settingsDirectory, settingsFile));
+                object obj2 = new XmlSerializer(Config.GetType()).Deserialize(textReader);
+                Config = (SettingsDataObject)obj2;
                 textReader.Close();
             }
         }
 
         public void SaveConfig()
         {
-            StreamWriter writer = File.CreateText(Path.Combine(this.settingsDirectory, this.settingsFile));
-            Type type = this.Config.GetType();
+            StreamWriter writer = File.CreateText(Path.Combine(settingsDirectory, settingsFile));
+            Type type = Config.GetType();
             if (type.IsSerializable)
             {
-                new XmlSerializer(type).Serialize((TextWriter)writer, this.Config);
+                new XmlSerializer(type).Serialize(writer, Config);
                 writer.Close();
             }
         }
@@ -69,13 +65,16 @@ namespace VTCManager_1._0._0
             try
             {
                 // Check if file exists with its full path    
-                if (File.Exists(Path.Combine(this.settingsDirectory, this.settingsFile)))
+                if (File.Exists(Path.Combine(settingsDirectory, settingsFile)))
                 {
                     // If file found, delete it    
-                    File.Delete(Path.Combine(this.settingsDirectory, this.settingsFile));
+                    File.Delete(Path.Combine(settingsDirectory, settingsFile));
                     Console.WriteLine("File deleted.");
                 }
-                else Console.WriteLine("File not found");
+                else
+                {
+                    Console.WriteLine("File not found");
+                }
             }
             catch (IOException ioExp)
             {
