@@ -3,7 +3,7 @@
     static class Information
     {
         //Versions
-        public static string ClientVersion = "2.3.0";           // Eigene Revisionsnummer
+        public static string ClientVersion = "2.3.1";           // Eigene Revisionsnummer
         public static string TelemetryVersion = "1.10";         // Telemetry Version. 11 ist die letzte, die haben wir derzeit Testweise in Erprobung. 
         public static string SCSSdkVersion = "4.0.30319";       // Neue Versionsnummer -> Steht nei der SCSSdkClient.dll in Eigenschaften. Wenn kleiner bitte Updaten
         //Discord

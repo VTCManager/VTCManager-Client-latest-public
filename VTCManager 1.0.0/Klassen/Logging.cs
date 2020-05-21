@@ -55,7 +55,6 @@ namespace VTCManager_1._0._0
                     }
                     catch (Exception ex)
                     {
-                        MessageBox.Show("<ERROR> " + ex.Message + ex.StackTrace + " - Given String: " + text + " [Logging.cs->56]", "Fehler beim Schreiben in Log", MessageBoxButton.OK, MessageBoxImage.Error);
                     }
                 }
             }
