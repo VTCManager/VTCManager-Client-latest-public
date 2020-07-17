@@ -1,6 +1,6 @@
-# VTCManager client: latest and unstable version
+# VTCManager client: latest and stable version
 VTCManager is a powerful Euro Truck Simulator 2 tool. We are building something more than only a simple job logger. Together we can build something awesome! <br>
-IMPORTANT: This client was in production until 17th of July 2020. All passwords are invalid and the data in the databases has been deleted.
+IMPORTANT: This client was in production until 17th of July 2020. This was the latest, published and stable version
 
 ## Community
 Join our official Discord server and chat with other devs. https://discord.gg/AJrapkG
